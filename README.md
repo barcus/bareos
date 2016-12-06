@@ -27,8 +27,8 @@ Exemple :
 version: '2'
 services:
   bareos-dir:
-    #image: tripax/bareos-director-pgsql
-    image: tripax/bareos-director-mysql
+    #image: barcus/bareos-director-pgsql
+    image: barcus/bareos-director-mysql
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
     environment:
@@ -46,7 +46,7 @@ services:
       - bareos-db
 
   bareos-sd:
-    image: tripax/bareos-storage
+    image: barcus/bareos-storage
     ports:
       - 9103:9103
     volumes:
@@ -56,7 +56,7 @@ services:
       - BAREOS_SD_PASSWORD=<PASSWORD>
 
   bareos-fd:
-    image: tripax/bareos-client
+    image: barcus/bareos-client
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
     environment:
@@ -77,7 +77,7 @@ services:
       - MYSQL_ROOT_PASSWORD=<PASSWORD>
 
   bareos-webui:
-    image: tripax/bareos-webui
+    image: barcus/bareos-webui
     ports:
       - 8080:80
     environment:
