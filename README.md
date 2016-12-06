@@ -27,8 +27,8 @@ Exemple :
 version: '2'
 services:
   bareos-dir:
-    #image: barcus/bareos-director-pgsql
-    image: barcus/bareos-director-mysql
+    #image: barcus/bareos-director:pgsql
+    image: barcus/bareos-director:mysql
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
     environment:
