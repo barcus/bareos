@@ -132,6 +132,7 @@ git clone https://github.com/rockyluke/docker-ubuntu
 cd docker-ubuntu
 ./build.sh -d trusty
 ```
+
 Thanks to @rockyluke :)
 
 ## Usage
@@ -146,8 +147,7 @@ Run `docker exec -it bareos-dir bconsole`
 
 ## Github/Dockerfile
 For more information visit the Github repositories :
-* [bareos-director-mysql](https://github.com/barcus/bareos-director-mysql)
-* [bareos-director-pgsql](https://github.com/barcus/bareos-director-pgsql)
+* [bareos-director](https://github.com/barcus/bareos-director)
 * [bareos-storage](https://github.com/barcus/bareos-storage)
 * [bareos-client](https://github.com/barcus/bareos-client)
 * [bareos-webui](https://github.com/barcus/bareos-webui)
