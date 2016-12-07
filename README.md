@@ -1,9 +1,9 @@
-## About
+# About
 This package provides images for [BareOS](http://www.bareos.org) :
-* Director [![Build Status](https://travis-ci.org/barcus/bareos-director.svg?branch=master)](https://travis-ci.org/barcus/bareos-director)
-* Storage Daemon [![Build Status](https://travis-ci.org/barcus/bareos-storage.svg?branch=master)](https://travis-ci.org/barcus/bareos-storage)
-* Client/File Daemon [![Build Status](https://travis-ci.org/barcus/bareos-client.svg?branch=master)](https://travis-ci.org/barcus/bareos-client)
-* webUI. [![Build Status](https://travis-ci.org/barcus/bareos-webui.svg?branch=master)](https://travis-ci.org/barcus/bareos-webui)
+* Director ![License badge][license-img] [![Build Status][build-img-dir]][build-url-dir] [![Docker badge][docker-img-dir]][docker-url-dir]
+* Storage Daemon ![License badge][license-img] [![Build Status][build-img-sd]][build-url-sd] [![Docker badge][docker-img-sd]][docker-url-sd]
+* Client/File Daemon ![License badge][license-img] [![Build Status][build-img-fd]][build-url-fd] [![Docker badge][docker-img-fd]][docker-url-fd]
+* webUI. ![License badge][license-img] [![Build Status][build-img-ui]][build-url-ui] [![Docker badge][docker-img-ui]][docker-url-ui]
 
 It's based on Ubuntu Trusty and the BareOS package repository.
 
@@ -15,12 +15,14 @@ Each component runs in an single container and are linked together by docker-com
 
 :+1: Tested with BareOS 16.2
 
-## Security advice
+# Security advice
 The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
 
 :o: Do not use this container for anything else, as passwords gets exposed to the BareOS containers.
 
-## Setup with [docker-compose](https://docs.docker.com/compose/) 
+# Setup 
+
+## with [docker-compose](https://docs.docker.com/compose/) 
 
 Exemple :
 ```yml
@@ -62,20 +64,6 @@ services:
     environment:
       - BAREOS_FD_PASSWORD=<PASSWORD>
 
-  #bareos-db:
-  #  image: postgres:9.3
-  #  volumes:
-  #    - <DB_DATA_PATH>:/var/lib/postgresql/data
-  #  environment:
-  #    - POSTGRES_PASSWORD=<PASSWORD>
-
-  bareos-db:
-    image: mysql:5.6
-    volumes:
-      - <DB_DATA_PATH>:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=<PASSWORD>
-
   bareos-webui:
     image: barcus/bareos-webui
     ports:
@@ -84,6 +72,20 @@ services:
       - BAREOS_DIR_HOST=bareos-dir
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos-webui
+
+  bareos-db:
+    image: mysql:5.6
+    volumes:
+      - <DB_DATA_PATH>:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=<PASSWORD>
+
+  #bareos-db:
+  #  image: postgres:9.3
+  #  volumes:
+  #    - <DB_DATA_PATH>:/var/lib/postgresql/data
+  #  environment:
+  #    - POSTGRES_PASSWORD=<PASSWORD>
 
   smtpd:
     image: namshi/smtp
@@ -119,10 +121,27 @@ BareOS WebUI (bareos-webui)
 
 :warning: Remember variables *_HOST must be set with container name
 
-## Build your own BareOS image !
+# Build
+
+## Build your own BareOS images !
 ```bash
-git clone https://github.com/barcus/bareos-director-mysql
-cd bareos-director-mysql
+git clone https://github.com/barcus/bareos-director
+cd bareos-director/mysql
+docker build .
+```
+```bash
+git clone https://github.com/barcus/bareos-storage
+cd bareos-storage
+docker build .
+```
+```bash
+git clone https://github.com/barcus/bareos-client
+cd bareos-client
+docker build .
+```
+```bash
+git clone https://github.com/barcus/bareos-webui
+cd bareos-webui
 docker build .
 ```
 
@@ -135,7 +154,7 @@ cd docker-ubuntu
 
 Thanks to @rockyluke :)
 
-## Usage
+# Usage
 
 ## WebUI
 Open http://your-docker-host:8080/bareos-webui in your browser (user: admin / pass: `<BAREOS_WEBUI_PASSWORD>`)
@@ -143,7 +162,7 @@ Open http://your-docker-host:8080/bareos-webui in your browser (user: admin / pa
 ## bconsole
 Run `docker exec -it bareos-dir bconsole`
 
-## Links
+# Links
 
 ## Github/Dockerfile
 For more information visit the Github repositories :
@@ -152,3 +171,21 @@ For more information visit the Github repositories :
 * [bareos-client](https://github.com/barcus/bareos-client)
 * [bareos-webui](https://github.com/barcus/bareos-webui)
 * [docker-ubuntu](https://github.com/rockyluke/docker-ubuntu)
+
+[license-img]: https://img.shields.io/badge/license-ISC-blue.svg
+[build-img-dir]: https://travis-ci.org/barcus/bareos-director.svg?branch=master
+[build-url-dir]: https://travis-ci.org/barcus/bareos-director
+[docker-img-dir]: https://img.shields.io/docker/pulls/barcus/bareos-director.svg
+[docker-url-dir]: https://registry.hub.docker.com/u/barcus/bareos-director
+[build-img-sd]: https://travis-ci.org/barcus/bareos-storage.svg?branch=master
+[build-url-sd]: https://travis-ci.org/barcus/bareos-storage
+[docker-img-sd]: https://img.shields.io/docker/pulls/barcus/bareos-storage.svg
+[docker-url-sd]: https://registry.hub.docker.com/u/barcus/bareos-storage
+[build-img-fd]: https://travis-ci.org/barcus/bareos-client.svg?branch=master
+[build-url-fd]: https://travis-ci.org/barcus/bareos-client
+[docker-img-fd]: https://img.shields.io/docker/pulls/barcus/bareos-client.svg
+[docker-url-fd]: https://registry.hub.docker.com/u/barcus/bareos-client
+[build-img-ui]: https://travis-ci.org/barcus/bareos-webui.svg?branch=master
+[build-url-ui]: https://travis-ci.org/barcus/bareos-webui
+[docker-img-ui]: https://img.shields.io/docker/pulls/barcus/bareos-webui.svg
+[docker-url-ui]: https://registry.hub.docker.com/u/barcus/bareos-webui
