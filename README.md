@@ -1,9 +1,9 @@
 ## About
 This package provides images for [BareOS](http://www.bareos.org) :
 * Director [![Build Status](https://travis-ci.org/barcus/bareos-director.svg?branch=master)](https://travis-ci.org/barcus/bareos-director)
-* Storage Daemon
-* Client/File Daemon
-* webUI.
+* Storage Daemon [![Build Status](https://travis-ci.org/barcus/bareos-storage.svg?branch=master)](https://travis-ci.org/barcus/bareos-storage)
+* Client/File Daemon [![Build Status](https://travis-ci.org/barcus/bareos-client.svg?branch=master)](https://travis-ci.org/barcus/bareos-client)
+* webUI. [![Build Status](https://travis-ci.org/barcus/bareos-webui.svg?branch=master)](https://travis-ci.org/barcus/bareos-webui)
 
 It's based on Ubuntu Trusty and the BareOS package repository.
 
