@@ -41,7 +41,11 @@ fi
 
 if [ ! -f /etc/bareos/bareos-db.control ]
   then
-  sleep 15
+  # Waiting for MySQL
+  sqlup=1
+  msg="Waiting for MySQL..."
+  while [ "$sqlup" -ne 0 ] ; do mysqladmin -u root -p${DB_PASSWORD} -h ${DB_HOST} ping ; sqlup=$? ; echo $msg && sleep 5 ; done
+
   # Init MySQL DB
   echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
   /usr/lib/bareos/scripts/create_bareos_database 
