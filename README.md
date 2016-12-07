@@ -1,6 +1,6 @@
 ## About
 This package provides images for [BareOS](http://www.bareos.org) :
-* Director
+* Director [![Build Status](https://travis-ci.org/barcus/bareos-director.svg?branch=master)](https://travis-ci.org/barcus/bareos-director)
 * Storage Daemon
 * Client/File Daemon
 * webUI.
