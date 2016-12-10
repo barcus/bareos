@@ -1,5 +1,5 @@
 # BareOS Web-ui Dockerfile
-FROM       tripax/ubuntu:trusty
+FROM       barcus/ubuntu:trusty
 MAINTAINER Barcus <barcus@tou.nu>
 
 ENV DEBIAN_FRONTEND noninteractive
