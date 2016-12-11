@@ -1,5 +1,6 @@
-![License badge][license-img] [![Build Status][build-img]][build-url]
-# About
+## docker-bareos ![License badge][license-img] [![Build Status][build-img]][build-url]
+
+## About
 This package provides images for [BareOS](http://www.bareos.org) :
 
 module|pulls
@@ -19,14 +20,14 @@ Each component runs in an single container and are linked together by docker-com
 
 :+1: Tested with BareOS 16.2
 
-# Security advice
+## Security advice
 The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
 
 :o: Do not use this container for anything else, as passwords gets exposed to the BareOS containers.
 
-# Setup
+## Setup
 
-## with [docker-compose](https://docs.docker.com/compose/)
+[docker-compose](https://docs.docker.com/compose/) :
 
 Exemple :
 ```yml
@@ -125,9 +126,9 @@ BareOS WebUI (bareos-webui)
 
 :warning: Remember variables *_HOST must be set with container name
 
-# Build
+## Build
 
-## Build your own BareOS images !
+Build your own BareOS images :
 ```bash
 git clone https://github.com/barcus/bareos-director
 cd bareos-director/mysql
@@ -149,7 +150,7 @@ cd bareos-webui
 docker build .
 ```
 
-## Build your own Trusty base system image !
+Build your own Trusty base system image :
 ```bash
 git clone https://github.com/rockyluke/docker-ubuntu
 cd docker-ubuntu
@@ -158,18 +159,17 @@ cd docker-ubuntu
 
 Thanks to @rockyluke :)
 
-# Usage
+## Usage
 
-## WebUI
+* WebUI :
 Open http://your-docker-host:8080/bareos-webui in your browser (user: admin / pass: `<BAREOS_WEBUI_PASSWORD>`)
-
-## bconsole
+* bconsole :
 Run `docker exec -it bareos-dir bconsole`
 
-# Links
+## Links
 
-## Github/Dockerfile
 For more information visit the Github repositories :
+
 * [bareos-director](https://github.com/barcus/bareos/director-mysql)
 * [bareos-storage](https://github.com/barcus/bareos/storage)
 * [bareos-client](https://github.com/barcus/bareos/client)
