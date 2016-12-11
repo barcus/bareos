@@ -94,7 +94,7 @@ services:
     image: namshi/smtp
 ```
 
-BareOS Director (bareos-dir)
+**BareOS Director** (bareos-dir)
 * `<BAREOS_CONF_PATH>` is the path to share your Director config folder from the host side (optional/recommended)
 * DB_PASSWORD must be same `<PASSWORD>` as BareOS Database section
 * Set BAREOS_DB_PASSWORD here with a strong `<PASSWORD>`
@@ -104,21 +104,21 @@ BareOS Director (bareos-dir)
 * SMTP_HOST is the name of smtp container
 * ADMIN_MAIL is your email address
 
-BareOS Storage Daemon (bareos-sd)
+**BareOS Storage Daemon** (bareos-sd)
 * `<BAREOS_CONF_PATH>` is the path to share your Storage config folder from the host side (optional/recommended)
 * `<BAREOS_BKP_VOLUME_PATH>` is the path to share your data folder from the host side. (optional)
 * BAREOS_SD_PASSWORD must be same `<PASSWORD>` as BareOS Director section
 
-BareOS Client/File Daemon (bareos-fd)
+**BareOS Client/File Daemon** (bareos-fd)
 * `<BAREOS_CONF_PATH>` is the path to share your Client config folder from the host side (optional/recommended)
 * BAREOS_FD_PASSWORD must be same `<PASSWORD>` as BareOS Director section
 
-Database MySQL or PostgreSQL (bareos-db)
+**Database MySQL or PostgreSQL** (bareos-db)
 Required as catalog backend, simply use the official MySQL/PostgreSQL image
 * `<DB_DATA_PATH>` is the path to share your MySQL/PostgreSQL data from the host side
 * Set DB_PASSWORD here with a strong `<PASSWORD>`
 
-BareOS WebUI (bareos-webui)
+**BareOS webUI** (bareos-webui)
 * `<BAREOS_CONF_PATH>` is the path to share your WebUI config folder from the host side. (optional)
 * default user is `admin`
 
