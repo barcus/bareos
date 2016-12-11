@@ -175,9 +175,11 @@ For more information visit the Github repositories :
 * [bareos-client](https://github.com/barcus/bareos/client)
 * [bareos-webui](https://github.com/barcus/bareos/webui)
 * [docker-ubuntu](https://github.com/rockyluke/docker-ubuntu)
-* 
-Docker hub :
+
+My Docker hub :
 * [docker images](https://hub.docker.com/r/barcus)
+
+Enjoy !
 
 [license-img]: https://img.shields.io/badge/license-ISC-blue.svg
 [build-img]: https://travis-ci.org/barcus/bareos.svg?branch=master
