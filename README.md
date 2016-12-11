@@ -28,8 +28,6 @@ The default passwords inside the configuration files are created when building t
 ## Setup
 
 [docker-compose](https://docs.docker.com/compose/) :
-
-Exemple :
 ```yml
 version: '2'
 services:
@@ -162,8 +160,11 @@ Thanks to @rockyluke :)
 ## Usage
 
 * WebUI :
+
 Open http://your-docker-host:8080/bareos-webui in your browser (user: admin / pass: `<BAREOS_WEBUI_PASSWORD>`)
+
 * bconsole :
+
 Run `docker exec -it bareos-dir bconsole`
 
 ## Links
