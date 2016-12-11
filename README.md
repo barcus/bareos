@@ -171,10 +171,10 @@ Run `docker exec -it bareos-dir bconsole`
 
 For more information visit the Github repositories :
 
-* [bareos-director](https://github.com/barcus/bareos/director-mysql)
-* [bareos-storage](https://github.com/barcus/bareos/storage)
-* [bareos-client](https://github.com/barcus/bareos/client)
-* [bareos-webui](https://github.com/barcus/bareos/webui)
+* [bareos-director](https://github.com/barcus/bareos/tree/master/director-mysql)
+* [bareos-storage](https://github.com/barcus/bareos/tree/master/storage)
+* [bareos-client](https://github.com/barcus/bareos/tree/master/client)
+* [bareos-webui](https://github.com/barcus/bareos/tree/master/webui)
 * [docker-ubuntu](https://github.com/rockyluke/docker-ubuntu)
 
 My Docker hub :
