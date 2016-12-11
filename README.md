@@ -1,12 +1,12 @@
 ![License badge][license-img] [![Build Status][build-img]][build-url]
 # About
 This package provides images for [BareOS](http://www.bareos.org) :
-|module|pulls
-|-----|-----:
-|Director|[![Docker badge][docker-img-dir]][docker-url-dir]
-|Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]
-|Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]
-|webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
+module|pulls
+-----|-----
+Director|[![Docker badge][docker-img-dir]][docker-url-dir]
+Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]
+Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]
+webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
 
 It's based on Ubuntu Trusty and the BareOS package repository.
 
