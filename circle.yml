@@ -3,7 +3,6 @@ general:
 
 machine:
   pre:
-    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
     - pip install docker-compose
   services:
     - docker
@@ -12,6 +11,6 @@ test:
   pre:
     - docker-compose -f docker-compose-mysql.yml up -d
   override:
-    - docker exec -i -t build_bareos-dir_1 bash -c 'echo "run job=backup-bareos-fd yes" | bconsole'
+    - sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" build_bareos-dir_1)" -- bash -c 'echo "run job=backup-bareos-fd yes" | bconsole'
   post:
     - docker-compose -f docker-compose-mysql.yml down
