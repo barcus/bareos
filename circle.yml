@@ -4,12 +4,14 @@ general:
 machine:
   pre:
     - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
+    - pip install docker-compose
   services:
     - docker
 
-dependencies:
+test:
   pre:
-    - sudo pip install docker-compose
-
+    - docker-compose -f docker-compose-mysql.yml up -d
+  override:
+    - docker exec -i -t build_bareos-dir_1 bash -c 'echo "run job=backup-bareos-fd yes" | bconsole'
   post:
-    - docker-compose -f docker-compose-mysql.yml up --build
+    - docker-compose -f docker-compose-mysql.yml down
