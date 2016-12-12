@@ -1,5 +1,7 @@
 bareos-dir:
   #build: ../director-mysql
+  ports:
+    - 9101:9101
   image: barcus/bareos-director:mysql
   environment:
     - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
