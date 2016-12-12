@@ -9,8 +9,8 @@ machine:
 
 test:
   pre:
-    - docker-compose -f docker-compose-mysql.yml up -d
+    - docker-compose -f docker-compose-mysql.yml up -d ; sleep 20
   override:
     - sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" build_bareos-dir_1)" -- bash -c 'echo "run job=backup-bareos-fd yes" | bconsole'
-  post:
-    - docker-compose -f docker-compose-mysql.yml down
+  #post:
+  #  - docker-compose -f docker-compose-mysql.yml down
