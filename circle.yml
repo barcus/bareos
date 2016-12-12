@@ -12,4 +12,4 @@ dependencies:
     - sudo pip install docker-compose
 
   post:
-    - docker-compose -f docker-compose-mysql.yml up --build
+    - docker-compose -f docker-compose-mysql.yml up
