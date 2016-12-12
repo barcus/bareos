@@ -1,0 +1,15 @@
+general:
+  build_dir: build
+
+machine:
+  python:
+    version: 2.7.3
+  services:
+    - docker
+
+dependencies:
+  pre:
+    - sudo pip install docker-compose
+
+  post:
+    - docker-compose -f docker-compose-mysql.yml up --build

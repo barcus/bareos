@@ -1,0 +1,44 @@
+version: '2'
+services:
+  bareos-dir:
+    build: ../director-mysql
+    environment:
+      - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - DB_HOST=bareos-db
+      - DB_PORT=3306
+      - BAREOS_FD_HOST=bareos-fd
+      - BAREOS_SD_HOST=bareos-sd
+      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+      - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
+      - SMTP_HOST=smtpd
+      - ADMIN_MAIL=barcus@tou.nu
+    depends_on:
+      - bareos-db
+
+  bareos-sd:
+    build: ../storage
+    ports:
+      - 9103:9103
+    environment:
+      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+
+  bareos-fd:
+    build: ../client
+    environment:
+      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+
+  bareos-webui:
+    build: ../webui
+    ports:
+      - 8080:80
+    environment:
+      - BAREOS_DIR_HOST=bareos-dir
+
+  bareos-db:
+    image: mysql:5.6
+    environment:
+      - MYSQL_ROOT_PASSWORD=ThisIsMySecretDBp4ssw0rd
+
+  smtpd:
+    image: namshi/smtp
