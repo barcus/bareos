@@ -128,23 +128,14 @@ Required as catalog backend, simply use the official MySQL/PostgreSQL image
 
 Build your own BareOS images :
 ```bash
-git clone https://github.com/barcus/bareos-director
-cd bareos-director/mysql
+git clone https://github.com/barcus/bareos
+cd director-mysql
 docker build .
-```
-```bash
-git clone https://github.com/barcus/bareos-storage
-cd bareos-storage
+cd ../storage
 docker build .
-```
-```bash
-git clone https://github.com/barcus/bareos-client
-cd bareos-client
+cd ../client
 docker build .
-```
-```bash
-git clone https://github.com/barcus/bareos-webui
-cd bareos-webui
+cd ../webui
 docker build .
 ```
 
