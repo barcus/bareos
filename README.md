@@ -1,7 +1,5 @@
 ## docker-bareos ![License badge][license-img] [![Build Status][build-img]][build-url]
 
-**CircleCI build** : [![CircleCI][circleci-img]][circleci-url]
-
 ## About
 This package provides images for [BareOS](http://www.bareos.org) :
 
@@ -29,7 +27,7 @@ The default passwords inside the configuration files are created when building t
 
 ## Setup
 
-[docker-compose](https://docs.docker.com/compose/) :
+[docker-compose](https://docs.docker.com/compose/) : **CircleCI build** : [![CircleCI][circleci-img]][circleci-url]
 
 ```yml
 version: '2'
