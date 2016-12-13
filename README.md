@@ -27,7 +27,9 @@ The default passwords inside the configuration files are created when building t
 
 ## Setup
 
-[docker-compose](https://docs.docker.com/compose/) : **CircleCI build** : [![CircleCI][circleci-img]][circleci-url]
+[docker-compose](https://docs.docker.com/compose/) :
+
+build and run with CircleCI [![CircleCI][circleci-img]][circleci-url]
 
 ```yml
 version: '2'
