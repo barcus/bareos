@@ -1,10 +1,11 @@
 bareos-dir:
   #build: ../director-mysql
+  image: barcus/bareos-director:mysql
   ports:
     - 9101:9101
   image: barcus/bareos-director:mysql
   environment:
-    - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
+   - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
     - DB_HOST=bareos-db
     - DB_PORT=3306
     - BAREOS_FD_HOST=bareos-fd
