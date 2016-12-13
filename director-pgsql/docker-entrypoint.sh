@@ -6,15 +6,16 @@ if [ ! -f /etc/bareos/bareos-config.control ]
   then
   tar xfvz /bareos-dir.tgz
 
-  # Copy profile for bareos-webui
+  # Download default admin profile config
   if [ ! -f /etc/bareos/bareos-dir.d/profile/webui-admin.conf ]
     then
-    wget --no-check-certificate 'https://raw.githubusercontent.com/bareos/bareos-webui/master/install/bareos/bareos-dir.d/profile/webui-admin.conf' -P /etc/bareos/bareos-dir.d/profile/
+    curl --silent --insecure https://raw.githubusercontent.com/bareos/bareos-webui/master/install/bareos/bareos-dir.d/profile/webui-admin.conf --output /etc/bareos/bareos-dir.d/profile/webui-admin.conf
   fi
 
+  # Download default webUI config
   if [ ! -f /etc/bareos/bareos-dir.d/console/admin.conf ]
     then
-    wget --no-check-certificate 'https://raw.githubusercontent.com/bareos/bareos-webui/master/install/bareos/bareos-dir.d/console/admin.conf.example' -O /etc/bareos/bareos-dir.d/console/admin.conf
+    curl --silent --insecure https://raw.githubusercontent.com/bareos/bareos-webui/master/install/bareos/bareos-dir.d/console/admin.conf.example --output /etc/bareos/bareos-dir.d/console/admin.conf
   fi
 
   # Update bareos-director configs
@@ -31,7 +32,7 @@ if [ ! -f /etc/bareos/bareos-config.control ]
   # client/file daemon
   sed -i "s#Address = .*#Address = \"${BAREOS_FD_HOST}\"#" /etc/bareos/bareos-dir.d/client/bareos-fd.conf
   sed -i "s#Password = .*#Password = \"${BAREOS_FD_PASSWORD}\"#" /etc/bareos/bareos-dir.d/client/bareos-fd.conf
-  # console
+  # webUI
   sed -i "s#Password = .*#Password = \"${BAREOS_WEBUI_PASSWORD}\"#" /etc/bareos/bareos-dir.d/console/admin.conf
 
   # Control file
