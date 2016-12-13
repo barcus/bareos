@@ -4,23 +4,11 @@ MAINTAINER Barcus <barcus@tou.nu>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update \
-  && apt-get install --no-install-recommends -y -qq wget \
-  && bash -c 'wget -q http://download.bareos.org/bareos/release/latest/xUbuntu_14.04/Release.key -O- | apt-key add -' \
-  && bash -c 'echo "deb http://download.bareos.org/bareos/release/latest/xUbuntu_14.04/ /" > /etc/apt/sources.list.d/bareos.list' \
-  && bash -c "echo 'postfix postfix/main_mailer_type select No configuration' | debconf-set-selections" \
-  && apt-get update \
-  && apt-get install -y -qq --no-install-recommends bareos-webui \
-  && apt-get -y -qq remove --purge wget \
-  && apt-get -y -qq autoremove \
-  && apt-get -y -qq clean \
-  && apt-get -y -qq autoclean \
-  && find /usr/share/doc     -type f ! -name copyright -delete \
-  && find /usr/share/i18n    -type f -delete \
-  && find /usr/share/locale  -type f -delete \
-  && find /usr/share/man     -type f -delete \
-  && find /var/cache/apt     -type f -delete \
-  && find /var/lib/apt/lists -type f -delete
+RUN curl -Ls http://download.bareos.org/bareos/release/latest/xUbuntu_14.04/Release.key | apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg add - && \
+    echo 'deb http://download.bareos.org/bareos/release/latest/xUbuntu_14.04/ /' > /etc/apt/sources.list.d/bareos.list && \
+    apt-get update -qq && \
+    apt-get install -qq -y bareos-webui && \
+    apt-clean
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh
