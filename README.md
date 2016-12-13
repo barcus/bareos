@@ -1,11 +1,13 @@
 ## docker-bareos ![License badge][license-img] [![Build Status][build-img]][build-url]
 
+**CircleCI build** : [![CircleCI][circleci-img]][circleci-url]
+
 ## About
 This package provides images for [BareOS](http://www.bareos.org) :
 
 module|pulls
 -----|-----
-Director|[![Docker badge][docker-img-dir]][docker-url-dir]
+Director| [![Docker badge][docker-img-dir]][docker-url-dir]
 Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]
 Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]
 webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
@@ -28,6 +30,7 @@ The default passwords inside the configuration files are created when building t
 ## Setup
 
 [docker-compose](https://docs.docker.com/compose/) :
+
 ```yml
 version: '2'
 services:
@@ -182,3 +185,5 @@ Enjoy !
 [docker-url-fd]: https://registry.hub.docker.com/u/barcus/bareos-client
 [docker-img-ui]: https://img.shields.io/docker/pulls/barcus/bareos-webui.svg
 [docker-url-ui]: https://registry.hub.docker.com/u/barcus/bareos-webui
+[circleci-url]: https://circleci.com/gh/barcus/bareos
+[circleci-img]: https://circleci.com/gh/barcus/bareos.svg?style=svg
