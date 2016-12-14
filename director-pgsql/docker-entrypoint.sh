@@ -20,8 +20,8 @@ if [ ! -f /etc/bareos/bareos-config.control ]
 
   # Update bareos-director configs
   # Director / mycatalog & mail report
-  sed -i "s#dbuser = bareos#dbuser = bareos\n  dbpassword = \"${DB_PASSWORD}\"#" /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
-  sed -i "s#dbname = bareos#dbname = bareos\n  dbaddress = \"${BAREOS_DB_HOST}\"\n  dbport = \"${BAREOS_DB_PORT}\"#" /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
+  sed -i "s#dbuser = bareos#dbuser = bareos\n  dbpassword = ${DB_PASSWORD}#" /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
+  sed -i "s#dbname = bareos#dbname = bareos\n  dbaddress = \"${DB_HOST}\"\n  dbport = \"${DB_PORT}\"#" /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   sed -i "s#/usr/bin/bsmtp -h localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#" /etc/bareos/bareos-dir.d/messages/Daemon.conf
   sed -i "s#mail = root@localhost#mail = ${ADMIN_MAIL}#" /etc/bareos/bareos-dir.d/messages/Daemon.conf
   sed -i "s#/usr/bin/bsmtp -h localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#" /etc/bareos/bareos-dir.d/messages/Standard.conf
@@ -44,7 +44,7 @@ if [ ! -f /etc/bareos/bareos-db.control ]
   sleep 15
   # Iinit Postgres DB
   export PGUSER=postgres
-  export PGHOST=${BAREOS_DB_HOST}
+  export PGHOST=${DB_HOST}
   export PGPASSWORD=${DB_PASSWORD}
   psql -c 'create user bareos with createdb createrole createuser login;'
   psql -c "alter user bareos password '${DB_PASSWORD}';"
