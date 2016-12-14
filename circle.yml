@@ -7,10 +7,16 @@ machine:
   services:
     - docker
 
+dependencies:
+  pre:
+    - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe'
+    - sudo apt-get update ; sudo apt-get install shellcheck
+
 test:
   pre:
     - docker-compose -f docker-compose-mysql.yml up -d
-  #override:
+  override:
     #- sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" build_bareos-dir_1)" -- bash -c 'echo "run job=backup-bareos-fd yes" | bconsole'
+    - shellcheck ../director-mysql/docker-entrypoint.sh ../director-pgsql/docker-entrypoint.sh ../storage/docker-entrypoint.sh ../client/docker-entrypoint.sh ../webui/docker-entrypoint.sh
   post:
     - docker-compose -f docker-compose-mysql.yml down
