@@ -40,14 +40,14 @@ services:
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
     environment:
-      - DB_PASSWORD=<PASSWORD>
+      - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
       - DB_HOST=bareos-db
       - DB_PORT=3306
       - BAREOS_FD_HOST=bareos-fd
       - BAREOS_SD_HOST=bareos-sd
-      - BAREOS_FD_PASSWORD=<PASSWORD>
-      - BAREOS_SD_PASSWORD=<PASSWORD>
-      - BAREOS_WEBUI_PASSWORD=<PASSWORD>
+      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+      - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
       - SMTP_HOST=smtpd
       - ADMIN_MAIL=your@mail.address
     depends_on:
@@ -61,14 +61,14 @@ services:
       - <BAREOS_CONF_PATH>:/etc/bareos
       - <BAREOS_BKP_VOLUME_PATH>:/var/lib/bareos/storage
     environment:
-      - BAREOS_SD_PASSWORD=<PASSWORD>
+      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
 
   bareos-fd:
     image: barcus/bareos-client
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
     environment:
-      - BAREOS_FD_PASSWORD=<PASSWORD>
+      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
 
   bareos-webui:
     image: barcus/bareos-webui
@@ -84,14 +84,14 @@ services:
     volumes:
       - <DB_DATA_PATH>:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=<PASSWORD>
+      - MYSQL_ROOT_PASSWORD=ThisIsMySecretDBp4ssw0rd
 
   #bareos-db:
   #  image: postgres:9.3
   #  volumes:
   #    - <DB_DATA_PATH>:/var/lib/postgresql/data
   #  environment:
-  #    - POSTGRES_PASSWORD=<PASSWORD>
+  #    - POSTGRES_PASSWORD=ThisIsMySecretDBp4ssw0rd
 
   smtpd:
     image: namshi/smtp
@@ -99,27 +99,22 @@ services:
 
 **BareOS Director** (bareos-dir)
 * `<BAREOS_CONF_PATH>` is the path to share your Director config folder from the host side (optional/recommended)
-* DB_PASSWORD must be same `<PASSWORD>` as BareOS Database section
-* Set BAREOS_DB_PASSWORD here with a strong `<PASSWORD>`
-* Set BAREOS_SD_PASSWORD here with a strong `<PASSWORD>`
-* Set BAREOS_FD_PASSWORD here with a strong `<PASSWORD>`
-* Set BAREOS_WEBUI_PASSWORD here with a strong `<PASSWORD>`
+* DB_PASSWORD must be same as BareOS Database section
 * SMTP_HOST is the name of smtp container
 * ADMIN_MAIL is your email address
 
 **BareOS Storage Daemon** (bareos-sd)
 * `<BAREOS_CONF_PATH>` is the path to share your Storage config folder from the host side (optional/recommended)
 * `<BAREOS_BKP_VOLUME_PATH>` is the path to share your data folder from the host side. (optional)
-* BAREOS_SD_PASSWORD must be same `<PASSWORD>` as BareOS Director section
+* BAREOS_SD_PASSWORD must be same as BareOS Director section
 
 **BareOS Client/File Daemon** (bareos-fd)
 * `<BAREOS_CONF_PATH>` is the path to share your Client config folder from the host side (optional/recommended)
-* BAREOS_FD_PASSWORD must be same `<PASSWORD>` as BareOS Director section
+* BAREOS_FD_PASSWORD must be same as BareOS Director section
 
 **Database MySQL or PostgreSQL** (bareos-db)
 Required as catalog backend, simply use the official MySQL/PostgreSQL image
 * `<DB_DATA_PATH>` is the path to share your MySQL/PostgreSQL data from the host side
-* Set DB_PASSWORD here with a strong `<PASSWORD>`
 
 **BareOS webUI** (bareos-webui)
 * `<BAREOS_CONF_PATH>` is the path to share your WebUI config folder from the host side. (optional)
