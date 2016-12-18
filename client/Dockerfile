@@ -9,7 +9,8 @@ RUN curl -Ls http://download.bareos.org/bareos/release/latest/xUbuntu_14.04/Rele
     echo 'deb http://download.bareos.org/bareos/release/latest/xUbuntu_14.04/ /' > /etc/apt/sources.list.d/bareos.list && \
     apt-get update -qq && \
     apt-get install -qq -y bareos-client && \
-    apt-clean
+    apt-clean && \
+    curl -Lsk https://github.com/bareos/bareos/blob/master/src/cats/make_catalog_backup.pl.in -o /usr/lib/bareos/scripts/make_catalog_backup.pl
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh
