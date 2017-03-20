@@ -147,7 +147,7 @@ Thanks to @rockyluke :)
 
 * WebUI :
 
-Open http://your-docker-host:8080/bareos-webui in your browser (user: admin / pass: `<BAREOS_WEBUI_PASSWORD>`)
+Open http://your-docker-host:8080/ in your browser (user: admin / pass: `<BAREOS_WEBUI_PASSWORD>`)
 
 * bconsole :
 
