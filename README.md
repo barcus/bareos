@@ -12,7 +12,7 @@ webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
 
 It's based on Ubuntu Trusty and the BareOS package repository.
 
-BareOS Director also required :
+BareOS Director also require :
 * PostgreSQL or MySQL as catalog backend
 * SMTP Daemon as local mail router (backup reports)
 
@@ -23,7 +23,7 @@ Each component runs in an single container and are linked together by docker-com
 ## Security advice
 The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
 
-:o: Do not use this container for anything else, as passwords gets exposed to the BareOS containers.
+:o: Do not use this container for anything else, as passwords get expose to the BareOS containers.
 
 ## Setup
 
