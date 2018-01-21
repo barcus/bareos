@@ -36,8 +36,9 @@ build and run with CircleCI [![CircleCI][circleci-img]][circleci-url]
 version: '3'
 services:
   bareos-dir:
-    #image: barcus/bareos-director:pgsql
-    image: barcus/bareos-director:mysql
+    #image: barcus/bareos-director:pgsql_latest
+    #image: barcus/bareos-director:mysql_16 #(Bareos 16.2)
+    image: barcus/bareos-director:mysql_latest 
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
       - <BAREOS_DATA_PATH>:/var/lib/bareos # (required for MyCatalog backup)
@@ -102,6 +103,7 @@ services:
 
 **BareOS Director** (bareos-dir)
 * `<BAREOS_CONF_PATH>` is the path to share your Director config folder from the host side (optional/recommended)
+* `<BAREOS_DATA_PATH>` is the path to share your Director data folder from the host side (recommended)
 * DB_PASSWORD must be same as BareOS Database section
 * SMTP_HOST is the name of smtp container
 * ADMIN_MAIL is your email address
@@ -113,6 +115,7 @@ services:
 
 **BareOS Client/File Daemon** (bareos-fd)
 * `<BAREOS_CONF_PATH>` is the path to share your Client config folder from the host side (optional/recommended)
+* `<BAREOS_DATA_PATH>` is the path to access Director data folder (recommended)
 * BAREOS_FD_PASSWORD must be same as BareOS Director section
 
 **Database MySQL or PostgreSQL** (bareos-db)
