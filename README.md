@@ -19,6 +19,7 @@ BareOS Director also require :
 Each component runs in an single container and are linked together by docker-compose.
 
 :+1: Tested with BareOS 16.2
+:+1: Tested with BareOS 17.2 
 
 ## Security advice
 The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
@@ -32,13 +33,14 @@ The default passwords inside the configuration files are created when building t
 build and run with CircleCI [![CircleCI][circleci-img]][circleci-url]
 
 ```yml
-version: '2'
+version: '3'
 services:
   bareos-dir:
     #image: barcus/bareos-director:pgsql
     image: barcus/bareos-director:mysql
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
+      - <BAREOS_DATA_PATH>:/var/lib/bareos # (required for MyCatalog backup)
     environment:
       - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
       - DB_HOST=bareos-db
@@ -67,6 +69,7 @@ services:
     image: barcus/bareos-client
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
+      - <BAREOS_DATA_PATH>:/var/lib/bareos-director # (required for MyCatalog backup)
     environment:
       - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
 

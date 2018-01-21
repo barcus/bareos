@@ -35,6 +35,8 @@ if [ ! -f /etc/bareos/bareos-config.control ]
   sed -i "s#Password = .*#Password = \"${BAREOS_FD_PASSWORD}\"#" /etc/bareos/bareos-dir.d/client/bareos-fd.conf
   # webUI
   sed -i "s#Password = .*#Password = \"${BAREOS_WEBUI_PASSWORD}\"#" /etc/bareos/bareos-dir.d/console/admin.conf
+  # MyCatalog Backup
+  sed -i "s#/var/lib/bareos/bareos.sql#/var/lib/bareos-director/bareos.sql#" /etc/bareos/bareos-dir.d/fileset/Catalog.conf
 
   # Control file
   touch /etc/bareos/bareos-config.control
@@ -42,20 +44,26 @@ fi
 
 if [ ! -f /etc/bareos/bareos-db.control ]
   then
-  # Waiting for MySQL
-  sqlup=1
-  msg="Waiting for MySQL..."
-  while [ "$sqlup" -ne 0 ] ; do mysqladmin -u root -p"${DB_PASSWORD}" -h "${DB_HOST}" ping ; sqlup=$? ; echo "$msg" && sleep 5 ; done
+    # Waiting for MySQL
+    sqlup=1
+    msg="Waiting for MySQL..."
+    while [ "$sqlup" -ne 0 ] ; do mysqladmin -u root -p"${DB_PASSWORD}" -h "${DB_HOST}" ping ; sqlup=$? ; echo "$msg" && sleep 5 ; done
 
-  # Init MySQL DB
-  echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
-  /usr/lib/bareos/scripts/create_bareos_database 
-  /usr/lib/bareos/scripts/make_bareos_tables 
-  #/usr/lib/bareos/scripts/grant_bareos_privileges
+    # Init MySQL DB
+    echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
+    /usr/lib/bareos/scripts/create_bareos_database
+    /usr/lib/bareos/scripts/make_bareos_tables
+    # Only for Postgres
+    #/usr/lib/bareos/scripts/grant_bareos_privileges
 
-  # Control file
-  touch /etc/bareos/bareos-db.control
+    # Control file
+    touch /etc/bareos/bareos-db.control
+  else
+    # Try MySQL upgrade
+    echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
+    /usr/lib/bareos/scripts/update_bareos_tables
 fi
 
 find /etc/bareos/bareos-dir.d ! -user bareos -exec chown bareos {} \;
+chown bareos:bareos /var/lib/bareos
 exec "$@"

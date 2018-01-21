@@ -4,8 +4,8 @@ MAINTAINER Barcus <barcus@tou.nu>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN curl -Ls http://download.bareos.org/bareos/release/latest/xUbuntu_14.04/Release.key | apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg add - && \
-    echo 'deb http://download.bareos.org/bareos/release/latest/xUbuntu_14.04/ /' > /etc/apt/sources.list.d/bareos.list && \
+RUN curl -Ls http://download.bareos.org/bareos/release/17.2/xUbuntu_14.04/Release.key | apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg add - && \
+    echo 'deb http://download.bareos.org/bareos/release/17.2/xUbuntu_14.04/ /' > /etc/apt/sources.list.d/bareos.list && \
     echo 'bareos-database-common bareos-database-common/dbconfig-install boolean false' | debconf-set-selections && \
     echo 'bareos-database-common bareos-database-common/install-error select ignore' | debconf-set-selections && \
     echo 'bareos-database-common bareos-database-common/database-type select psql' | debconf-set-selections && \
