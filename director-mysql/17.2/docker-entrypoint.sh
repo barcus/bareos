@@ -44,9 +44,10 @@ fi
 
 if [ ! -f /etc/bareos/bareos-db.control ]
   then
+    # MysSQL init
     # Waiting for MySQL
     sqlup=1
-    msg="Waiting for MySQL..."
+    msg="Waiting for MySQL...!"
     while [ "$sqlup" -ne 0 ] ; do mysqladmin -u root -p"${DB_PASSWORD}" -h "${DB_HOST}" ping ; sqlup=$? ; echo "$msg" && sleep 5 ; done
 
     # Init MySQL DB
@@ -60,6 +61,11 @@ if [ ! -f /etc/bareos/bareos-db.control ]
     touch /etc/bareos/bareos-db.control
   else
     # Try MySQL upgrade
+    # Waiting for MySQL
+    sqlup=1
+    msg="Waiting for MySQL...!"
+    while [ "$sqlup" -ne 0 ] ; do mysqladmin -u root -p"${DB_PASSWORD}" -h "${DB_HOST}" ping ; sqlup=$? ; echo "$msg" && sleep 5 ; done
+
     echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
     /usr/lib/bareos/scripts/update_bareos_tables
 fi
