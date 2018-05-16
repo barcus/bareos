@@ -9,13 +9,13 @@ if [ ! -f /etc/bareos/bareos-config.control ]
   # Download default admin profile config
   if [ ! -f /etc/bareos/bareos-dir.d/profile/webui-admin.conf ]
     then
-    curl --silent --insecure https://raw.githubusercontent.com/bareos/bareos-webui/master/install/bareos/bareos-dir.d/profile/webui-admin.conf --output /etc/bareos/bareos-dir.d/profile/webui-admin.conf
+    curl --silent --insecure https://raw.githubusercontent.com/bareos/bareos/master/webui//install/bareos/bareos-dir.d/profile/webui-admin.conf --output /etc/bareos/bareos-dir.d/profile/webui-admin.conf
   fi
 
   # Download default webUI config
   if [ ! -f /etc/bareos/bareos-dir.d/console/admin.conf ]
     then
-    curl --silent --insecure https://raw.githubusercontent.com/bareos/bareos-webui/master/install/bareos/bareos-dir.d/console/admin.conf.example --output /etc/bareos/bareos-dir.d/console/admin.conf
+    curl --silent --insecure https://raw.githubusercontent.com/bareos/bareos/master/webui//install/bareos/bareos-dir.d/console/admin.conf.example --output /etc/bareos/bareos-dir.d/console/admin.conf
   fi
 
   # Update bareos-director configs
