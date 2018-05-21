@@ -1,4 +1,4 @@
-## docker-bareos ![License badge][license-img] [![Build Status][build-img]][build-url]
+## docker-bareos ![License badge][license-img] [![Build Status][build-img]][build-url] [![CircleCI][circleci-img]][circleci-url]
 
 ## About
 This package provides images for [BareOS](http://www.bareos.org) :
@@ -10,7 +10,7 @@ Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]
 Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]
 webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
 
-It's based on Ubuntu Trusty and the BareOS package repository.
+It's based on Ubuntu Xenial and the BareOS package repository.
 
 BareOS Director also require :
 * PostgreSQL or MySQL as catalog backend
@@ -27,9 +27,13 @@ The default passwords inside the configuration files are created when building t
 :o: Do not use this container for anything else, as passwords get expose to the BareOS containers.
 
 ## Setup
-[docker-compose](https://docs.docker.com/compose/) :
+With docker-compose, you can find it [here](https://docs.docker.com/compose/)
 
-build and run with CircleCI [![CircleCI][circleci-img]][circleci-url]
+A docker-compose file is available [here](https://github.com/barcus/bareos/blob/master/docker-compose.yml)
+* Remember to change your mail address (ADMIN_MAIL) and maybe some password.
+* You will find all your data and configs in /home/bareos and /home/mysql
+
+You can also build your own docker-compose file with this model :
 
 ```yml
 version: '3'
@@ -39,6 +43,7 @@ services:
     #image: barcus/bareos-director:mysql_16 #(Bareos 16.2)
     #image: barcus/bareos-director:mysql_17 #(Bareos 17.2)
     image: barcus/bareos-director:latest #(BareOS latest with MySQL) 
+
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
       - <BAREOS_DATA_PATH>:/var/lib/bareos # (required for MyCatalog backup)
@@ -52,7 +57,7 @@ services:
       - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
       - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
       - SMTP_HOST=smtpd
-      - ADMIN_MAIL=your@mail.address
+      - ADMIN_MAIL=your@mail.address # Change me!
     depends_on:
       - bareos-db
 
@@ -69,7 +74,7 @@ services:
       - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
 
   bareos-fd:
-    image: barcus/bareos-client
+    image: barcus/bareos-client:latest
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
       - <BAREOS_DATA_PATH>:/var/lib/bareos-director # (required for MyCatalog backup)
@@ -142,11 +147,11 @@ docker build client/
 docker build webui/
 ```
 
-Build your own Trusty base system image :
+Build your own Xenial base system image :
 ```bash
 git clone https://github.com/rockyluke/docker-ubuntu
 cd docker-ubuntu
-./build.sh -d trusty
+./build.sh -d xenial
 ```
 
 Thanks to @rockyluke :)
