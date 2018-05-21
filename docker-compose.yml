@@ -1,0 +1,72 @@
+## docker-compose BareOS Director/Storage/Client/webUI and MySQL Database
+version: '3'
+services:
+  bareos-dir:
+    #image: barcus/bareos-director: (mysql as default)
+    #image: barcus/bareos-director:latest (mysql as default)
+    #image: barcus/bareos-director:mysql_latest
+    #image: barcus/bareos-director:pgsql
+    #image: barcus/bareos-director:mysql_16
+    #image: barcus/bareos-director:mysql_17
+    image: barcus/bareos-director:mysql # same as mysql_latest
+    volumes:
+      - /home/bareos/config/director:/etc/bareos
+      - /home/bareos/data/director:/var/lib/bareos #(required for MyCatalog backup)
+    environment:
+      - DB_HOST=bareos-db
+      - DB_PORT=3306
+      - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - BAREOS_SD_HOST=bareos-sd
+      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+      - BAREOS_FD_HOST=bareos-fd
+      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+      - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
+      - SMTP_HOST=smtpd
+      - ADMIN_MAIL=your@mail.address # Change me!
+    depends_on:
+      - bareos-db
+
+  bareos-sd:
+    image: barcus/bareos-storage
+    ports:
+      - 9103:9103
+    volumes:
+      - /home/bareos/config/storage:/etc/bareos
+      - /home/bareos/data/storage:/var/lib/bareos/storage
+    environment:
+      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+
+  bareos-fd:
+    image: barcus/bareos-client
+    volumes:
+      - /home/bareos/config/client:/etc/bareos
+      - /home/bareos/data/director:/var/lib/bareos-director #(required for MyCatalog backup)
+    environment:
+      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+
+  bareos-webui:
+    image: barcus/bareos-webui
+    ports:
+      - 80:80
+    environment:
+      - BAREOS_DIR_HOST=bareos-dir
+    volumes:
+      - /home/bareos/config/webui:/etc/bareos-webui
+
+  bareos-db:
+    image: mysql:5.6
+    volumes:
+      - /home/mysql/data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=ThisIsMySecretDBp4ssw0rd
+
+  #bareos-db:
+  #  image: postgres:9.3
+  #  volumes:
+  #    - /home/pgsql/data:/var/lib/postgresql/data
+  #  environment:
+  #    - POSTGRES_PASSWORD=ThisIsMySecretDBp4ssw0rd
+
+  smtpd:
+    image: namshi/smtp
+#EOF
