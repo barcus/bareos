@@ -22,7 +22,7 @@ if [ ! -f /etc/bareos/bareos-config.control ]
   # Director / mycatalog & mail report
   sed -i "s#dbuser =.*#dbuser = root#" /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   sed -i "s#dbpassword =.*#dbpassword = \"${DB_PASSWORD}\"#" /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
-  sed -i "s#dbname = bareos#dbname = bareos\n  dbaddress = \"${DB_HOST}\"\n  dbport = \"${DB_PORT}\"#" /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
+  sed -i "s#dbname =.*#dbname = bareos\n  dbaddress = \"${DB_HOST}\"\n  dbport = \"${DB_PORT}\"#" /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   sed -i "s#/usr/bin/bsmtp -h localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#" /etc/bareos/bareos-dir.d/messages/Daemon.conf
   sed -i "s#mail = root@localhost#mail = ${ADMIN_MAIL}#" /etc/bareos/bareos-dir.d/messages/Daemon.conf
   sed -i "s#/usr/bin/bsmtp -h localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#" /etc/bareos/bareos-dir.d/messages/Standard.conf
@@ -42,31 +42,35 @@ if [ ! -f /etc/bareos/bareos-config.control ]
   touch /etc/bareos/bareos-config.control
 fi
 
+# MySQL check
+# Waiting for mysqld
+sqlup=1
+while [ "$sqlup" -ne 0 ] ; do 
+  echo "Waiting for mysqld..."
+  mysqladmin --silent -u root -p"${DB_PASSWORD}" -h "${DB_HOST}" ping
+  if [ $? -ne 0 ] ; then
+    sqlup=1
+    sleep 5
+  else
+    sqlup=0
+    echo "...mysqld is alive"
+  fi
+done
+
+# Set mysqld access for root
+echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
+
+# MySQL init for BareOS if required
 if [ ! -f /etc/bareos/bareos-db.control ]
   then
-    # MysSQL init
-    # Waiting for MySQL
-    sqlup=1
-    msg="Waiting for MySQL...!"
-    while [ "$sqlup" -ne 0 ] ; do mysqladmin -u root -p"${DB_PASSWORD}" -h "${DB_HOST}" ping ; sqlup=$? ; echo "$msg" && sleep 5 ; done
-
     # Init MySQL DB
-    echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
     /usr/lib/bareos/scripts/create_bareos_database
     /usr/lib/bareos/scripts/make_bareos_tables
-    # Only for Postgres
-    #/usr/lib/bareos/scripts/grant_bareos_privileges
 
     # Control file
     touch /etc/bareos/bareos-db.control
   else
-    # Try MySQL upgrade
-    # Waiting for MySQL
-    sqlup=1
-    msg="Waiting for MySQL...!"
-    while [ "$sqlup" -ne 0 ] ; do mysqladmin -u root -p"${DB_PASSWORD}" -h "${DB_HOST}" ping ; sqlup=$? ; echo "$msg" && sleep 5 ; done
-
-    echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
+    # Try MySQL DB upgrade
     /usr/lib/bareos/scripts/update_bareos_tables
 fi
 
