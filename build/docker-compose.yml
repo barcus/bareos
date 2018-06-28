@@ -41,7 +41,7 @@ bareos-webui:
     - bareos-dir:bareos-dir
 
 php-fpm:
-  images: barcus/php-fpm-alpine
+  image: barcus/php-fpm-alpine
 
 bareos-db:
   image: mysql:5.6
