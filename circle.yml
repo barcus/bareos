@@ -1,5 +1,5 @@
 general:
-  build_dir: build
+  build_dir: .
 
 machine:
   pre:
@@ -11,4 +11,4 @@ test:
   pre:
     - docker-compose -f docker-compose.yml up -d
   post:
-    - docker-compose -f docker-compose-.yml down
+    - docker-compose -f docker-compose.yml down
