@@ -52,7 +52,7 @@ services:
       - php-fpm
 
   php-fpm:
-    build: /home/gok/git/docker-fpm-alpine
+    image: barcus/php-fpm-alpine
     volumes:
       - /home/bareos/data/webui:/usr/share/bareos-webui
       - /home/bareos/config/webui:/etc/bareos-webui
