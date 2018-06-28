@@ -45,6 +45,8 @@ services:
       - 80:9100
     environment:
       - BAREOS_DIR_HOST=bareos-dir
+      - PHP_FPM_HOST=php-fpm
+      - PHP_FPM_PORT=9000
     volumes:
       - /home/bareos/config/webui:/etc/bareos-webui
       - /home/bareos/data/webui:/usr/share/bareos-webui
