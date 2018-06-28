@@ -1,0 +1,52 @@
+bareos-dir:
+  image: barcus/bareos-director:alpine
+  environment:
+    - DB_HOST=bareos-db
+    - DB_PORT=3306
+    - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
+    - BAREOS_SD_HOST=bareos-sd
+    - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+    - BAREOS_FD_HOST=bareos-fd
+    - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+    - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
+    - SMTP_HOST=smtpd
+    - ADMIN_MAIL=your@mail.address
+  links:
+    - bareos-fd:bareos-fd
+    - bareos-sd:bareos-sd
+    - bareos-db:bareos-db
+
+bareos-sd:
+  image: barcus/bareos-storage:alpine
+  ports:
+    - 9103:9103
+  environment:
+    - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+
+bareos-fd:
+  image: barcus/bareos-client:alpine
+  environment:
+    - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+  links:
+    - bareos-sd:bareos-sd
+
+bareos-webui:
+  image: barcus/bareos-webui:alpine
+  ports:
+    - 80:9100
+  environment:
+    - BAREOS_DIR_HOST=bareos-dir
+  links:
+    - php-fpm:php-fpm
+    - bareos-dir:bareos-dir
+
+php-fpm:
+  images: barcus/php-fpm-alpine
+
+bareos-db:
+  image: mysql:5.6
+  environment:
+    - MYSQL_ROOT_PASSWORD=ThisIsMySecretDBp4ssw0rd
+
+smtpd:
+  image: namshi/smtp
