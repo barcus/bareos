@@ -1,9 +1,12 @@
 docker-php-fpm-alpine
 =======
-[License badge][license-img] [![Docker badge][docker-img]][docker-url]
+![License badge][license-img] [![Docker badge][docker-img]][docker-url]
 
 ## About
 This package provides images for [php-fpm](http://php.net/manual/en/install.fpm.php) with some extra extentions installed :
+
+* intl
+* gettext
 
 It's based on Alpine Edge.
 
