@@ -2,9 +2,7 @@
 FROM       alpine:edge
 MAINTAINER Barcus <barcus@tou.nu>
 
-RUN set -ex \
-    && apk add --no-cache \
-    bareos-webui-nginx
+RUN apk add --no-cache bareos-webui-nginx
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh
