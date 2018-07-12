@@ -1,0 +1,113 @@
+## docker-compose BareOS Director/Storage/Client/webUI, PHP-FPM and MySQL Database
+version: '3.2'
+services:
+  bareos-dir:
+    #image: barcus/bareos-director:latest
+    image: barcus/bareos-director:17.2-mysql-alpine #(lastest director+mysql)
+    volumes:
+      - director_config:/etc/bareos
+      - director_data:/var/lib/bareos #(required for MyCatalog backup)
+    environment:
+      - DB_HOST=bareos-db
+      - DB_PORT=3306
+      - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - BAREOS_SD_HOST=bareos-sd
+      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+      - BAREOS_FD_HOST=bareos-fd
+      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+      - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
+      - SMTP_HOST=smtpd
+      - ADMIN_MAIL=your@mail.address # Change me!
+    depends_on:
+      - bareos-db
+
+  bareos-sd:
+    image: barcus/bareos-storage:alpine
+    ports:
+      - 9103:9103
+    volumes:
+      - storage_config:/etc/bareos
+      - storage_data:/var/lib/bareos/storage
+    environment:
+      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+
+  bareos-fd:
+    image: barcus/bareos-client:alpine
+    volumes:
+      - client_config:/etc/bareos
+      - director_data:/var/lib/bareos-director #(required for MyCatalog backup)
+    environment:
+      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+
+  bareos-webui:
+    image: barcus/bareos-webui:alpine
+    ports:
+      - 8080:9100
+    environment:
+      - BAREOS_DIR_HOST=bareos-dir
+      - PHP_FPM_HOST=php-fpm
+      - PHP_FPM_PORT=9000
+    volumes:
+      - webuiconfig:/etc/bareos-webui
+      - webui_data:/usr/share/bareos-webui
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    image: barcus/php-fpm-alpine
+    volumes:
+      - webui_config:/etc/bareos-webui
+      - webui_data:/usr/share/bareos-webui
+
+  bareos-db:
+    image: mysql:5.6
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=ThisIsMySecretDBp4ssw0rd
+
+  smtpd:
+    image: namshi/smtp
+
+volumes:
+  director_config:
+    driver: local
+    driver_opts:
+      o: 'bind'
+      device: '/home/bareos/config/director'
+  director_data:
+    driver: local
+    driver_opts:
+      o: 'bind'
+      device: '/home/bareos/data/director'
+  storage_config:
+    driver: local
+    driver_opts:
+      o: 'bind'
+      device: '/home/bareos/config/storage'
+  storage_data:
+    driver: local
+    driver_opts:
+      o: 'bind'
+      device: '/home/bareos/data/storage'
+  client_config:
+    driver: local
+    driver_opts:
+      o: 'bind'
+      device: '/home/bareos/config/client'
+  webui_config:
+    driver: local
+    driver_opts:
+      o: 'bind'
+      device: '/home/bareos/config/webui'
+  webui_data:
+    driver: local
+    driver_opts:
+      o: 'bind'
+      device: '/home/bareos/data/webui'
+  mysql_data:
+    driver: local
+    driver_opts:
+      o: 'bind'
+        device: '/home/mysql/data'
+#EOF
