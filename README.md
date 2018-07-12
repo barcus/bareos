@@ -10,18 +10,18 @@ Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]
 Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]
 webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
 
-It's based on Alpine (branch alpine) or Ubuntu (branch master) and the BareOS package repository.
+It's based on Alpine (very small image) and BareOS Alpine package
+
+You can find Ubuntu version [here](https://github.com/barcus/bareos)
 
 BareOS Director require :
-* PostgreSQL or MySQL as catalog backend
+* MySQL as catalog backend
 * SMTP Daemon as local mail router (backup reports)
 
 BareOS Webui require :
 * PHP-FPM
 
 Each component runs in an single container and are linked together by docker-compose :
-
-* :+1: Tested with BareOS 16.2
 * :+1: Tested with BareOS 17.2
 
 ## Security advice
@@ -32,7 +32,8 @@ The default passwords inside the configuration files are created when building t
 ## Setup
 With docker-compose, you can find it [here](https://docs.docker.com/compose/)
 
-A docker-compose file is available [here](https://github.com/barcus/bareos/blob/master/docker-compose.yml)
+A docker-compose file is available [here](https://github.com/barcus/bareos/blob/alpine/docker-compose.yml)
+
 ```bash
 docker-compose -f /path/to/your/docker-compose.yml up -d
 ```
@@ -72,14 +73,13 @@ Build your own Alpine base system image :
 ...soon :)
 
 ## Links
-
 For more information visit the Github repositories :
 
-* [bareos-director-mysql](https://github.com/barcus/bareos/tree/master/director-mysql)
-* [bareos-director-pgsql](https://github.com/barcus/bareos/tree/master/director-pgsql)
-* [bareos-storage](https://github.com/barcus/bareos/tree/master/storage)
-* [bareos-client](https://github.com/barcus/bareos/tree/master/client)
-* [bareos-webui](https://github.com/barcus/bareos/tree/master/webui)
+* [bareos-director-mysql](https://github.com/barcus/bareos/tree/alpine/director-mysql)
+* [bareos-director-pgsql](https://github.com/barcus/bareos/tree/alpine/director-pgsql)
+* [bareos-storage](https://github.com/barcus/bareos/tree/alpine/storage)
+* [bareos-client](https://github.com/barcus/bareos/tree/alpine/client)
+* [bareos-webui](https://github.com/barcus/bareos/tree/alpine/webui)
 * [php-fpm-alpine](https://github.com/barcus/docker-php-fpm-alpine)
 * [docker-ubuntu](https://github.com/rockyluke/docker-ubuntu)
 
@@ -89,7 +89,7 @@ My Docker hub :
 Enjoy !
 
 [license-img]: https://img.shields.io/badge/license-ISC-blue.svg
-[build-img]: https://travis-ci.org/barcus/bareos.svg?branch=master
+[build-img]: https://travis-ci.org/barcus/bareos.svg?branch=alpine
 [build-url]: https://travis-ci.org/barcus/bareos
 [docker-img-dir]: https://img.shields.io/docker/pulls/barcus/bareos-director.svg
 [docker-url-dir]: https://registry.hub.docker.com/u/barcus/bareos-director
