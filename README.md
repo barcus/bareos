@@ -61,14 +61,6 @@ docker build client/17.2
 docker build webui/17.2
 ```
 
-Build your own Ubuntu base system image :
-```bash
-git clone https://github.com/rockyluke/docker-ubuntu
-cd docker-ubuntu
-./build.sh -d xenial
-```
-Thanks to @rockyluke :)
-
 Build your own Alpine base system image :
 ...soon :)
 
@@ -76,12 +68,10 @@ Build your own Alpine base system image :
 For more information visit the Github repositories :
 
 * [bareos-director-mysql](https://github.com/barcus/bareos/tree/alpine/director-mysql)
-* [bareos-director-pgsql](https://github.com/barcus/bareos/tree/alpine/director-pgsql)
 * [bareos-storage](https://github.com/barcus/bareos/tree/alpine/storage)
 * [bareos-client](https://github.com/barcus/bareos/tree/alpine/client)
 * [bareos-webui](https://github.com/barcus/bareos/tree/alpine/webui)
 * [php-fpm-alpine](https://github.com/barcus/docker-php-fpm-alpine)
-* [docker-ubuntu](https://github.com/rockyluke/docker-ubuntu)
 
 My Docker hub :
 * [docker images](https://hub.docker.com/r/barcus)
