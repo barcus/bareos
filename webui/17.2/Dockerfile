@@ -10,7 +10,7 @@ RUN tar cfvz /bareos-webui-config.tgz /etc/bareos-webui
 RUN tar cfvz /bareos-webui-code.tgz /usr/share/bareos-webui
 RUN mkdir /run/nginx
 
-EXPOSE 8080
+EXPOSE 9100
 
 VOLUME /etc/bareos-webui
 
