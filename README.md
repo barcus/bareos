@@ -21,7 +21,8 @@ BareOS Director also require :
 Each component runs in an single container and are linked together by docker-compose.
 
 * :+1: Tested with BareOS 16.2
-* :+1: Tested with BareOS 17.2 (default version with 'latest' tag) 
+* :+1: Tested with BareOS 17.2
+* :+1: Tested with BareOS 18.2 (default version with 'latest' tag) 
 
 ## Security advice
 The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
