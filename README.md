@@ -12,6 +12,8 @@ webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
 
 It's based on Ubuntu Xenial and the BareOS package repository.
 
+:exclamation: New version based on Alpine is available [here](https://github.com/barcus/bareos/tree/alpine)
+
 BareOS Director also require :
 * PostgreSQL or MySQL as catalog backend
 * SMTP Daemon as local mail router (backup reports)
@@ -19,7 +21,8 @@ BareOS Director also require :
 Each component runs in an single container and are linked together by docker-compose.
 
 * :+1: Tested with BareOS 16.2
-* :+1: Tested with BareOS 17.2 (default version with 'latest' tag) 
+* :+1: Tested with BareOS 17.2
+* :+1: Tested with BareOS 18.2 (default version with 'latest' tag) 
 
 ## Security advice
 The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
@@ -40,8 +43,8 @@ version: '3'
 services:
   bareos-dir:
     #image: barcus/bareos-director:pgsql_latest
-    #image: barcus/bareos-director:mysql_16 #(Bareos 16.2)
     #image: barcus/bareos-director:mysql_17 #(Bareos 17.2)
+    #image: barcus/bareos-director:mysql_18 #(Bareos 18.2)
     image: barcus/bareos-director:latest #(BareOS latest with MySQL) 
 
     volumes:
@@ -62,8 +65,8 @@ services:
       - bareos-db
 
   bareos-sd:
-    #image: barcus/bareos-storage:16
     #image: barcus/bareos-storage:17
+    #image: barcus/bareos-storage:18
     image: barcus/bareos-storage:latest
     ports:
       - 9103:9103
@@ -74,6 +77,8 @@ services:
       - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
 
   bareos-fd:
+    #image: barcus/bareos-client:17
+    #image: barcus/bareos-client:18
     image: barcus/bareos-client:latest
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
@@ -82,7 +87,9 @@ services:
       - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
 
   bareos-webui:
-    image: barcus/bareos-webui
+    #image: barcus/bareos-webui:17
+    #image: barcus/bareos-webui:18
+    image: barcus/bareos-webui:latest
     ports:
       - 8080:80
     environment:
