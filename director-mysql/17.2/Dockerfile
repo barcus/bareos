@@ -1,5 +1,5 @@
 # BareOS director Dockerfile
-FROM       alpine:edge
+FROM       alpine:3.8
 MAINTAINER Barcus <barcus@tou.nu>
 
 RUN apk add --no-cache bareos mysql-client curl
