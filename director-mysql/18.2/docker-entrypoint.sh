@@ -35,6 +35,7 @@ if [ ! -f /etc/bareos/bareos-config.control ]
   sed -i "s#Password = .*#Password = \"${BAREOS_FD_PASSWORD}\"#" /etc/bareos/bareos-dir.d/client/bareos-fd.conf
   # webUI
   sed -i "s#Password = .*#Password = \"${BAREOS_WEBUI_PASSWORD}\"#" /etc/bareos/bareos-dir.d/console/admin.conf
+  sed -i "s#}#  TlsEnable = false\n}#" /etc/bareos/bareos-dir.d/console/admin.conf
   # MyCatalog Backup
   sed -i "s#/var/lib/bareos/bareos.sql#/var/lib/bareos-director/bareos.sql#" /etc/bareos/bareos-dir.d/fileset/Catalog.conf
 
