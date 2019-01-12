@@ -12,7 +12,7 @@ RUN curl -Ls http://download.bareos.org/bareos/release/18.2/xUbuntu_16.04/Releas
     echo 'bareos-database-common bareos-database-common/missing-db-package-error select ignore' | debconf-set-selections && \
     echo 'postfix postfix/main_mailer_type select No configuration' | debconf-set-selections && \
     apt-get update -qq && \
-    apt-get install -qq -y bareos bareos-database-mysql mysql-client && \
+    apt-get install -qq -y bareos bareos-database-mysql mysql-client bareos-tools && \
     apt-clean
 
 COPY docker-entrypoint.sh /
