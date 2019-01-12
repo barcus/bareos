@@ -1,7 +1,7 @@
 ## docker-bareos ![License badge][license-img] [![Build Status][build-img]][build-url] [![CircleCI][circleci-img]][circleci-url]
 
 ## About
-This package provides images for [BareOS](http://www.bareos.org) :
+This package provides images for [BareOS][bareos-href] :
 
 module|pulls
 -----|-----
@@ -12,7 +12,7 @@ webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
 
 It's based on Ubuntu Xenial and the BareOS package repository.
 
-:exclamation: New version based on Alpine is available [here](https://github.com/barcus/bareos/tree/alpine)
+:exclamation: New version based on Alpine is available [here][bareos-alpine] (BareOS 17.2 only)
 
 BareOS Director also require :
 * PostgreSQL or MySQL as catalog backend
@@ -30,10 +30,8 @@ The default passwords inside the configuration files are created when building t
 :o: Do not use this container for anything else, as passwords get expose to the BareOS containers.
 
 ## Setup
-With docker-compose, you can find it [here](https://docs.docker.com/compose/)
-
-A docker-compose file is available [here](https://github.com/barcus/bareos/blob/master/docker-compose.yml)
-* Remember to change your mail address (ADMIN_MAIL) and maybe some password.
+With docker-compose, (available [here][compose-href]), run this [file][compose-file]
+* Remember to change your mail address (ADMIN_MAIL) and maybe some passwords.
 * You will find all your data and configs in /home/bareos and /home/mysql
 
 You can also build your own docker-compose file with this model :
@@ -202,3 +200,7 @@ Enjoy !
 [docker-url-ui]: https://registry.hub.docker.com/u/barcus/bareos-webui
 [circleci-url]: https://circleci.com/gh/barcus/bareos
 [circleci-img]: https://circleci.com/gh/barcus/bareos.svg?style=svg
+[bareos-href]: https://www.bareos.org
+[compose-file]: https://github.com/barcus/bareos/blob/ubuntu/docker-compose.yml
+[compose-href]: https://docs.docker.com/compose
+[bareos-alpine]: https://github.com/barcus/bareos/tree/alpine
