@@ -208,6 +208,6 @@ Enjoy !
 [circleci-url]: https://circleci.com/gh/barcus/bareos
 [circleci-img]: https://circleci.com/gh/barcus/bareos.svg?style=svg
 [bareos-href]: https://www.bareos.org
-[compose-file]: https://github.com/barcus/bareos/blob/ubuntu/docker-compose.yml
+[compose-file]: https://github.com/barcus/bareos/blob/master/docker-compose.yml
 [compose-href]: https://docs.docker.com/compose
 [bareos-alpine]: https://github.com/barcus/bareos/tree/alpine
