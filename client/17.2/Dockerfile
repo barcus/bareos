@@ -1,6 +1,6 @@
 # Dockerfile BareOS client/file daemon
 
-FROM       alpine:edge
+FROM       alpine:3.8
 MAINTAINER Barcus <barcus@tou.nu>
 
 RUN set -ex \
