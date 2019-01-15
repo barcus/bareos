@@ -76,6 +76,6 @@ if [ ! -f /etc/bareos/bareos-db.control ]
     /etc/bareos/scripts/update_bareos_tables
 fi
 
-find /etc/bareos/bareos-dir.d ! -user bareos -exec chown bareos {} \;
+find /etc/bareos ! -user bareos -exec chown bareos {} \;
 chown bareos:bareos /var/lib/bareos
 exec "$@"

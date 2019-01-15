@@ -17,5 +17,5 @@ if [ ! -f /etc/bareos/bareos-config.control ]
   touch /etc/bareos/bareos-config.control
 fi
 
-find /etc/bareos/bareos-sd.d ! -user bareos -exec chown bareos {} \;
+find /etc/bareos ! -user bareos -exec chown bareos {} \;
 exec "$@"
