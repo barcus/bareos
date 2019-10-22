@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN curl -Ls http://download.bareos.org/bareos/release/16.2/xUbuntu_16.04/Release.key | apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg add - && \
     echo 'deb http://download.bareos.org/bareos/release/16.2/xUbuntu_16.04/ /' > /etc/apt/sources.list.d/bareos.list && \
     apt-get update -qq && \
-    apt-get install -qq -y bareos-storage && \
+    apt-get install -qq -y bareos-storage bareos-tools bareos-storage-tape mtx scsitools sg3-utils mt-st && \
     apt-clean
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
