@@ -64,4 +64,5 @@ if [ ! -f /etc/bareos/bareos-db.control ]
 fi
 
 find /etc/bareos/bareos-dir.d ! -user bareos -exec chown bareos {} \;
+chown -R bareos:bareos /var/lib/bareos
 exec "$@"
