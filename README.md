@@ -22,7 +22,7 @@ Each component runs in an single container and are linked together by docker-com
 
 * :+1: Tested with BareOS 16.2
 * :+1: Tested with BareOS 17.2
-* :+1: Tested with BareOS 18.2 (default version with 'latest' tag) 
+* :+1: Tested with BareOS 18.2 (default version with 'latest' tag)
 
 ## Security advice
 The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
@@ -50,7 +50,7 @@ services:
     #image: barcus/bareos-director:mysql_18 (mysql5.6 with BareOS 18.x)
     #image: barcus/bareos-director:mysql_latest (mysql5.6 with latest BareOS)
     #image: barcus/bareos-director:mysql (same as mysql_latest)
-    image: barcus/bareos-director:latest #(BareOS latest with MySQL) 
+    image: barcus/bareos-director:latest #(BareOS latest with MySQL)
 
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
@@ -65,6 +65,7 @@ services:
       - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
       - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
       - SMTP_HOST=smtpd
+      - SENDER_MAIL=your-sender@mail.address #optional
       - ADMIN_MAIL=your@mail.address # Change me!
     depends_on:
       - bareos-db
@@ -125,6 +126,7 @@ services:
 * `<BAREOS_DATA_PATH>` is the path to share your Director data folder from the host side (recommended)
 * DB_PASSWORD must be same as BareOS Database section
 * SMTP_HOST is the name of smtp container
+* SENDER_MAIL is the email address you want to use for send the email # optional, if you don't specify it the ADMIN_MAIL will be used
 * ADMIN_MAIL is your email address
 
 **BareOS Storage Daemon** (bareos-sd)

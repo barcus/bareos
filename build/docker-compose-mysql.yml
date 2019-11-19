@@ -12,6 +12,7 @@ bareos-dir:
     - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
     - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
     - SMTP_HOST=smtpd
+    - SENDER_MAIL=your-sender@mail.address #optional
     - ADMIN_MAIL=your@mail.address
   links:
     - bareos-fd:bareos-fd
