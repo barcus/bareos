@@ -11,7 +11,7 @@ RUN apt-get update -qq && \
     echo 'deb http://download.bareos.org/bareos/release/18.2/xUbuntu_16.04/ /' > /etc/apt/sources.list.d/bareos.list && \
     apt-get update -qq && \
     apt-get install -qq -y bareos-storage bareos-tools bareos-storage-tape mtx scsitools sg3-utils mt-st && \
-    apt-clean
+    apt clean
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh

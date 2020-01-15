@@ -15,7 +15,7 @@ RUN apt-get update -qq && \
     echo 'postfix postfix/main_mailer_type select No configuration' | debconf-set-selections && \
     apt-get update -qq && \
     apt-get install -qq -y bareos postgresql-client && \
-    apt-clean
+    apt clean
 
 COPY docker-entrypoint.sh /
 RUN chmod u+x /docker-entrypoint.sh
