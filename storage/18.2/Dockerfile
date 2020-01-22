@@ -1,4 +1,4 @@
-# Dockerfile BareOS storage daemon
+# Dockerfile Bareos storage daemon
 
 FROM       barcus/ubuntu:xenial
 MAINTAINER Barcus <barcus@tou.nu>

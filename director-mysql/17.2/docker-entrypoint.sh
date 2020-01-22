@@ -60,7 +60,7 @@ done
 # Set mysqld access for root
 echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
 
-# MySQL init for BareOS if required
+# MySQL init for Bareos if required
 if [ ! -f /etc/bareos/bareos-db.control ]
   then
     # Init MySQL DB

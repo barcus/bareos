@@ -1,4 +1,4 @@
-# BareOS director Dockerfile
+# Bareos director Dockerfile
 FROM       barcus/ubuntu:xenial
 MAINTAINER Barcus <barcus@tou.nu>
 
