@@ -1,4 +1,4 @@
-# BareOS Web-ui Dockerfile
+# Bareos Web-ui Dockerfile
 FROM       barcus/ubuntu:xenial
 MAINTAINER Barcus <barcus@tou.nu>
 

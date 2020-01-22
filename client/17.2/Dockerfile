@@ -1,4 +1,4 @@
-# Dockerfile BareOS client/file daemon
+# Dockerfile Bareos client/file daemon
 
 FROM       barcus/ubuntu:xenial
 MAINTAINER Barcus <barcus@tou.nu>

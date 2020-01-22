@@ -1,7 +1,7 @@
 ## docker-bareos ![License badge][license-img] [![Build Status][build-img]][build-url] [![CircleCI][circleci-img]][circleci-url]
 
 ## About
-This package provides images for [BareOS][bareos-href] :
+This package provides images for [Bareos][bareos-href] :
 
 module|pulls
 -----|-----
@@ -10,24 +10,24 @@ Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]
 Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]
 webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
 
-It's based on Ubuntu Xenial and the BareOS package repository.
+It's based on Ubuntu Xenial and the Bareos package repository.
 
-:exclamation: New version based on Alpine is available [here][bareos-alpine] (BareOS 17.2 only)
+:exclamation: New version based on Alpine is available [here][bareos-alpine] (Bareos 17.2 only)
 
-BareOS Director also require :
+Bareos Director also require :
 * PostgreSQL or MySQL as catalog backend
 * SMTP Daemon as local mail router (backup reports)
 
 Each component runs in an single container and are linked together by docker-compose.
 
-* :+1: Tested with BareOS 16.2
-* :+1: Tested with BareOS 17.2
-* :+1: Tested with BareOS 18.2 (default version with 'latest' tag)
+* :+1: Tested with Bareos 16.2
+* :+1: Tested with Bareos 17.2
+* :+1: Tested with Bareos 18.2 (default version with 'latest' tag)
 
 ## Security advice
 The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
 
-:o: Do not use this container for anything else, as passwords get expose to the BareOS containers.
+:o: Do not use this container for anything else, as passwords get expose to the Bareos containers.
 
 ## Setup
 With docker-compose, (available [here][compose-href]), run this [file][compose-file]
@@ -40,17 +40,17 @@ You can also build your own docker-compose file with this model :
 version: '3'
 services:
   bareos-dir:
-    #image: barcus/bareos-director:latest (mysql5.6 with latest BareOS)
+    #image: barcus/bareos-director:latest (mysql5.6 with latest Bareos)
     #image: barcus/bareos-director (same as latest)
-    #image: barcus/bareos-director:pgsql_17 (pgsql9.3 with BareOS 17.x)
-    #image: barcus/bareos-director:pgsql_18 (pgsql9.3 with BareOS 18.x)
-    #image: barcus/bareos-director:pgsql_latest (pgsql9.3 with latest BareOS)
+    #image: barcus/bareos-director:pgsql_17 (pgsql9.3 with Bareos 17.x)
+    #image: barcus/bareos-director:pgsql_18 (pgsql9.3 with Bareos 18.x)
+    #image: barcus/bareos-director:pgsql_latest (pgsql9.3 with latest Bareos)
     #image: barcus/bareos-director:pgsql (same as pgsql_latest)
-    #image: barcus/bareos-director:mysql_17 (mysql5.6 with BareOS 17.x)
-    #image: barcus/bareos-director:mysql_18 (mysql5.6 with BareOS 18.x)
-    #image: barcus/bareos-director:mysql_latest (mysql5.6 with latest BareOS)
+    #image: barcus/bareos-director:mysql_17 (mysql5.6 with Bareos 17.x)
+    #image: barcus/bareos-director:mysql_18 (mysql5.6 with Bareos 18.x)
+    #image: barcus/bareos-director:mysql_latest (mysql5.6 with latest Bareos)
     #image: barcus/bareos-director:mysql (same as mysql_latest)
-    image: barcus/bareos-director:latest #(BareOS latest with MySQL)
+    image: barcus/bareos-director:latest #(Bareos latest with MySQL)
 
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
@@ -121,29 +121,29 @@ services:
     image: namshi/smtp
 ```
 
-**BareOS Director** (bareos-dir)
+**Bareos Director** (bareos-dir)
 * `<BAREOS_CONF_PATH>` is the path to share your Director config folder from the host side (optional/recommended)
 * `<BAREOS_DATA_PATH>` is the path to share your Director data folder from the host side (recommended)
-* DB_PASSWORD must be same as BareOS Database section
+* DB_PASSWORD must be same as Bareos Database section
 * SMTP_HOST is the name of smtp container
 * SENDER_MAIL is the email address you want to use for send the email # optional, if you don't specify it the ADMIN_MAIL will be used
 * ADMIN_MAIL is your email address
 
-**BareOS Storage Daemon** (bareos-sd)
+**Bareos Storage Daemon** (bareos-sd)
 * `<BAREOS_CONF_PATH>` is the path to share your Storage config folder from the host side (optional/recommended)
 * `<BAREOS_BKP_VOLUME_PATH>` is the path to share your data folder from the host side. (optional)
-* BAREOS_SD_PASSWORD must be same as BareOS Director section
+* BAREOS_SD_PASSWORD must be same as Bareos Director section
 
-**BareOS Client/File Daemon** (bareos-fd)
+**Bareos Client/File Daemon** (bareos-fd)
 * `<BAREOS_CONF_PATH>` is the path to share your Client config folder from the host side (optional/recommended)
 * `<BAREOS_DATA_PATH>` is the path to access Director data folder (recommended)
-* BAREOS_FD_PASSWORD must be same as BareOS Director section
+* BAREOS_FD_PASSWORD must be same as Bareos Director section
 
 **Database MySQL or PostgreSQL** (bareos-db)
 Required as catalog backend, simply use the official MySQL/PostgreSQL image
 * `<DB_DATA_PATH>` is the path to share your MySQL/PostgreSQL data from the host side
 
-**BareOS webUI** (bareos-webui)
+**Bareos webUI** (bareos-webui)
 * `<BAREOS_CONF_PATH>` is the path to share your WebUI config folder from the host side. (optional)
 * default user is `admin`
 
@@ -151,7 +151,7 @@ Required as catalog backend, simply use the official MySQL/PostgreSQL image
 
 ## Build
 
-Build your own BareOS images :
+Build your own Bareos images :
 ```bash
 git clone https://github.com/barcus/bareos
 cd bareos
