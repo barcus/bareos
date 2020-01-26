@@ -81,7 +81,7 @@ Remember to change your mail address in `ADMIN_MAIL` and maybe some passwords :g
 
 :file_folder: Those docker-compose file are configured to store data inside `/data/(bareos|mysql|pgsql)`
 
-Finaly, when your contains are up, you can access Bareos through
+Finaly, when your containers are up and runing access Bareos through
 
 * WebUI :
 
