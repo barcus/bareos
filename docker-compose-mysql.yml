@@ -22,7 +22,7 @@ services:
       - bareos-db
 
   bareos-sd:
-    image: barcus/bareos-storage
+    image: barcus/bareos-storage:18-ubuntu
     ports:
       - 9103:9103
     volumes:
@@ -32,7 +32,7 @@ services:
       - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
 
   bareos-fd:
-    image: barcus/bareos-client
+    image: barcus/bareos-client:18-ubuntu
     volumes:
       - /data/bareos/config/client:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
@@ -40,7 +40,7 @@ services:
       - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
 
   bareos-webui:
-    image: barcus/bareos-webui
+    image: barcus/bareos-webui:18-ubuntu
     ports:
       - 8080:80
     environment:
