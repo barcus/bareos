@@ -37,8 +37,11 @@ if [ ! -f /etc/bareos/bareos-config.control ]
   # webUI
   sed -i "s#Password = .*#Password = \"${BAREOS_WEBUI_PASSWORD}\"#" /etc/bareos/bareos-dir.d/console/admin.conf
   # MyCatalog Backup
+  sql_opt="-u ${DB_USER} -p${DB_PASSWORD} -h ${DB_HOST} -P ${DB_PORT} -f --opt ${DB_NAME}"
+  echo -e "#!/bin/ash\n mysqldump ${sql_opt} > /var/lib/bareos/bareos.sql" > /etc/bareos/scripts/backup_catalog.sh
+  chmod +x /etc/bareos/scripts/backup_catalog.sh
+  sed -i "s#RunBeforeJob =.*#RunBeforeJob = \"/etc/bareos/scripts/backup_catalog.sh\"#" /etc/bareos/bareos-dir.d/job/BackupCatalog.conf
   sed -i "s#/var/lib/bareos/bareos.sql#/var/lib/bareos-director/bareos.sql#" /etc/bareos/bareos-dir.d/fileset/Catalog.conf
-  sed -i "s#make_catalog_backup#make_catalog_backup.pl#" /etc/bareos/bareos-dir.d/job/BackupCatalog.conf
 
   # Control file
   touch /etc/bareos/bareos-config.control
