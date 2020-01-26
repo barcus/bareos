@@ -2,7 +2,7 @@
 version: '3.7'
 services:
   bareos-dir:
-    image: barcus/bareos-director:18-mysql-alpine
+    image: barcus/bareos-director:18-alpine
     volumes:
       - director_config:/etc/bareos
       - director_data:/var/lib/bareos # required for MyCatalog backup
@@ -10,6 +10,8 @@ services:
       - DB_HOST=bareos-db
       - DB_PORT=3306
       - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - DB_NAME=bareos
+      - DB_USER=root
       - BAREOS_SD_HOST=bareos-sd
       - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
       - BAREOS_FD_HOST=bareos-fd
@@ -26,7 +28,7 @@ services:
       - 9103:9103
     volumes:
       - storage_config:/etc/bareos
-      - storage_data:/var/lib/bareos/storage
+      - storage_data:/var/lib/bareos/archive
     environment:
       - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
 
