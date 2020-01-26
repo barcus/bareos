@@ -1,6 +1,9 @@
-## docker-bareos ![License badge][license-img] [![Build Status][build-img]][build-url] [![CircleCI][circleci-img]][circleci-url]
+# bareos
+
+![License badge][license-img] [![Build Status][build-img]][build-url] [![CircleCI][circleci-img]][circleci-url]
 
 ## About
+
 This package provides images for [Bareos][bareos-href] :
 
 module|pulls
@@ -10,47 +13,95 @@ Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]
 Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]
 webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
 
-It's based on Ubuntu Xenial and the Bareos package repository.
+Images are based on Ubuntu or Alpine, check tags below
 
-:exclamation: New version based on Alpine is available [here][bareos-alpine] (Bareos 17.2 only)
+* :+1: Tested with Bareos 16.2, 17.2, 18.2 and 19.2rc1
 
-Bareos Director also require :
-* PostgreSQL or MySQL as catalog backend
-* SMTP Daemon as local mail router (backup reports)
+## Tags
 
-Each component runs in an single container and are linked together by docker-compose.
+Director (bareos-dir)
 
-* :+1: Tested with Bareos 16.2
-* :+1: Tested with Bareos 17.2
-* :+1: Tested with Bareos 18.2 (default version with 'latest' tag)
+* `19.2-mysql-ubuntu`, `19-mysql-ubuntu`
+* `18.2-mysql-ubuntu`, `18-mysql-ubuntu`, `mysql-ubuntu`, `ubuntu`, `latest`
+* `18.2-pgsql-ubuntu`, `18-pgsql-ubuntu`, `pgsql-ubuntu`
+* `18.2-mysql-alpine`, `18-mysql-alpine`, `mysql-alpine`, `alpine`
+* `17.2-mysql-ubuntu`, `17-mysql-ubuntu`
+* `17.2-pgsql-ubuntu`, `17-pgsql-ubuntu`
+* `17.2-mysql-alpine`, `17-mysql-alpine`
+
+Client (bareos-fd) - Storage (bareos-sd) - Webui
+
+* `19.2-ubuntu`
+* `18.2-ubuntu`, `18-ubuntu`, `ubuntu`, `latest`
+* `18.2-alpine`, `18-alpine`, `alpine`
+* `17.2-ubuntu`, `17-ubuntu`
+* `17.2-alpine`, `17-alpine`
 
 ## Security advice
+
 The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
 
 :o: Do not use this container for anything else, as passwords get expose to the Bareos containers.
 
 ## Setup
-With docker-compose, (available [here][compose-href]), run this [file][compose-file]
-* Remember to change your mail address (ADMIN_MAIL) and maybe some passwords.
-* You will find all your data and configs in /home/bareos and /home/mysql
 
-You can also build your own docker-compose file with this model :
+Bareos Director requires :
+
+* PostgreSQL or MySQL as a catalog backend
+* SMTP Daemon as mail router (for reporting)
+
+Curently, PostgreSQL is not available on Alpine images.
+
+Bareos Webui requires (Alpine images only) :
+
+* PHP-FPM
+
+Bareos Client (fd) and Storage (sd) have no depencies.
+
+Each component have to run in an single container and must linked together through docker-compose, see exemple below
+
+## Requirements
+
+* [Docker][docker-href] & [docker-compose][docker-compose-href]
+
+## Usage
+
+```bash
+docker-compose -f /path/to/your/docker-compose.yml up -d
+```
+
+docker-compose files are available for Alpine and Ubuntu based stack:
+
+* [alpine/mysql](https://github.com/barcus/bareos/blob/master/docker-compose.yml) (compose v3.7, required Docker 18.06.0+)
+* [alpine/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-alpine.yml) (compose v3, required Docker 1.13.0+)
+* [ubuntu/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-mysql.yml) (compose v3, required Docker 1.13.0+)
+* [ubuntu/pgsql](https://github.com/barcus/bareos/blob/master/docker-compose-pgsql.yml) (compose v3, required Docker 1.13.0+)
+
+Remember to change your mail address in `ADMIN_MAIL` and maybe some passwords :grin:
+
+:file_folder: Those docker-compose file are configured to store data inside `/data/(bareos|mysql|pgsql)`
+
+Finaly, when your contains are up, you can access Bareos through
+
+* WebUI :
+
+Open `http://your-docker-host:8080` (user: admin / pass: `<BAREOS_WEBUI_PASSWORD>`)
+
+* bconsole :
+
+Run `docker exec -it bareos-dir bconsole`
+
+## Build
+
+### Docker-compose file
+
+Build your own docker-compose file with this template :
 
 ```yml
 version: '3'
 services:
   bareos-dir:
-    #image: barcus/bareos-director:latest (mysql5.6 with latest Bareos)
-    #image: barcus/bareos-director (same as latest)
-    #image: barcus/bareos-director:pgsql_17 (pgsql9.3 with Bareos 17.x)
-    #image: barcus/bareos-director:pgsql_18 (pgsql9.3 with Bareos 18.x)
-    #image: barcus/bareos-director:pgsql_latest (pgsql9.3 with latest Bareos)
-    #image: barcus/bareos-director:pgsql (same as pgsql_latest)
-    #image: barcus/bareos-director:mysql_17 (mysql5.6 with Bareos 17.x)
-    #image: barcus/bareos-director:mysql_18 (mysql5.6 with Bareos 18.x)
-    #image: barcus/bareos-director:mysql_latest (mysql5.6 with latest Bareos)
-    #image: barcus/bareos-director:mysql (same as mysql_latest)
-    image: barcus/bareos-director:latest #(Bareos latest with MySQL)
+    image: barcus/bareos-director:latest #(latest dicector+mysql based on ubuntu)
 
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
@@ -71,8 +122,6 @@ services:
       - bareos-db
 
   bareos-sd:
-    #image: barcus/bareos-storage:17
-    #image: barcus/bareos-storage:18
     image: barcus/bareos-storage:latest
     ports:
       - 9103:9103
@@ -83,8 +132,6 @@ services:
       - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
 
   bareos-fd:
-    #image: barcus/bareos-client:17
-    #image: barcus/bareos-client:18
     image: barcus/bareos-client:latest
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
@@ -93,8 +140,6 @@ services:
       - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
 
   bareos-webui:
-    #image: barcus/bareos-webui:17
-    #image: barcus/bareos-webui:18
     image: barcus/bareos-webui:latest
     ports:
       - 8080:80
@@ -122,6 +167,7 @@ services:
 ```
 
 **Bareos Director** (bareos-dir)
+
 * `<BAREOS_CONF_PATH>` is the path to share your Director config folder from the host side (optional/recommended)
 * `<BAREOS_DATA_PATH>` is the path to share your Director data folder from the host side (recommended)
 * DB_PASSWORD must be same as Bareos Database section
@@ -130,28 +176,34 @@ services:
 * ADMIN_MAIL is your email address
 
 **Bareos Storage Daemon** (bareos-sd)
+
 * `<BAREOS_CONF_PATH>` is the path to share your Storage config folder from the host side (optional/recommended)
 * `<BAREOS_BKP_VOLUME_PATH>` is the path to share your data folder from the host side. (optional)
 * BAREOS_SD_PASSWORD must be same as Bareos Director section
 
 **Bareos Client/File Daemon** (bareos-fd)
+
 * `<BAREOS_CONF_PATH>` is the path to share your Client config folder from the host side (optional/recommended)
 * `<BAREOS_DATA_PATH>` is the path to access Director data folder (recommended)
 * BAREOS_FD_PASSWORD must be same as Bareos Director section
 
 **Database MySQL or PostgreSQL** (bareos-db)
+
 Required as catalog backend, simply use the official MySQL/PostgreSQL image
+
 * `<DB_DATA_PATH>` is the path to share your MySQL/PostgreSQL data from the host side
 
 **Bareos webUI** (bareos-webui)
+
 * `<BAREOS_CONF_PATH>` is the path to share your WebUI config folder from the host side. (optional)
 * default user is `admin`
 
 :warning: Remember variables *_HOST must be set with container name
 
-## Build
+### Your own Docker images
 
 Build your own Bareos images :
+
 ```bash
 git clone https://github.com/barcus/bareos
 cd bareos
@@ -162,6 +214,7 @@ docker build webui/
 ```
 
 Build your own Xenial base system image :
+
 ```bash
 git clone https://github.com/rockyluke/docker-ubuntu
 cd docker-ubuntu
@@ -169,16 +222,6 @@ cd docker-ubuntu
 ```
 
 Thanks to @rockyluke :)
-
-## Usage
-
-* WebUI :
-
-Open http://your-docker-host:8080/ in your browser (user: admin / pass: `<BAREOS_WEBUI_PASSWORD>`)
-
-* bconsole :
-
-Run `docker exec -it bareos-dir bconsole`
 
 ## Links
 
@@ -192,6 +235,7 @@ For more information visit the Github repositories :
 * [docker-ubuntu](https://github.com/rockyluke/docker-ubuntu)
 
 My Docker hub :
+
 * [docker images](https://hub.docker.com/r/barcus)
 
 Enjoy !
@@ -211,5 +255,5 @@ Enjoy !
 [circleci-img]: https://circleci.com/gh/barcus/bareos.svg?style=svg
 [bareos-href]: https://www.bareos.org
 [compose-file]: https://github.com/barcus/bareos/blob/master/docker-compose.yml
-[compose-href]: https://docs.docker.com/compose
-[bareos-alpine]: https://github.com/barcus/bareos/tree/alpine
+[docker-compose-href]: https://docs.docker.com/compose
+[docker-href]: https://docs.docker.com/install

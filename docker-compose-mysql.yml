@@ -1,8 +1,8 @@
-## docker-compose Bareos Director/Storage/Client/webUI and PostgreSQL Database based on Ubuntu
+## docker-compose Bareos Director/Storage/Client/webUI and MySQL Database based on ubuntu
 version: '3'
 services:
   bareos-dir:
-    image: barcus/bareos-director:18-pgsql-ubuntu
+    image: barcus/bareos-director:18-mysql-ubuntu
     volumes:
       - /data/bareos/config/director:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos #(required for MyCatalog backup)
@@ -49,11 +49,11 @@ services:
       - /data/bareos/config/webui:/etc/bareos-webui
 
   bareos-db:
-    image: postgres:9.3
+    image: mysql:5.6
     volumes:
-      - /data/pgsql/data:/var/lib/postgresql/data
+      - /data/mysql/data:/var/lib/mysql
     environment:
-      - POSTGRES_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - MYSQL_ROOT_PASSWORD=ThisIsMySecretDBp4ssw0rd
 
   smtpd:
     image: namshi/smtp
