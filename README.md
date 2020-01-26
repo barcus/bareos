@@ -23,6 +23,7 @@ Each component runs in an single container and are linked together by docker-com
 * :+1: Tested with Bareos 16.2
 * :+1: Tested with Bareos 17.2
 * :+1: Tested with Bareos 18.2 (default version with 'latest' tag)
+* :+1: Tested with Bareos 19.2rc
 
 ## Security advice
 The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
@@ -40,18 +41,11 @@ You can also build your own docker-compose file with this model :
 version: '3'
 services:
   bareos-dir:
-    #image: barcus/bareos-director:latest (mysql5.6 with latest Bareos)
-    #image: barcus/bareos-director (same as latest)
-    #image: barcus/bareos-director:pgsql_17 (pgsql9.3 with Bareos 17.x)
-    #image: barcus/bareos-director:pgsql_18 (pgsql9.3 with Bareos 18.x)
-    #image: barcus/bareos-director:pgsql_latest (pgsql9.3 with latest Bareos)
-    #image: barcus/bareos-director:pgsql (same as pgsql_latest)
-    #image: barcus/bareos-director:mysql_17 (mysql5.6 with Bareos 17.x)
-    #image: barcus/bareos-director:mysql_18 (mysql5.6 with Bareos 18.x)
-    #image: barcus/bareos-director:mysql_latest (mysql5.6 with latest Bareos)
-    #image: barcus/bareos-director:mysql (same as mysql_latest)
-    image: barcus/bareos-director:latest #(Bareos latest with MySQL)
-
+    #image: barcus/bareos-director:latest (mysql 5.6 / Bareos 18.2)
+    #image: barcus/bareos-director:mysql_18 (mysql 5.6 / Bareos 18.x)
+    #image: barcus/bareos-director:mysql_19 (mysql 5.6 / Bareos 19.x)
+    #image: barcus/bareos-director:pgsql_18 (pgsql 9.3 / Bareos 18.x)
+    image: barcus/bareos-director:latest
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
       - <BAREOS_DATA_PATH>:/var/lib/bareos # (required for MyCatalog backup)
