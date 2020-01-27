@@ -21,21 +21,21 @@ Images are based on Ubuntu or Alpine, check tags below
 
 Director (bareos-dir)
 
-* `19.2-mysql-ubuntu`, `19-mysql-ubuntu`
-* `18.2-mysql-ubuntu`, `18-mysql-ubuntu`, `mysql-ubuntu`, `ubuntu`, `latest`
-* `18.2-pgsql-ubuntu`, `18-pgsql-ubuntu`, `pgsql-ubuntu`
-* `18.2-mysql-alpine`, `18-mysql-alpine`, `mysql-alpine`, `alpine`
-* `17.2-mysql-ubuntu`, `17-mysql-ubuntu`
-* `17.2-pgsql-ubuntu`, `17-pgsql-ubuntu`
-* `17.2-mysql-alpine`, `17-mysql-alpine`
+* `19-mysql-ubuntu`, `19`
+* `18-mysql-ubuntu`, `18-ubuntu`, `18`, `ubuntu`, `latest`
+* `18-pgsql-ubuntu`
+* `18-mysql-alpine`, `18-alpine`, `alpine`
+* `17-mysql-ubuntu`, `17-ubuntu`, `17`
+* `17-pgsql-ubuntu`
+* `17-mysql-alpine`, `17-alpine`
 
 Client (bareos-fd) - Storage (bareos-sd) - Webui
 
-* `19.2-ubuntu`
-* `18.2-ubuntu`, `18-ubuntu`, `ubuntu`, `latest`
-* `18.2-alpine`, `18-alpine`, `alpine`
-* `17.2-ubuntu`, `17-ubuntu`
-* `17.2-alpine`, `17-alpine`
+* `19-ubuntu`, `19`
+* `18-ubuntu`, `18`, `ubuntu`, `latest`
+* `18-alpine`, `alpine`
+* `17-ubuntu`, `17`
+* `17-alpine`
 
 ## Security advice
 
