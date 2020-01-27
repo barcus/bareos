@@ -37,7 +37,6 @@ Client (bareos-fd) - Storage (bareos-sd) - Webui
 * `17-ubuntu`, `17`
 * `17-alpine`
 
-
 ## Security advice
 
 The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
