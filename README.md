@@ -102,7 +102,6 @@ version: '3'
 services:
   bareos-dir:
     image: barcus/bareos-director:latest #(latest dicector+mysql based on ubuntu)
-
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
       - <BAREOS_DATA_PATH>:/var/lib/bareos # (required for MyCatalog backup)
