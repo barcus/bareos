@@ -11,6 +11,10 @@ jobs:
            sudo mv ~/docker-compose /usr/local/bin/docker-compose
 
      - checkout
+
+     - setup_remote_docker: 
+         docker_layer_caching: true
+
      - deploy: 
          name: Build and push docker images
          command: |
@@ -46,4 +50,4 @@ jobs:
 
      - run:
          name: Test docker-compose file
-         command: docker-compose -f docker-compose.yml
+         command: docker-compose -f docker-compose.yml up
