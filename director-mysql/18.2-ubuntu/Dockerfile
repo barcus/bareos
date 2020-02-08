@@ -16,8 +16,7 @@ RUN apt-get update -qq && \
     apt-get update -qq && \
     apt-get install -qq -y bareos bareos-database-mysql mysql-client bareos-tools && \
     apt-get clean -qq -y && \
-    apt-get autoremove -qq -y && \
-    apt-get autoclean -qq -y
+    apt-get autoremove --purge -qq -y
 
 COPY docker-entrypoint.sh /
 RUN chmod u+x /docker-entrypoint.sh

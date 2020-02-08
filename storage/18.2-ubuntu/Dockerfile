@@ -12,8 +12,7 @@ RUN apt-get update -qq && \
     apt-get update -qq && \
     apt-get install -qq -y bareos-storage bareos-tools bareos-storage-tape mtx scsitools sg3-utils mt-st && \
     apt-get clean -qq -y && \
-    apt-get autoremove -qq -y && \
-    apt-get autoclean -qq -y
+    apt-get autoremove --purge -qq -y
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh
