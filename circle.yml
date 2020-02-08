@@ -3,7 +3,47 @@ jobs:
  build:
    machine: true
    steps:
+     - run:
+         name: Install Docker Compose
+         command: |
+           curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+           chmod +x ~/docker-compose
+           sudo mv ~/docker-compose /usr/local/bin/docker-compose
+
      - checkout
-     - run: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
-     - run: docker build -t barcus/bareos-director:latest director-mysql/19.2-ubuntu
-     - run: docker push barcus/bareos-director:latest
+     - deploy: 
+         name: Build and push docker images
+         command: |
+           echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+           docker build -t barcus/bareos-director:19.2-ubuntu director-mysql/19.2-ubuntu
+           docker build -t barcus/bareos-client:19.2-ubuntu director-client/19.2-ubuntu
+           docker build -t barcus/bareos-storage:19.2-ubuntu director-storage/19.2-ubuntu
+           docker build -t barcus/bareos-webui:19.2-ubuntu director-webui/19.2-ubuntu
+           docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:latest
+           docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:19.2-mysql-ubuntu
+           docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:19.2
+           docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:ubuntu
+           docker tag barcus/bareos-client:19.2-ubuntu barcus/bareos-client:latest
+           docker tag barcus/bareos-client:19.2-ubuntu barcus/bareos-client:19.2
+           docker tag barcus/bareos-storage:19.2-ubuntu barcus/bareos-storage:latest
+           docker tag barcus/bareos-storage:19.2-ubuntu barcus/bareos-storage:19.2
+           docker tag barcus/bareos-webui:19.2-ubuntu barcus/bareos-webui:latest
+           docker tag barcus/bareos-webui:19.2-ubuntu barcus/bareos-webui:19.2
+           docker push barcus/bareos-director:19.2-mysql-ubuntu
+           docker push barcus/bareos-director:19.2-ubuntu
+           docker push barcus/bareos-director:ubuntu
+           docker push barcus/bareos-director:19.2
+           docker push barcus/bareos-director:latest
+           docker push barcus/bareos-client:19.2-ubuntu
+           docker push barcus/bareos-client:19.2
+           docker push barcus/bareos-client:latest
+           docker push barcus/bareos-storage:19.2-ubuntu
+           docker push barcus/bareos-storage:19.2
+           docker push barcus/bareos-storage:latest
+           docker push barcus/bareos-webui:19.2-ubuntu
+           docker push barcus/bareos-webui:19.2
+           docker push barcus/bareos-webui:latest
+
+     - run:
+         name: Test docker-compose file
+         command: docker-compose -f docker-compose.yml
