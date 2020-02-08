@@ -16,9 +16,9 @@ jobs:
          command: |
            echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
            docker build -t barcus/bareos-director:19.2-ubuntu director-mysql/19.2-ubuntu
-           docker build -t barcus/bareos-client:19.2-ubuntu director-client/19.2-ubuntu
-           docker build -t barcus/bareos-storage:19.2-ubuntu director-storage/19.2-ubuntu
-           docker build -t barcus/bareos-webui:19.2-ubuntu director-webui/19.2-ubuntu
+           docker build -t barcus/bareos-client:19.2-ubuntu client/19.2-ubuntu
+           docker build -t barcus/bareos-storage:19.2-ubuntu storage/19.2-ubuntu
+           docker build -t barcus/bareos-webui:19.2-ubuntu webui/19.2-ubuntu
            docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:latest
            docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:19.2-mysql-ubuntu
            docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:19.2
