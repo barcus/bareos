@@ -12,25 +12,38 @@ jobs:
 
      - checkout
 
-     - deploy: 
-         name: Build and push docker images
+     - run: 
+         name: Docker login
+         command: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+
+     - run:
+         name: Docker build and tag
          command: |
-           echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
            docker build -t barcus/bareos-director:19.2-ubuntu director-mysql/19.2-ubuntu
+           docker build -t barcus/bareos-director:19.2-pgsql-ubuntu director-pgsql/19.2-ubuntu
            docker build -t barcus/bareos-client:19.2-ubuntu client/19.2-ubuntu
            docker build -t barcus/bareos-storage:19.2-ubuntu storage/19.2-ubuntu
            docker build -t barcus/bareos-webui:19.2-ubuntu webui/19.2-ubuntu
+
            docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:latest
            docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:19.2-mysql-ubuntu
            docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:19.2
            docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:ubuntu
+
            docker tag barcus/bareos-client:19.2-ubuntu barcus/bareos-client:latest
            docker tag barcus/bareos-client:19.2-ubuntu barcus/bareos-client:19.2
+
            docker tag barcus/bareos-storage:19.2-ubuntu barcus/bareos-storage:latest
            docker tag barcus/bareos-storage:19.2-ubuntu barcus/bareos-storage:19.2
+
            docker tag barcus/bareos-webui:19.2-ubuntu barcus/bareos-webui:latest
            docker tag barcus/bareos-webui:19.2-ubuntu barcus/bareos-webui:19.2
+
+     - deploy:
+         name: Docker build and tag
+         command: |
            docker push barcus/bareos-director:19.2-mysql-ubuntu
+           docker push barcus/bareos-director:19.2-pgsql-ubuntu
            docker push barcus/bareos-director:19.2-ubuntu
            docker push barcus/bareos-director:ubuntu
            docker push barcus/bareos-director:19.2
@@ -45,6 +58,6 @@ jobs:
            docker push barcus/bareos-webui:19.2
            docker push barcus/bareos-webui:latest
 
-     - run:
-         name: Test docker-compose file
-         command: docker-compose -f docker-compose.yml up
+     #- run:
+     #    name: Test docker-compose file
+     #    command: docker-compose -f docker-compose.yml up
