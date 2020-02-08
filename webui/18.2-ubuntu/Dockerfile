@@ -1,14 +1,18 @@
 # Bareos Web-ui Dockerfile
-FROM       barcus/ubuntu:xenial
+FROM       ubuntu:bionic
 MAINTAINER Barcus <barcus@tou.nu>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN curl -Ls http://download.bareos.org/bareos/release/18.2/xUbuntu_16.04/Release.key | apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg add - && \
-    echo 'deb http://download.bareos.org/bareos/release/18.2/xUbuntu_16.04/ /' > /etc/apt/sources.list.d/bareos.list && \
+RUN apt-get update -qq && \
+    apt-get install -qq curl gnupg && \
+    curl -Ls http://download.bareos.org/bareos/release/18.2/xUbuntu_18.04/Release.key | apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg add - && \
+    echo 'deb http://download.bareos.org/bareos/release/18.2/xUbuntu_18.04/ /' > /etc/apt/sources.list.d/bareos.list && \
     apt-get update -qq && \
     apt-get install -qq -y bareos-webui && \
-    apt-clean
+    apt-get clean -qq -y && \
+    apt-get autoremove -qq -y && \
+    apt-get autoclean -qq -y
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh

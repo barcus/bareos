@@ -15,14 +15,17 @@ webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
 
 Images are based on Ubuntu or Alpine, check tags below
 
-* :+1: Tested with Bareos 16.2, 17.2, 18.2 and 19.2rc1
+:+1: Tested with Bareos 16.2, 17.2, 18.2 and 19.2
+
+* Bareos 16 and 17 Ubuntu images are based on Xenial
+* Bareos 18+ Ubuntu images are based on Bionic
 
 ## Tags
 
 Director (bareos-dir)
 
-* `19-mysql-ubuntu`, `19`
-* `18-mysql-ubuntu`, `18-ubuntu`, `18`, `ubuntu`, `latest`
+* `19-mysql-ubuntu`, `19-ubuntu`, `19`, `ubuntu`, `latest`
+* `18-mysql-ubuntu`, `18-ubuntu`, `18`
 * `18-pgsql-ubuntu`
 * `18-mysql-alpine`, `18-alpine`, `alpine`
 * `17-mysql-ubuntu`, `17-ubuntu`, `17`
@@ -31,8 +34,8 @@ Director (bareos-dir)
 
 Client (bareos-fd) - Storage (bareos-sd) - Webui
 
-* `19-ubuntu`, `19`
-* `18-ubuntu`, `18`, `ubuntu`, `latest`
+* `19-ubuntu`, `19`, `ubuntu`, `latest`
+* `18-ubuntu`, `18`
 * `18-alpine`, `alpine`
 * `17-ubuntu`, `17`
 * `17-alpine`
