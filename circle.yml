@@ -12,9 +12,6 @@ jobs:
 
      - checkout
 
-     - setup_remote_docker: 
-         docker_layer_caching: true
-
      - deploy: 
          name: Build and push docker images
          command: |
