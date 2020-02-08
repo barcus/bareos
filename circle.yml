@@ -40,7 +40,7 @@ jobs:
            docker tag barcus/bareos-webui:19.2-ubuntu barcus/bareos-webui:19.2
 
      - deploy:
-         name: Docker build and tag
+         name: Docker push
          command: |
            docker push barcus/bareos-director:19.2-mysql-ubuntu
            docker push barcus/bareos-director:19.2-pgsql-ubuntu
