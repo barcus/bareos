@@ -1,23 +1,8 @@
-general:
-  build_dir: build
-
-machine:
-  pre:
-    - pip install docker-compose
-  services:
-    - docker
-
-dependencies:
-  pre:
-    - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe'
-    - sudo apt-get update ; sudo apt-get install shellcheck
-
-test:
-  pre:
-    - docker-compose -f docker-compose-mysql.yml up -d
-  override:
-    #- sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" build_bareos-dir_1)" -- bash -c 'echo "run job=backup-bareos-fd yes" | bconsole'
-    - shellcheck ../director-mysql/16.2/docker-entrypoint.sh ../director-pgsql/16.2/docker-entrypoint.sh ../storage/16.2/docker-entrypoint.sh ../client/16.2/docker-entrypoint.sh ../webui/16.2/docker-entrypoint.sh
-    - shellcheck ../director-mysql/17.2/docker-entrypoint.sh ../director-pgsql/17.2/docker-entrypoint.sh ../storage/17.2/docker-entrypoint.sh ../client/17.2/docker-entrypoint.sh ../webui/17.2/docker-entrypoint.sh
-  post:
-    - docker-compose -f docker-compose-mysql.yml down
+version: 2
+jobs:
+ build:
+   machine: true
+   steps:
+     - checkout
+     - run: docker build -t barcus/bareos-director:latest director-mysql/19.2-ubuntu
+     - run: docker push barcus/bareos-director:latest
