@@ -1,6 +1,6 @@
 # bareos
 
-![License badge][license-img] [![Build Status][build-img]][build-url] [![CircleCI][circleci-img]][circleci-url]
+![License badge][license-img] [![Build Status][circleci-img]][circleci-url]
 
 ## About
 
