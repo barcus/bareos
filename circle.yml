@@ -1,23 +1,63 @@
-general:
-  build_dir: build
+version: 2
+jobs:
+ build:
+   machine: true
+   steps:
+     - run:
+         name: Install Docker Compose
+         command: |
+           curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+           chmod +x ~/docker-compose
+           sudo mv ~/docker-compose /usr/local/bin/docker-compose
 
-machine:
-  pre:
-    - pip install docker-compose
-  services:
-    - docker
+     - checkout
 
-dependencies:
-  pre:
-    - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe'
-    - sudo apt-get update ; sudo apt-get install shellcheck
+     - run: 
+         name: Docker login
+         command: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
 
-test:
-  pre:
-    - docker-compose -f docker-compose-mysql.yml up -d
-  override:
-    #- sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" build_bareos-dir_1)" -- bash -c 'echo "run job=backup-bareos-fd yes" | bconsole'
-    - shellcheck ../director-mysql/16.2/docker-entrypoint.sh ../director-pgsql/16.2/docker-entrypoint.sh ../storage/16.2/docker-entrypoint.sh ../client/16.2/docker-entrypoint.sh ../webui/16.2/docker-entrypoint.sh
-    - shellcheck ../director-mysql/17.2/docker-entrypoint.sh ../director-pgsql/17.2/docker-entrypoint.sh ../storage/17.2/docker-entrypoint.sh ../client/17.2/docker-entrypoint.sh ../webui/17.2/docker-entrypoint.sh
-  post:
-    - docker-compose -f docker-compose-mysql.yml down
+     - run:
+         name: Docker build and tag
+         command: |
+           docker build -t barcus/bareos-director:19.2-ubuntu director-mysql/19.2-ubuntu
+           docker build -t barcus/bareos-director:19.2-pgsql-ubuntu director-pgsql/19.2-ubuntu
+           docker build -t barcus/bareos-client:19.2-ubuntu client/19.2-ubuntu
+           docker build -t barcus/bareos-storage:19.2-ubuntu storage/19.2-ubuntu
+           docker build -t barcus/bareos-webui:19.2-ubuntu webui/19.2-ubuntu
+
+           docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:latest
+           docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:19.2-mysql-ubuntu
+           docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:19.2
+           docker tag barcus/bareos-director:19.2-ubuntu barcus/bareos-director:ubuntu
+
+           docker tag barcus/bareos-client:19.2-ubuntu barcus/bareos-client:latest
+           docker tag barcus/bareos-client:19.2-ubuntu barcus/bareos-client:19.2
+
+           docker tag barcus/bareos-storage:19.2-ubuntu barcus/bareos-storage:latest
+           docker tag barcus/bareos-storage:19.2-ubuntu barcus/bareos-storage:19.2
+
+           docker tag barcus/bareos-webui:19.2-ubuntu barcus/bareos-webui:latest
+           docker tag barcus/bareos-webui:19.2-ubuntu barcus/bareos-webui:19.2
+
+     - deploy:
+         name: Docker build and tag
+         command: |
+           docker push barcus/bareos-director:19.2-mysql-ubuntu
+           docker push barcus/bareos-director:19.2-pgsql-ubuntu
+           docker push barcus/bareos-director:19.2-ubuntu
+           docker push barcus/bareos-director:ubuntu
+           docker push barcus/bareos-director:19.2
+           docker push barcus/bareos-director:latest
+           docker push barcus/bareos-client:19.2-ubuntu
+           docker push barcus/bareos-client:19.2
+           docker push barcus/bareos-client:latest
+           docker push barcus/bareos-storage:19.2-ubuntu
+           docker push barcus/bareos-storage:19.2
+           docker push barcus/bareos-storage:latest
+           docker push barcus/bareos-webui:19.2-ubuntu
+           docker push barcus/bareos-webui:19.2
+           docker push barcus/bareos-webui:latest
+
+     #- run:
+     #    name: Test docker-compose file
+     #    command: docker-compose -f docker-compose.yml up
