@@ -22,23 +22,26 @@ Images are based on Ubuntu or Alpine, check tags below
 
 ## Tags
 
-Director (bareos-dir)
+### Director (dir)
 
-* `19-mysql-ubuntu`, `19-ubuntu`, `19`, `ubuntu`, `latest`
-* `18-mysql-ubuntu`, `18-ubuntu`, `18`
-* `18-pgsql-ubuntu`
-* `18-mysql-alpine`, `18-alpine`, `alpine`
-* `17-mysql-ubuntu`, `17-ubuntu`, `17`
-* `17-pgsql-ubuntu`
-* `17-mysql-alpine`, `17-alpine`
+* `19-ubuntu-mysql`, `19`, `latest`
+* `18-ubuntu-mysql`, `18`
+* `18-ubuntu-pgsql`
+* `18-alpine-mysql`
+* `17-ubuntu-mysql`, `17`
+* `17-ubuntu-pgsql`
+* `17-alpine-mysql`
+* `16-ubuntu-mysql`, `16`
+* `16-ubuntu-pgsql`
 
-Client (bareos-fd) - Storage (bareos-sd) - Webui
+### Client (fd) / Storage (sd) / Webui
 
-* `19-ubuntu`, `19`, `ubuntu`, `latest`
+* `19-ubuntu`, `19`, `latest`
 * `18-ubuntu`, `18`
-* `18-alpine`, `alpine`
+* `18-alpine`,
 * `17-ubuntu`, `17`
 * `17-alpine`
+* `16-ubuntu, `16`
 
 ## Security advice
 
@@ -75,10 +78,10 @@ docker-compose -f /path/to/your/docker-compose.yml up -d
 
 docker-compose files are available for Alpine and Ubuntu based stack:
 
-* [alpine/mysql](https://github.com/barcus/bareos/blob/master/docker-compose.yml) (compose v3.7, required Docker 18.06.0+)
-* [alpine/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-alpine.yml) (compose v3, required Docker 1.13.0+)
-* [ubuntu/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-mysql.yml) (compose v3, required Docker 1.13.0+)
-* [ubuntu/pgsql](https://github.com/barcus/bareos/blob/master/docker-compose-pgsql.yml) (compose v3, required Docker 1.13.0+)
+* [alpine/mysql](https://github.com/barcus/bareos/blob/18/docker-compose-alpine-alt.yml) (compose v3.7, required Docker 18.06.0+)
+* [alpine/mysql](https://github.com/barcus/bareos/blob/18/docker-compose-alpine.yml) (compose v3, required Docker 1.13.0+)
+* [ubuntu/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-mysql.yml) (compose v3, required Docker 1.13.0+)
+* [ubuntu/pgsql](https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-pgsql.yml) (compose v3, required Docker 1.13.0+)
 
 Remember to change your mail address in `ADMIN_MAIL` and maybe some passwords :grin:
 
@@ -243,7 +246,7 @@ My Docker hub :
 Enjoy !
 
 [license-img]: https://img.shields.io/badge/license-ISC-blue.svg
-[build-img]: https://travis-ci.org/barcus/bareos.svg?branch=master
+[build-img]: https://travis-ci.org/barcus/bareos.svg?branch=19
 [build-url]: https://travis-ci.org/barcus/bareos
 [docker-img-dir]: https://img.shields.io/docker/pulls/barcus/bareos-director.svg
 [docker-url-dir]: https://registry.hub.docker.com/u/barcus/bareos-director

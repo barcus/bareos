@@ -64,7 +64,7 @@ jobs:
           name: Docker push
           command: |
             docker push barcus/bareos-${BAREOS_COMP}:${TAG}
-            if [[ "$BASE_IMG" == "ubuntu" ]]
+            if [[ "$BASE_IMG" == "ubuntu" ]] && [[ "$BAREOS_BACKEND" != "pqsql" ]]
             then
               docker push barcus/bareos-${BAREOS_COMP}:${CIRCLE_BRANCH}
             fi
