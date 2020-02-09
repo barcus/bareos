@@ -182,10 +182,10 @@ workflows:
       - build-client-ubuntu
       - build-storage-ubuntu  
       - build-webui-ubuntu
-      - build-director-alpine
-      - build-client-alpine
-      - build-storage-alpine
-      - build-webui-alpine
+      #- build-director-alpine
+      #- build-client-alpine
+      #- build-storage-alpine
+      #- build-webui-alpine
       - deploy-director-ubuntu-mysql:
           requires:
             - build-director-ubuntu-mysql
@@ -201,15 +201,15 @@ workflows:
       - deploy-webui-ubuntu:
           requires:
             - build-webui-ubuntu
-      - deploy-director-alpine:
-          requires:
-            - build-director-alpine
-      - deploy-client-alpine:
-          requires:
-            - build-client-alpine
-      - deploy-storage-alpine:
-          requires:
-            - build-storage-alpine
-      - deploy-webui-alpine:
-          requires:
-            - build-webui-alpine
+      #- deploy-director-alpine:
+      #    requires:
+      #      - build-director-alpine
+      #- deploy-client-alpine:
+      #    requires:
+      #      - build-client-alpine
+      #- deploy-storage-alpine:
+      #    requires:
+      #      - build-storage-alpine
+      #- deploy-webui-alpine:
+      #    requires:
+      #      - build-webui-alpine
