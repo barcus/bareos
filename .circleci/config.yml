@@ -1,0 +1,215 @@
+version: 2.1
+jobs:
+  build: &build
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Prepare ENV 
+          command: |
+            if [[ -n "$BAREOS_BACKEND" ]]
+            then 
+              export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"
+              export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"
+              echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"' >> $BASH_ENV
+              echo 'export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"' >> $BASH_ENV
+            else
+              export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"
+              export BAREOS_PATH="${BAREOS_COMP}"
+              echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"' >> $BASH_ENV
+              echo 'export BAREOS_PATH="${BAREOS_COMP}"' >> $BASH_ENV
+            fi
+      - run:
+          name: Docker build
+          command: docker build -t barcus/bareos-${BAREOS_COMP}:${TAG} ${BAREOS_PATH}/$BASE_IMG
+      - run:
+          name: Save images
+          command: |
+            mkdir images
+            docker save -o images/image-${BAREOS_PATH}.tar barcus/bareos-${BAREOS_COMP}:${TAG}
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./images
+
+  deploy: &deploy
+    machine: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Load image and add tags
+          command: |
+
+            if [[ -n "$BAREOS_BACKEND" ]]
+            then
+              export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"
+              export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"
+              echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"' >> $BASH_ENV
+            else
+              export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"
+              export BAREOS_PATH="${BAREOS_COMP}"
+              echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"' >> $BASH_ENV
+            fi
+
+            docker load -i /tmp/workspace/images/image-${BAREOS_PATH}.tar
+            if [[ "$BASE_IMG" == "ubuntu" ]]
+            then
+              docker tag barcus/bareos-${BAREOS_COMP}:${TAG} barcus/bareos-${BAREOS_COMP}:${CIRCLE_BRANCH}
+            fi
+      - run: 
+          name: Docker login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
+          name: Docker push
+          command: |
+            docker push barcus/bareos-${BAREOS_COMP}:${TAG}
+            if [[ "$BASE_IMG" == "ubuntu" ]]
+            then
+              docker push barcus/bareos-${BAREOS_COMP}:${CIRCLE_BRANCH}
+            fi
+
+  # Build Ubuntu images
+  build-director-ubuntu-mysql:
+     <<: *build
+     environment:
+       - BAREOS_COMP: director
+       - BAREOS_BACKEND: mysql
+       - BASE_IMG: ubuntu
+  build-director-ubuntu-pgsql:
+     <<: *build
+     environment:
+       - BAREOS_COMP: director
+       - BAREOS_BACKEND: pgsql
+       - BASE_IMG: ubuntu
+  build-client-ubuntu:
+     <<: *build
+     environment:
+       - BAREOS_COMP: client
+       - BASE_IMG: ubuntu
+  build-storage-ubuntu:
+     <<: *build
+     environment:
+       - BAREOS_COMP: storage
+       - BASE_IMG: ubuntu
+  build-webui-ubuntu:
+     <<: *build
+     environment:
+       - BAREOS_COMP: webui
+       - BASE_IMG: ubuntu
+
+  # Build Alpine images
+  build-director-alpine:
+     <<: *build
+     environment:
+       - BAREOS_COMP: director
+       - BAREOS_BACKEND: mysql
+       - BASE_IMG: alpine
+  build-client-alpine:
+     <<: *build
+     environment:
+       - BAREOS_COMP: client
+       - BASE_IMG: alpine
+  build-storage-alpine:
+     <<: *build
+     environment:
+       - BAREOS_COMP: storage
+       - BASE_IMG: alpine
+  build-webui-alpine:
+     <<: *build
+     environment:
+       - BAREOS_COMP: webui
+       - BASE_IMG: alpine
+
+  # Deploy Ubuntu images
+  deploy-director-ubuntu-mysql:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: director
+       - BAREOS_BACKEND: mysql
+       - BASE_IMG: ubuntu
+  deploy-director-ubuntu-pgsql:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: director
+       - BAREOS_BACKEND: pgsql
+       - BASE_IMG: ubuntu
+  deploy-client-ubuntu:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: client
+       - BASE_IMG: ubuntu
+  deploy-storage-ubuntu:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: storage
+       - BASE_IMG: ubuntu
+  deploy-webui-ubuntu:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: webui
+       - BASE_IMG: ubuntu
+
+  # Deploy Ubuntu images
+  deploy-director-alpine:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: director
+       - BAREOS_BACKEND: mysql
+       - BASE_IMG: alpine
+  deploy-client-alpine:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: client
+       - BASE_IMG: alpine
+  deploy-storage-alpine:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: storage
+       - BASE_IMG: alpine
+  deploy-webui-alpine:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: webui
+       - BASE_IMG: alpine
+
+workflows:
+  version: 2
+  build-n-deploy:
+    jobs:
+      - build-director-ubuntu-mysql
+      - build-director-ubuntu-pgsql
+      - build-client-ubuntu
+      - build-storage-ubuntu  
+      - build-webui-ubuntu
+      - build-director-alpine
+      - build-client-alpine
+      - build-storage-alpine
+      - build-webui-alpine
+      - deploy-director-ubuntu-mysql:
+          requires:
+            - build-director-ubuntu-mysql
+      - deploy-director-ubuntu-pgsql:
+          requires:
+            - build-director-ubuntu-pgsql
+      - deploy-client-ubuntu:
+          requires:
+            - build-client-ubuntu
+      - deploy-storage-ubuntu:
+          requires:
+            - build-storage-ubuntu
+      - deploy-webui-ubuntu:
+          requires:
+            - build-webui-ubuntu
+      - deploy-director-alpine:
+          requires:
+            - build-director-alpine
+      - deploy-client-alpine:
+          requires:
+            - build-client-alpine
+      - deploy-storage-alpine:
+          requires:
+            - build-storage-alpine
+      - deploy-webui-alpine:
+          requires:
+            - build-webui-alpine
