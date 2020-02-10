@@ -53,7 +53,7 @@ jobs:
             fi
 
             docker load -i /tmp/workspace/images/image-${BAREOS_PATH}.tar
-            if [[ "$BASE_IMG" == "ubuntu" ]]
+            if [[ "$BASE_IMG" == "ubuntu" ]] && [[ "$BAREOS_BACKEND" != "pqsql" ]]
             then
               docker tag barcus/bareos-${BAREOS_COMP}:${TAG} barcus/bareos-${BAREOS_COMP}:${CIRCLE_BRANCH}
             fi
