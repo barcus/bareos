@@ -7,11 +7,13 @@ jobs:
       - run:
           name: Prepare ENV 
           command: |
+            mkdir vars
             if [[ -n "$BAREOS_BACKEND" ]]
             then 
               export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"
               export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"
               echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"' >> $BASH_ENV
+              echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"' >> vars/env.var
               echo 'export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"' >> $BASH_ENV
             else
               export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"
@@ -31,6 +33,7 @@ jobs:
           root: .
           paths:
             - ./images
+            - ./vars
 
   deploy: &deploy
     machine: true
@@ -40,6 +43,7 @@ jobs:
       - run:
           name: Load image and add tags
           command: |
+            cat /tmp/workspace/vars/env.var
             if [[ -n "$BAREOS_BACKEND" ]]
             then
               export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"

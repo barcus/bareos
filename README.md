@@ -41,7 +41,7 @@ Images are based on Ubuntu or Alpine, check tags below
 * `18-alpine`,
 * `17-ubuntu`, `17`
 * `17-alpine`
-* `16-ubuntu, `16`
+* `16-ubuntu`, `16`
 
 ## Security advice
 
