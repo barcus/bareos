@@ -5,35 +5,37 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Prepare ENV 
+          name: Prepare env vars & img tags
           command: |
             mkdir env
-            if [[ -n "$BAREOS_BACKEND" ]]
+            touch env/env_vars
+            touch env/img_tags
+            if [[ -n "${BAREOS_BACKEND}" ]]
             then 
-              echo "BUILD_TAG=${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}" >> env/myvars
-              echo "BAREOS_PATH=${BAREOS_COMP}-${BAREOS_BACKEND}" >> env/myvars
+              echo "BUILD_TAG=${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}" >> env/env_vars
+              echo "BAREOS_PATH=${BAREOS_COMP}-${BAREOS_BACKEND}" >> env/env_vars
             else
-              echo "BUILD_TAG=${CIRCLE_BRANCH}-${BASE_IMG}" >> env/myvars
-              echo "BAREOS_PATH=${BAREOS_COMP}" >> env/myvars
+              echo "BUILD_TAG=${CIRCLE_BRANCH}-${BASE_IMG}" >> env/env_vars
+              echo "BAREOS_PATH=${BAREOS_COMP}" >> env/env_vars
             fi
 
-            if [[ "$BASE_IMG" == "ubuntu" ]] && [[ "$BAREOS_BACKEND" != "pgsql" ]]
+            if [[ "${BASE_IMG}" == "ubuntu" ]] && [[ "${BAREOS_BACKEND}" != "pgsql" ]]
             then
-              echo "${CIRCLE_BRANCH}" >> env/img_add_tags
+              echo "${CIRCLE_BRANCH}" >> env/img_tags
               if [[ "${CIRCLE_BRANCH}" == "19" ]]
               then
-                echo "latest" >> env/img_add_tags
+                echo "latest" >> env/img_tags
               fi
             fi
       - run:
           name: Docker build
           command: |
-            source env/myvars
-            docker build -t barcus/bareos-${BAREOS_COMP}:${BUILD_TAG} ${BAREOS_PATH}/$BASE_IMG
+            source env/env_vars
+            docker build -t barcus/bareos-${BAREOS_COMP}:${BUILD_TAG} ${BAREOS_PATH}/${BASE_IMG}
       - run:
           name: Save images
           command: |
-            source env/myvars
+            source env/env_vars
             mkdir images
             docker save -o images/image-${BAREOS_PATH}-${BASE_IMG}.tar barcus/bareos-${BAREOS_COMP}:${BUILD_TAG}
       - persist_to_workspace:
@@ -50,24 +52,24 @@ jobs:
       - run:
           name: Load image and add tags
           command: |
-            source /tmp/workspace/env/myvars
+            source /tmp/workspace/env/env_vars
             docker load -i /tmp/workspace/images/image-${BAREOS_PATH}-${BASE_IMG}.tar
             while read tag
             do
               docker tag barcus/bareos-${BAREOS_COMP}:${BUILD_TAG} barcus/bareos-${BAREOS_COMP}:${tag}
-            done < /tmp/workspace/env/img_add_tags
+            done < /tmp/workspace/env/img_tags
       - run: 
           name: Docker login
           command: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
           name: Docker push
           command: |
-            source /tmp/workspace/env/myvars
+            source /tmp/workspace/env/env_vars
             docker push barcus/bareos-${BAREOS_COMP}:${BUILD_TAG}
             while read tag
             do
               docker push barcus/bareos-${BAREOS_COMP}:${tag}
-            done < /tmp/workspace/env/img_add_tags
+            done < /tmp/workspace/env/img_tags
 
   # Build Ubuntu images
   build-director-ubuntu-mysql:
@@ -182,10 +184,10 @@ workflows:
       - build-client-ubuntu
       - build-storage-ubuntu
       - build-webui-ubuntu
-      - build-director-alpine
-      - build-client-alpine
-      - build-storage-alpine
-      - build-webui-alpine
+      #- build-director-alpine
+      #- build-client-alpine
+      #- build-storage-alpine
+      #- build-webui-alpine
       - deploy-director-ubuntu-mysql:
           requires:
             - build-director-ubuntu-mysql
@@ -201,15 +203,15 @@ workflows:
       - deploy-webui-ubuntu:
           requires:
             - build-webui-ubuntu
-      - deploy-director-alpine:
-          requires:
-            - build-director-alpine
-      - deploy-client-alpine:
-          requires:
-            - build-client-alpine
-      - deploy-storage-alpine:
-          requires:
-            - build-storage-alpine
-      - deploy-webui-alpine:
-          requires:
-            - build-webui-alpine
+      #- deploy-director-alpine:
+      #    requires:
+      #      - build-director-alpine
+      #- deploy-client-alpine:
+      #    requires:
+      #      - build-client-alpine
+      #- deploy-storage-alpine:
+      #    requires:
+      #      - build-storage-alpine
+      #- deploy-webui-alpine:
+      #    requires:
+      #      - build-webui-alpine
