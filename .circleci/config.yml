@@ -177,30 +177,30 @@ workflows:
   version: 2
   build-n-deploy:
     jobs:
-      - build-director-ubuntu-mysql
+      #- build-director-ubuntu-mysql
       - build-director-ubuntu-pgsql
-      - build-client-ubuntu
-      - build-storage-ubuntu  
-      - build-webui-ubuntu
+      #- build-client-ubuntu
+      #- build-storage-ubuntu
+      #- build-webui-ubuntu
       #- build-director-alpine
       #- build-client-alpine
       #- build-storage-alpine
       #- build-webui-alpine
-      - deploy-director-ubuntu-mysql:
-          requires:
-            - build-director-ubuntu-mysql
+      #- deploy-director-ubuntu-mysql:
+      #    requires:
+      #      - build-director-ubuntu-mysql
       - deploy-director-ubuntu-pgsql:
           requires:
             - build-director-ubuntu-pgsql
-      - deploy-client-ubuntu:
-          requires:
-            - build-client-ubuntu
-      - deploy-storage-ubuntu:
-          requires:
-            - build-storage-ubuntu
-      - deploy-webui-ubuntu:
-          requires:
-            - build-webui-ubuntu
+      #- deploy-client-ubuntu:
+      #    requires:
+      #      - build-client-ubuntu
+      #- deploy-storage-ubuntu:
+      #    requires:
+      #      - build-storage-ubuntu
+      #- deploy-webui-ubuntu:
+      #    requires:
+      #      - build-webui-ubuntu
       #- deploy-director-alpine:
       #    requires:
       #      - build-director-alpine
