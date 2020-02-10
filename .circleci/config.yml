@@ -7,39 +7,42 @@ jobs:
       - run:
           name: Prepare ENV 
           command: |
-            mkdir vars
+            mkdir env
             if [[ -n "$BAREOS_BACKEND" ]]
             then 
-              #export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"
-              #export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"
-              #echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"' >> $BASH_ENV
-              #echo 'export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"' >> $BASH_ENV
-              echo "TAG=${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}" >> vars/env.var
-              echo "BAREOS_PATH=${BAREOS_COMP}-${BAREOS_BACKEND}" >> vars/env.var
+              echo "TAG=${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}" >> env/myvars
+              echo "${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}" >> env/mytags
+              echo "BAREOS_PATH=${BAREOS_COMP}-${BAREOS_BACKEND}" >> env/myvars
             else
-              #export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"
-              #export BAREOS_PATH="${BAREOS_COMP}"
-              #echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"' >> $BASH_ENV
-              #echo 'export BAREOS_PATH="${BAREOS_COMP}"' >> $BASH_ENV
-              echo "TAG=${CIRCLE_BRANCH}-${BASE_IMG}" >> vars/env.var
-              echo "BAREOS_PATH=${BAREOS_COMP}" >> vars/env.var
+              echo "TAG=${CIRCLE_BRANCH}-${BASE_IMG}" >> env/myvars
+              echo "${CIRCLE_BRANCH}-${BASE_IMG}" >> env/mytags
+              echo "BAREOS_PATH=${BAREOS_COMP}" >> env/myvars
+            fi
+
+            if [[ "$BASE_IMG" == "ubuntu" ]] && [[ "$BAREOS_BACKEND" != "pgsql" ]]
+            then
+              echo "${CIRCLE_BRANCH}" >> env/mytags
+              if [[ "${CIRCLE_BRANCH}" == "19" ]]
+              then
+                echo "latest" >> env/mytags
+              fi
             fi
       - run:
           name: Docker build
           command: |
-            source vars/env.var
+            source env/myvars
             docker build -t barcus/bareos-${BAREOS_COMP}:${TAG} ${BAREOS_PATH}/$BASE_IMG
       - run:
           name: Save images
           command: |
-            source vars/env.var
+            source env/myvars
             mkdir images
-            docker save -o images/image-${BAREOS_PATH}.tar barcus/bareos-${BAREOS_COMP}:${TAG}
+            docker save -o images/image-${BAREOS_PATH}-${BASE_IMG}.tar barcus/bareos-${BAREOS_COMP}:${TAG}
       - persist_to_workspace:
           root: .
           paths:
             - ./images
-            - ./vars
+            - ./env
 
   deploy: &deploy
     machine: true
@@ -49,30 +52,19 @@ jobs:
       - run:
           name: Load image and add tags
           command: |
-            cat /tmp/workspace/vars/env.var
-            source /tmp/workspace/vars/env.var
-            #if [[ -n "$BAREOS_BACKEND" ]]
-            #then
-            #  export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"
-            #  export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"
-            #  echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"' >> $BASH_ENV
-            #else
-            #  export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"
-            #  export BAREOS_PATH="${BAREOS_COMP}"
-            #  echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"' >> $BASH_ENV
-            #fi
-
-            docker load -i /tmp/workspace/images/image-${BAREOS_PATH}.tar
-            if [[ "$BASE_IMG" == "ubuntu" ]] && [[ "$BAREOS_BACKEND" != "pgsql" ]]
-            then
-              docker tag barcus/bareos-${BAREOS_COMP}:${TAG} barcus/bareos-${BAREOS_COMP}:${CIRCLE_BRANCH}
-            fi
+            source /tmp/workspace/env/myvars
+            docker load -i /tmp/workspace/images/image-${BAREOS_PATH}-${BASE_IMG}.tar
+            while read img_tag
+            do
+              docker tag barcus/bareos-${BAREOS_COMP}:${TAG} barcus/bareos-${BAREOS_COMP}:${img_tag}
+            done < /tmp/workspace/env/mytags
       - run: 
           name: Docker login
           command: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
           name: Docker push
           command: |
+            source /tmp/workspace/env/myvars
             docker push barcus/bareos-${BAREOS_COMP}:${TAG}
             if [[ "$BASE_IMG" == "ubuntu" ]] && [[ "$BAREOS_BACKEND" != "pgsql" ]]
             then
