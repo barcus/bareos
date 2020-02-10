@@ -40,7 +40,6 @@ jobs:
       - run:
           name: Load image and add tags
           command: |
-
             if [[ -n "$BAREOS_BACKEND" ]]
             then
               export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"
@@ -55,6 +54,7 @@ jobs:
             docker load -i /tmp/workspace/images/image-${BAREOS_PATH}.tar
             if [[ "$BASE_IMG" == "ubuntu" ]] && [[ "$BAREOS_BACKEND" != "pqsql" ]]
             then
+              echo "!!!!! on rentre dans la boucle pour ${CIRCLE_BRANCH} / debug : img: $BASE_IMG / back: $BAREOS_BACKEND"
               docker tag barcus/bareos-${BAREOS_COMP}:${TAG} barcus/bareos-${BAREOS_COMP}:${CIRCLE_BRANCH}
             fi
       - run: 
@@ -66,6 +66,7 @@ jobs:
             docker push barcus/bareos-${BAREOS_COMP}:${TAG}
             if [[ "$BASE_IMG" == "ubuntu" ]] && [[ "$BAREOS_BACKEND" != "pqsql" ]]
             then
+              echo "!!!!! on rentre dans la boucle pour ${CIRCLE_BRANCH} / debug : img: $BASE_IMG / back: $BAREOS_BACKEND"
               docker push barcus/bareos-${BAREOS_COMP}:${CIRCLE_BRANCH}
             fi
 
