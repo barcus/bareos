@@ -10,23 +10,29 @@ jobs:
             mkdir vars
             if [[ -n "$BAREOS_BACKEND" ]]
             then 
-              export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"
-              export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"
-              echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"' >> $BASH_ENV
-              echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"' >> vars/env.var
-              echo 'export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"' >> $BASH_ENV
+              #export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"
+              #export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"
+              #echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"' >> $BASH_ENV
+              #echo 'export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"' >> $BASH_ENV
+              echo "TAG=${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}" >> vars/env.var
+              echo "BAREOS_PATH=${BAREOS_COMP}-${BAREOS_BACKEND}" >> vars/env.var
             else
-              export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"
-              export BAREOS_PATH="${BAREOS_COMP}"
-              echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"' >> $BASH_ENV
-              echo 'export BAREOS_PATH="${BAREOS_COMP}"' >> $BASH_ENV
+              #export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"
+              #export BAREOS_PATH="${BAREOS_COMP}"
+              #echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"' >> $BASH_ENV
+              #echo 'export BAREOS_PATH="${BAREOS_COMP}"' >> $BASH_ENV
+              echo "TAG=${CIRCLE_BRANCH}-${BASE_IMG}" >> vars/env.var
+              echo "BAREOS_PATH=${BAREOS_COMP}" >> vars/env.var
             fi
       - run:
           name: Docker build
-          command: docker build -t barcus/bareos-${BAREOS_COMP}:${TAG} ${BAREOS_PATH}/$BASE_IMG
+          command: |
+            source vars/env.var
+            docker build -t barcus/bareos-${BAREOS_COMP}:${TAG} ${BAREOS_PATH}/$BASE_IMG
       - run:
           name: Save images
           command: |
+            source vars/env.var
             mkdir images
             docker save -o images/image-${BAREOS_PATH}.tar barcus/bareos-${BAREOS_COMP}:${TAG}
       - persist_to_workspace:
@@ -44,16 +50,17 @@ jobs:
           name: Load image and add tags
           command: |
             cat /tmp/workspace/vars/env.var
-            if [[ -n "$BAREOS_BACKEND" ]]
-            then
-              export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"
-              export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"
-              echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"' >> $BASH_ENV
-            else
-              export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"
-              export BAREOS_PATH="${BAREOS_COMP}"
-              echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"' >> $BASH_ENV
-            fi
+            source /tmp/workspace/vars/env.var
+            #if [[ -n "$BAREOS_BACKEND" ]]
+            #then
+            #  export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"
+            #  export BAREOS_PATH="${BAREOS_COMP}-${BAREOS_BACKEND}"
+            #  echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}-${BAREOS_BACKEND}"' >> $BASH_ENV
+            #else
+            #  export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"
+            #  export BAREOS_PATH="${BAREOS_COMP}"
+            #  echo 'export TAG="${CIRCLE_BRANCH}-${BASE_IMG}"' >> $BASH_ENV
+            #fi
 
             docker load -i /tmp/workspace/images/image-${BAREOS_PATH}.tar
             if [[ "$BASE_IMG" == "ubuntu" ]] && [[ "$BAREOS_BACKEND" != "pgsql" ]]
