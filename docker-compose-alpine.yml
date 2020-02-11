@@ -1,59 +1,68 @@
-## docker-compose Bareos Director/Storage/Client/webUI and PostgreSQL Database based on Ubuntu
+## docker-compose Bareos Director/Storage/Client/webUI, PHP-FPM and MySQL Database based on Alpine
 version: '3'
 services:
   bareos-dir:
-    image: barcus/bareos-director:18-pgsql-ubuntu
+    image: barcus/bareos-director:18-alpine
     volumes:
-      - /data/bareos/config/director:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
       - DB_HOST=bareos-db
       - DB_PORT=3306
       - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - DB_NAME=bareos
+      - DB_USER=root
       - BAREOS_SD_HOST=bareos-sd
       - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
       - BAREOS_FD_HOST=bareos-fd
       - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
       - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
       - SMTP_HOST=smtpd
-      #- SENDER_MAIL=your-sender@mail.address #optional
       - ADMIN_MAIL=your@mail.address # Change me!
     depends_on:
       - bareos-db
 
   bareos-sd:
-    image: barcus/bareos-storage:18-ubuntu
+    image: barcus/bareos-storage:18-alpine
     ports:
       - 9103:9103
     volumes:
-      - /data/bareos/config/storage:/etc/bareos
-      - /data/bareos/data/storage:/var/lib/bareos/storage
+      - /data/bareos/data/storage:/var/lib/bareos/archive
     environment:
       - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
 
   bareos-fd:
-    image: barcus/bareos-client:18-ubuntu
+    image: barcus/bareos-client:18-alpine
     volumes:
-      - /data/bareos/config/client:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
     environment:
       - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
 
   bareos-webui:
-    image: barcus/bareos-webui:18-ubuntu
+    image: barcus/bareos-webui:18-alpine
     ports:
-      - 8080:80
+      - 8080:9100
     environment:
       - BAREOS_DIR_HOST=bareos-dir
+      - PHP_FPM_HOST=php-fpm
+      - PHP_FPM_PORT=9000
     volumes:
       - /data/bareos/config/webui:/etc/bareos-webui
+      - /data/bareos/data/webui:/usr/share/bareos-webui
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    image: barcus/php-fpm-alpine
+    volumes:
+      - /data/bareos/config/webui:/etc/bareos-webui
+      - /data/bareos/data/webui:/usr/share/bareos-webui
 
   bareos-db:
-    image: postgres:9.3
+    image: mysql:5.6
     volumes:
-      - /data/pgsql/data:/var/lib/postgresql/data
+      - /data/mysql/data:/var/lib/mysql
     environment:
-      - POSTGRES_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - MYSQL_ROOT_PASSWORD=ThisIsMySecretDBp4ssw0rd
 
   smtpd:
     image: namshi/smtp
