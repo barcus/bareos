@@ -147,6 +147,7 @@ services:
       - 8080:80
     environment:
       - BAREOS_DIR_HOST=bareos-dir
+      - SERVER_STATS=yes #optional enable apache server statistics
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos-webui
 
