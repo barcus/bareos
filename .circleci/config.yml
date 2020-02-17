@@ -31,7 +31,7 @@ jobs:
           name: Docker build
           command: |
             source env/env_vars
-            docker build -t barcus/bareos-${BAREOS_COMP}:${BUILD_TAG} ${BAREOS_PATH}/${BASE_IMG}
+            docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 -t barcus/bareos-${BAREOS_COMP}:${BUILD_TAG} ${BAREOS_PATH}/${BASE_IMG}
       - run:
           name: Save images
           command: |
