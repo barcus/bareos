@@ -8,7 +8,6 @@ jobs:
       - run:
           name: Prepare env vars & img tags
           command: |
-            set -x
             mkdir env
             touch env/img_build
             touch env/img_tags
@@ -122,19 +121,19 @@ workflows:
     jobs:
       - build-director
           filters:
-            branch:
+            branches:
               only: /^\d+/
       - build-client
           filters:
-            branch:
+            branches:
               only: /^\d+/
       - build-storage
           filters:
-            branch:
+            branches:
               only: /^\d+/
       - build-webui
           filters:
-            branch:
+            branches:
               only: /^\d+/
       - deploy-director:
           requires:
