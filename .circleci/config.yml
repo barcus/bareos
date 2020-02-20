@@ -1,0 +1,138 @@
+version: 2.1
+jobs:
+  # Buid template
+  build: &build
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Prepare env vars & img tags
+          command: |
+            set -x
+            mkdir env
+            touch env/img_build
+            touch env/img_tags
+            for file in $(find ${BAREOS_COMP}* -name "Dockerfile"); do
+              app_dir=$(echo $file |cut -d'/' -f1) 
+              version=$(echo $file |cut -d'/' -f2) 
+              base_img=$(echo $version |cut -d'-' -f2)
+              tag_build="${CIRCLE_BRANCH}-${base_img}"
+              build_dir=${tag_build}
+              if [ "${BAREOS_COMP}" == "director" ]; then
+                backend=$(echo $app_dir |cut -d'-' -f2)
+                tag_build="${CIRCLE_BRANCH}-${base_img}-${backend}"
+              fi
+
+              echo "${app_dir} ${build_dir} ${base_img} ${tag_build}" >> env/img_build
+
+              if [ "${base_img}" == "ubuntu" ] && [ "${backend}" != "pgsql" ]; then
+                echo "${tag_build} ${CIRCLE_BRANCH}" >> env/img_tags
+              fi
+              if [ "${CIRCLE_BRANCH}" == "19" ]; then
+                echo "${tag_build} latest" >> env/img_tags
+              fi
+            done
+      - run:
+          name: Docker build & save
+          command: |
+            mkdir images
+            while read app_dir build_dir base_img tag_build ; do
+              docker build -t barcus/bareos-${BAREOS_COMP}:${tag_build} ${app_dir}/${build_dir}
+              docker save -o images/${app_dir}-${base_img}.tar barcus/bareos-${BAREOS_COMP}:${tag_build}
+            done < env/img_build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./images
+            - ./env
+
+  # Deploy template
+  deploy: &deploy
+    machine: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Load images
+          command: |
+            while read app_dir build_dir base_img tag_build ; do
+              docker load -i /tmp/workspace/images/${app_dir}-${base_img}.tar
+            done < /tmp/workspace/env/img_build
+      - run:
+          name: Add tags
+          command: |
+            while read tag_build tag ; do
+              docker tag barcus/bareos-${BAREOS_COMP}:${tag_build} barcus/bareos-${BAREOS_COMP}:${tag}
+            done < /tmp/workspace/env/img_tags
+      - run: 
+          name: Docker login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
+          name: Docker push build tag
+          command: |
+            while read app_dir build_dir base_img tag_build ; do
+              docker push barcus/bareos-${BAREOS_COMP}:${tag_build}
+            done < /tmp/workspace/env/img_build
+      - run:
+          name: Docker push additional tag
+          command: |
+            while read tag_build tag ; do
+              docker push barcus/bareos-${BAREOS_COMP}:${tag}
+            done < /tmp/workspace/env/img_tags
+
+  # Build image foreach component
+  build-director:
+     <<: *build
+     environment:
+       - BAREOS_COMP: director
+  build-client:
+     <<: *build
+     environment:
+       - BAREOS_COMP: client
+  build-storage:
+     <<: *build
+     environment:
+       - BAREOS_COMP: storage
+  build-webui:
+     <<: *build
+     environment:
+       - BAREOS_COMP: webui
+
+  # Deploy images for each component
+  deploy-director:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: director
+  deploy-client:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: client
+  deploy-storage:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: storage
+  deploy-webui:
+     <<: *deploy
+     environment:
+       - BAREOS_COMP: webui
+
+workflows:
+  version: 2
+  build-n-deploy:
+    jobs:
+      - build-director
+      - build-client
+      - build-storage
+      - build-webui
+      - deploy-director:
+          requires:
+            - build-director
+      - deploy-client:
+          requires:
+            - build-client
+      - deploy-storage:
+          requires:
+            - build-storage
+      - deploy-webui:
+          requires:
+            - build-webui
