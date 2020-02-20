@@ -121,18 +121,50 @@ workflows:
   build-n-deploy:
     jobs:
       - build-director
+          filters:
+            branch:
+              only: /^\d+/
       - build-client
+          filters:
+            branch:
+              only: /^\d+/
       - build-storage
+          filters:
+            branch:
+              only: /^\d+/
       - build-webui
+          filters:
+            branch:
+              only: /^\d+/
       - deploy-director:
           requires:
             - build-director
+          filters:
+            tags:
+              only: /^\d+-\d+/
+            branches:
+              ignore: /.*/
       - deploy-client:
           requires:
             - build-client
+          filters:
+            tags:
+              only: /^\d+-\d+/
+            branches:
+              ignore: /.*/
       - deploy-storage:
           requires:
             - build-storage
+          filters:
+            tags:
+              only: /^\d+-\d+/
+            branches:
+              ignore: /.*/
       - deploy-webui:
           requires:
             - build-webui
+          filters:
+            tags:
+              only: /^\d+-\d+/
+            branches:
+              ignore: /.*/
