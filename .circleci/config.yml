@@ -8,26 +8,32 @@ jobs:
       - run:
           name: Prepare build and tags
           command: |
-            release=${CIRCLE_BRANCH}
-            if [ -n "${CIRCLE_TAG}" ]; then
-              release=$(echo $CIRCLE_TAG |sed 's#^v\([0-9]*\)\.[0-9]*$#\1#g')
+            release=''
+            latest='19'
+            re_branch='^[0-9]+.*$'
+            if [[ ${CIRCLE_BRANCH} =~ $re ]] ; then
+              release=$(echo ${CIRCLE_BRANCH} |sed 's#^\([0-9]*\)-.*$#\1#'
             fi
+            if [[ "${CIRCLE_TAG}" -n ]] ; then
+              release=$(echo $CIRCLE_TAG |sed 's#^v\([0-9]*\)\.[0-9]*$#\1#')
+            fi            
             mkdir env && touch env/img_build && touch env/img_tags
-            for file in $(find ${BAREOS_COMP}*/* -name "Dockerfile"); do
+            for file in $(find ${BAREOS_APP}*/${release}* -name Dockerfile); do
               app_dir=$(echo $file |cut -d'/' -f1) 
               release_dir=$(echo $file |cut -d'/' -f2) 
+              version=$(echo $release_dir |cut -d'-' -f1)
               base_img=$(echo $release_dir |cut -d'-' -f2)
               tag_build="${release_dir}"
-              if [ "${BAREOS_COMP}" == "director" ]; then
+              if [ "${BAREOS_APP}" == 'director' ]; then
                 backend=$(echo $app_dir |cut -d'-' -f2)
                 tag_build="${release_dir}-${backend}"
               fi
               echo "${app_dir} ${release_dir} ${base_img} ${tag_build}" >> env/img_build
-              if [ "${base_img}" == "ubuntu" ] && [ "${backend}" != "pgsql" ]; then
-                echo "${tag_build} ${release}" >> env/img_tags
-              fi
-              if [ "${release}" == "19" ]; then
-                echo "${tag_build} latest" >> env/img_tags
+              if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
+                echo "${tag_build} ${version}" >> env/img_tags
+                if [ "${version}" == '19' ]; then
+                  echo "${tag_build} latest" >> env/img_tags
+                fi
               fi
             done
       - run:
@@ -35,8 +41,8 @@ jobs:
           command: |
             mkdir images
             while read app_dir release_dir base_img tag_build ; do
-              docker build -t barcus/bareos-${BAREOS_COMP}:${tag_build} ${app_dir}/${release_dir}
-              docker save -o images/${app_dir}-${base_img}.tar barcus/bareos-${BAREOS_COMP}:${tag_build}
+              docker build -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
+              docker save -o images/${app_dir}-${base_img}.tar barcus/bareos-${BAREOS_APP}:${tag_build}
             done < env/img_build
       - persist_to_workspace:
           root: .
@@ -60,7 +66,7 @@ jobs:
           name: Docker add tags
           command: |
             while read tag_build tag ; do
-              docker tag barcus/bareos-${BAREOS_COMP}:${tag_build} barcus/bareos-${BAREOS_COMP}:${tag}
+              docker tag barcus/bareos-${BAREOS_APP}:${tag_build} barcus/bareos-${BAREOS_APP}:${tag}
             done < /tmp/workspace/env/img_tags
       - run: 
           name: Docker login
@@ -69,50 +75,50 @@ jobs:
           name: Docker push original tag
           command: |
             while read app_dir build_dir base_img tag_build ; do
-              docker push barcus/bareos-${BAREOS_COMP}:${tag_build}
+              docker push barcus/bareos-${BAREOS_APP}:${tag_build}
             done < /tmp/workspace/env/img_build
       - run:
           name: Docker push additional tag
           command: |
             while read tag_build tag ; do
-              docker push barcus/bareos-${BAREOS_COMP}:${tag}
+              docker push barcus/bareos-${BAREOS_APP}:${tag}
             done < /tmp/workspace/env/img_tags
 
   # Build image foreach component
   build-director:
      <<: *build
      environment:
-       - BAREOS_COMP: director
+       - BAREOS_APP: director
   build-client:
      <<: *build
      environment:
-       - BAREOS_COMP: client
+       - BAREOS_APP: client
   build-storage:
      <<: *build
      environment:
-       - BAREOS_COMP: storage
+       - BAREOS_APP: storage
   build-webui:
      <<: *build
      environment:
-       - BAREOS_COMP: webui
+       - BAREOS_APP: webui
 
   # Deploy images for each component
   deploy-director:
      <<: *deploy
      environment:
-       - BAREOS_COMP: director
+       - BAREOS_APP: director
   deploy-client:
      <<: *deploy
      environment:
-       - BAREOS_COMP: client
+       - BAREOS_APP: client
   deploy-storage:
      <<: *deploy
      environment:
-       - BAREOS_COMP: storage
+       - BAREOS_APP: storage
   deploy-webui:
      <<: *deploy
      environment:
-       - BAREOS_COMP: webui
+       - BAREOS_APP: webui
 
 workflows:
   version: 2
