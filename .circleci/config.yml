@@ -18,7 +18,7 @@ jobs:
               release=$(echo ${branch} |sed 's#^\([0-9]*\).*$#\1#')
             fi
             if [[ -n ${tag} ]]; then
-              release=$(echo ${tag} |sed 's#^v\([0-9]+\)-.*$#\1#')
+              release=$(echo ${tag} |sed 's#^v\([0-9]*\)-.*$#\1#')
             fi
             mkdir env && touch env/img_build && touch env/img_tags
             for file in $(find ${BAREOS_APP}*/${release}* -name Dockerfile); do
