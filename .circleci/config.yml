@@ -152,7 +152,7 @@ workflows:
             - build-director
           filters:
             tags:
-              only: /^v\d+\.\d+$/
+              only: /^v\d+\-\d+$/
             branches:
               ignore: /.*/
       - deploy-client:
@@ -160,7 +160,7 @@ workflows:
             - build-client
           filters:
             tags:
-              only: /^v\d+\.\d+$/
+              only: /^v\d+\-\d+$/
             branches:
               ignore: /.*/
       - deploy-storage:
@@ -168,7 +168,7 @@ workflows:
             - build-storage
           filters:
             tags:
-              only: /^v\d+\.\d+$/
+              only: /^v\d+\-\d+$/
             branches:
               ignore: /.*/
       - deploy-webui:
@@ -176,6 +176,6 @@ workflows:
             - build-webui
           filters:
             tags:
-              only: /^v\d+\.\d+$/
+              only: /^v\d+\-\d+$/
             branches:
               ignore: /.*/
