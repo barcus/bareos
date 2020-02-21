@@ -11,12 +11,13 @@ jobs:
             tag=${CIRCLE_TAG}
             branch=${CIRCLE_BRANCH}
             release=''
-            latest='19'
+            latest_ubuntu='19'
+            latest_alpine='18'
             re='^[0-9]+.*$'
             if [[ ${branch} =~ $re ]]; then
               release=$(echo ${branch} |sed 's#^\([0-9]*\).*$#\1#')
             fi
-            if [[ -n ${tag} ]] ; then
+            if [[ -n ${tag} ]]; then
               release=$(echo ${tag} |sed 's#^v\([0-9]+\)-.*$#\1#')
             fi
             mkdir env && touch env/img_build && touch env/img_tags
@@ -33,9 +34,13 @@ jobs:
               echo "${app_dir} ${release_dir} ${base_img} ${tag_build}" >> env/img_build
               if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
                 echo "${tag_build} ${version}" >> env/img_tags
-                if [ "${version}" == '19' ]; then
+                if [ "${version}" == "$latest_ubuntu" ]; then
+                  echo "${tag_build} ubuntu" >> env/img_tags
                   echo "${tag_build} latest" >> env/img_tags
                 fi
+              fi
+              if [ "${base_img}" == 'alpine' ] && [ "${version}" == "$latest_alpine" ]; then
+                echo "${tag_build} alpine" >> env/img_tags
               fi
             done
       - run:
