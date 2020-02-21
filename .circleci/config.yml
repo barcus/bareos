@@ -8,19 +8,21 @@ jobs:
       - run:
           name: Prepare build and tags
           command: |
+            tag=${CIRCLE_TAG}
+            branch=${CIRCLE_BRANCH}
             release=''
             latest='19'
-            re_branch='^[0-9]+.*$'
-            if [ ${CIRCLE_BRANCH} =~ $re ] ; then
-              release=$(echo ${CIRCLE_BRANCH} |sed 's#^\([0-9]*\).*$#\1#')
+            re='^[0-9]+.*$'
+            if [[ ${branch} =~ $re ]]; then
+              release=$(echo ${branch} |sed 's#^\([0-9]*\).*$#\1#')
             fi
-            if [ "${CIRCLE_TAG}" -n ] ; then
-              release=$(echo ${CIRCLE_TAG} |sed 's#^v\([0-9]+\)-.*$#\1#')
-            fi            
+            if [[ -n ${tag} ]] ; then
+              release=$(echo ${tag} |sed 's#^v\([0-9]+\)-.*$#\1#')
+            fi
             mkdir env && touch env/img_build && touch env/img_tags
             for file in $(find ${BAREOS_APP}*/${release}* -name Dockerfile); do
-              app_dir=$(echo $file |cut -d'/' -f1) 
-              release_dir=$(echo $file |cut -d'/' -f2) 
+              app_dir=$(echo $file |cut -d'/' -f1)
+              release_dir=$(echo $file |cut -d'/' -f2)
               version=$(echo $release_dir |cut -d'-' -f1)
               base_img=$(echo $release_dir |cut -d'-' -f2)
               tag_build="${release_dir}"
