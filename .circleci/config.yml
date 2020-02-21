@@ -12,10 +12,8 @@ jobs:
             if [ -n "${CIRCLE_TAG}" ]; then
               release=$(echo $CIRCLE_TAG |sed 's#^v\([0-9]*\)\.[0-9]*$#\1#g')
             fi
-            mkdir env
-            touch env/img_build
-            touch env/img_tags
-            for file in $(find ${BAREOS_COMP}*/${release}* -name "Dockerfile"); do
+            mkdir env && touch env/img_build && touch env/img_tags
+            for file in $(find ${BAREOS_COMP}*/* -name "Dockerfile"); do
               app_dir=$(echo $file |cut -d'/' -f1) 
               release_dir=$(echo $file |cut -d'/' -f2) 
               base_img=$(echo $release_dir |cut -d'-' -f2)
