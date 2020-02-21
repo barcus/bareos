@@ -11,10 +11,10 @@ jobs:
             release=''
             latest='19'
             re_branch='^[0-9]+.*$'
-            if [[ ${CIRCLE_BRANCH} =~ $re ]] ; then
+            if [ ${CIRCLE_BRANCH} =~ $re ] ; then
               release=$(echo ${CIRCLE_BRANCH} |sed 's#^\([0-9]*\).*$#\1#')
             fi
-            if [[ "${CIRCLE_TAG}" -n ]] ; then
+            if [ "${CIRCLE_TAG}" -n ] ; then
               release=$(echo ${CIRCLE_TAG} |sed 's#^v\([0-9]+\)-.*$#\1#')
             fi            
             mkdir env && touch env/img_build && touch env/img_tags
