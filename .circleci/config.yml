@@ -20,6 +20,7 @@ jobs:
             if [[ -n ${tag} ]]; then
               release=$(echo ${tag} |sed 's#^v\([0-9]*\)-.*$#\1#')
             fi
+
             mkdir env && touch env/img_build && touch env/img_tags
             for file in $(find ${BAREOS_APP}*/${release}* -name Dockerfile); do
               app_dir=$(echo $file |cut -d'/' -f1)
@@ -32,11 +33,15 @@ jobs:
                 tag_build="${release_dir}-${backend}"
               fi
               echo "${app_dir} ${release_dir} ${base_img} ${tag_build}" >> env/img_build
+
               if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
                 echo "${tag_build} ${version}" >> env/img_tags
                 if [ "${version}" == "$latest_ubuntu" ]; then
                   echo "${tag_build} ubuntu" >> env/img_tags
                   echo "${tag_build} latest" >> env/img_tags
+                fi
+                if [ "${BAREOS_APP}" == 'director' ]; then
+                  echo "${tag_build} ${version}-ubuntu" >> env/img_tags
                 fi
               fi
               if [ "${base_img}" == 'alpine' ] && [ "${version}" == "$latest_alpine" ]; then
