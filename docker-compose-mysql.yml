@@ -45,6 +45,7 @@ services:
       - 8080:80
     environment:
       - BAREOS_DIR_HOST=bareos-dir
+      - SERVER_STATS=yes
     volumes:
       - /data/bareos/config/webui:/etc/bareos-webui
 

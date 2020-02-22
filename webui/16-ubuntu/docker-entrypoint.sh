@@ -14,4 +14,7 @@ fi
 #set document root for withouth subdir
 sed -i "s/\/var\/www\/html/\/usr\/share\/bareos-webui\/public/g" /etc/apache2/sites-available/000-default.conf
 
+#Enable Apache server stats
+[ -n "${SERVER_STATS}" ] && sed -i "s/#ServerName www.example.com/Alias \/server-status \/var\/www\/dummy/g" /etc/apache2/sites-available/000-default.conf
+
 exec "$@"

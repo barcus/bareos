@@ -104,10 +104,10 @@ Build your own docker-compose file with this template :
 version: '3'
 services:
   bareos-dir:
-    image: barcus/bareos-director:latest #(latest dicector+mysql based on ubuntu)
+    image: barcus/bareos-director:latest #latest dicector+mysql based on ubuntu
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
-      - <BAREOS_DATA_PATH>:/var/lib/bareos # (required for MyCatalog backup)
+      - <BAREOS_DATA_PATH>:/var/lib/bareos #required for MyCatalog backup
     environment:
       - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
       - DB_HOST=bareos-db
@@ -137,7 +137,7 @@ services:
     image: barcus/bareos-client:latest
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
-      - <BAREOS_DATA_PATH>:/var/lib/bareos-director # (required for MyCatalog backup)
+      - <BAREOS_DATA_PATH>:/var/lib/bareos-director #required for MyCatalog backup
     environment:
       - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
 
@@ -147,6 +147,7 @@ services:
       - 8080:80
     environment:
       - BAREOS_DIR_HOST=bareos-dir
+      - SERVER_STATS=yes #optional enable apache server statistics
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos-webui
 
