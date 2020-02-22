@@ -97,7 +97,7 @@ jobs:
               docker push barcus/bareos-${BAREOS_APP}:${tag}
             done < /tmp/workspace/env/img_tags
       - run:
-          name: Update Dockehub readme
+          name: Update Docker Hub readme
           command: |
             docker run -v $PWD:/workspace \
             -e DOCKERHUB_USERNAME=$DOCKER_USER \
