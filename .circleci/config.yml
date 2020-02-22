@@ -66,6 +66,7 @@ jobs:
   deploy: &deploy
     machine: true
     steps:
+      - checkout
       - attach_workspace:
           at: /tmp/workspace
       - run:
@@ -95,6 +96,15 @@ jobs:
             while read tag_build tag ; do
               docker push barcus/bareos-${BAREOS_APP}:${tag}
             done < /tmp/workspace/env/img_tags
+      - run:
+          name: Update Docker Hub readme
+          command: |
+            docker run -v $PWD:/workspace \
+            -e DOCKERHUB_USERNAME=$DOCKER_USER \
+            -e DOCKERHUB_PASSWORD=$DOCKER_PASS \
+            -e DOCKERHUB_REPOSITORY="barcus/bareos-${BAREOS_APP}" \
+            -e README_FILEPATH='/workspace/README.md' \
+            peterevans/dockerhub-description:2.1.0
 
   # Build image foreach component
   build-director:
