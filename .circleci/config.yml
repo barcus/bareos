@@ -66,6 +66,7 @@ jobs:
   deploy: &deploy
     machine: true
     steps:
+      - checkout
       - attach_workspace:
           at: /tmp/workspace
       - run:
