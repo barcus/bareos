@@ -24,13 +24,13 @@ Images are based on Ubuntu or Alpine, check tags below
 
 Director (bareos-dir)
 
-* `19-mysql-ubuntu`, `19-ubuntu`, `19`, `ubuntu`, `latest`
-* `18-mysql-ubuntu`, `18-ubuntu`, `18`
-* `18-pgsql-ubuntu`
-* `18-mysql-alpine`, `18-alpine`, `alpine`
-* `17-mysql-ubuntu`, `17-ubuntu`, `17`
-* `17-pgsql-ubuntu`
-* `17-mysql-alpine`, `17-alpine`
+* `19-ubuntu-mysql`, `19-ubuntu`, `19`, `ubuntu`, `latest`
+* `18-ubuntu-mysql`, `18-ubuntu`, `18`
+* `18-ubuntu-pgsql`
+* `18-alpine`, `alpine`
+* `17-ubuntu-mysql`, `17-ubuntu`, `17`
+* `17-ubuntu-pgsql`
+* `17-alpine`
 
 Client (bareos-fd) - Storage (bareos-sd) - Webui
 
