@@ -54,17 +54,13 @@ jobs:
       - run:
           name: Docker build
           command: |
-            #sudo apt-get update && sudo apt-get install -y --no-install-recommends qemu-user-static
             mkdir images
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
             while read app_dir release_dir base_img tag_build ; do
-              #export DOCKER_CLI_EXPERIMENTAL=enabled
-              #cp /usr/bin/qemu-arm-static ${app_dir}/${release_dir}
-              
-              #docker build -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
-              #docker save -o images/${app_dir}-${base_img}.tar barcus/bareos-${BAREOS_APP}:${tag_build}
+              docker build -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
+              docker save -o images/${app_dir}-${base_img}.tar barcus/bareos-${BAREOS_APP}:${tag_build}
               if [ "$release_dir" == "18-alpine" ]; then
-                docker build --build-arg BASE_ARCH=arm32v6 -t barcus/bareos-${BAREOS_APP}:${tag_build}-arm ${app_dir}/${release_dir}
+                docker build --build-arg BASE_ARCH=arm32v8 -t barcus/bareos-${BAREOS_APP}:${tag_build}-arm ${app_dir}/${release_dir}
                 docker save -o images/${app_dir}-${base_img}-arm.tar barcus/bareos-${BAREOS_APP}:${tag_build}-arm
               fi
             done < env/img_build
