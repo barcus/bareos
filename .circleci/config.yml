@@ -2,9 +2,9 @@ version: 2.1
 jobs:
   # Buid template
   build: &build
-    machine: true
-    #docker:
-    #  - image: circleci/buildpack-deps:stretch
+    #machine: true
+    docker:
+      - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
       - run:
@@ -57,7 +57,7 @@ jobs:
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
             while read app_dir release_dir base_img tag_build ; do
               #export DOCKER_CLI_EXPERIMENTAL=enabled
-              #cp /usr/bin/qemu-aarch64-static ${app_dir}/${release_dir}
+              cp /usr/bin/qemu-arm-static ${app_dir}/${release_dir}
               
               docker build -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
               docker save -o images/${app_dir}-${base_img}.tar barcus/bareos-${BAREOS_APP}:${tag_build}
