@@ -62,7 +62,7 @@ jobs:
               docker build -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
               docker save -o images/${app_dir}-${base_img}.tar barcus/bareos-${BAREOS_APP}:${tag_build}
               if [ "$release_dir" == "18-alpine" ]; then
-                docker run --rm --privileged multiarch/qemu-user-static --reset
+                docker run --rm --privileged multiarch/qemu-user-static:register --reset
                 docker build --build-arg BASE_ARCH=arm64v8 -t barcus/bareos-${BAREOS_APP}:${tag_build}-arm ${app_dir}/${release_dir}
                 docker save -o images/${app_dir}-${base_img}-arm.tar barcus/bareos-${BAREOS_APP}:${tag_build}-arm
               fi
