@@ -2,9 +2,9 @@ version: 2.1
 jobs:
   # Buid template
   build: &build
-    machine: true
-    #docker:
-    #  - image: circleci/buildpack-deps:stretch
+    #machine: true
+    docker:
+      - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
       - run:
@@ -52,7 +52,7 @@ jobs:
       - run:
           name: Docker build
           command: |
-            sudo apt-get update && sudo apt-get install -y --no-install-recommends qemu-user-static
+            #sudo apt-get update && sudo apt-get install -y --no-install-recommends qemu-user-static
             #sudo update-binfmts --enable qemu-aarch64
             #sudo update-binfmts --display qemu-aarch64
             mkdir images
@@ -60,12 +60,12 @@ jobs:
             #ls -l /usr/bin/qemu-*
             while read app_dir release_dir base_img tag_build ; do
               export DOCKER_CLI_EXPERIMENTAL=enabled
-              cp /usr/bin/qemu-arm-static ${app_dir}/${release_dir}
+              #cp /usr/bin/qemu-aarch64-static ${app_dir}/${release_dir}
               
               docker build -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
               docker save -o images/${app_dir}-${base_img}.tar barcus/bareos-${BAREOS_APP}:${tag_build}
               if [ "$release_dir" == "18-alpine" ]; then
-                docker build --build-arg BASE_ARCH=arm64v8 -t barcus/bareos-${BAREOS_APP}:${tag_build}-arm ${app_dir}/${release_dir}
+                docker build --build-arg BASE_ARCH=armhf -t barcus/bareos-${BAREOS_APP}:${tag_build}-arm ${app_dir}/${release_dir}
                 docker save -o images/${app_dir}-${base_img}-arm.tar barcus/bareos-${BAREOS_APP}:${tag_build}-arm
               fi
             done < env/img_build
