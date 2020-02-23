@@ -3,7 +3,7 @@ ARG	   BASE_ARCH=amd64
 FROM       ${BASE_ARCH}/alpine:3.10
 MAINTAINER Barcus <barcus@tou.nu>
 
-COPY qemu-arm-static /usr/bin/qemu-arm-static
+COPY qemu-arm-static /usr/local/bin/qemu-arm-static
 
 RUN set -ex \
     && apk add --no-cache bareos openssh-client curl
