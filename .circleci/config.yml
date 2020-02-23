@@ -25,7 +25,7 @@ jobs:
               release=$(echo ${tag} |sed 's#^v\([0-9]*\)-.*$#\1#')
             fi
             mkdir env && touch env/img_build && touch env/img_tags
-            for file in $(find ${BAREOS_APP}*/18-alpine* -name Dockerfile); do
+            for file in $(find ${BAREOS_APP}*/${release}* -name Dockerfile); do
               app_dir=$(echo $file |cut -d'/' -f1)
               release_dir=$(echo $file |cut -d'/' -f2)
               version=$(echo $release_dir |cut -d'-' -f1)
@@ -59,9 +59,9 @@ jobs:
             while read app_dir release_dir base_img tag_build ; do
               docker build -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
               docker save -o images/${app_dir}-${base_img}.tar barcus/bareos-${BAREOS_APP}:${tag_build}
-              if [ "$release_dir" == "18-alpine" ]; then
-                docker build --build-arg BASE_ARCH=arm64v8 -t barcus/bareos-${BAREOS_APP}:${tag_build}-arm ${app_dir}/${release_dir}
-                docker save -o images/${app_dir}-${base_img}-arm.tar barcus/bareos-${BAREOS_APP}:${tag_build}-arm
+              if [ "$release_dir" =~ ".*alpine" ]; then
+                docker build --build-arg BASE_ARCH=arm64v8 -t barcus/bareos-${BAREOS_APP}:${tag_build}-arm64v8 ${app_dir}/${release_dir}
+                docker save -o images/${app_dir}-${base_img}-arm64v8.tar barcus/bareos-${BAREOS_APP}:${tag_build}-arm64v8
               fi
             done < env/img_build
       - persist_to_workspace:
@@ -83,7 +83,7 @@ jobs:
             while read app_dir build_dir base_img tag_build ; do
               docker load -i /tmp/workspace/images/${app_dir}-${base_img}.tar
               if [ "$build_dir" == "18-alpine" ]; then
-                docker load -i /tmp/workspace/images/${app_dir}-${base_img}-arm.tar
+                docker load -i /tmp/workspace/images/${app_dir}-${base_img}-arm64v8.tar
               fi
             done < /tmp/workspace/env/img_build
       - run:
@@ -101,7 +101,7 @@ jobs:
             while read app_dir build_dir base_img tag_build ; do
               docker push barcus/bareos-${BAREOS_APP}:${tag_build}
               if [ "$build_dir" == "18-alpine" ]; then
-                docker push barcus/bareos-${BAREOS_APP}:${tag_build}-arm
+                docker push barcus/bareos-${BAREOS_APP}:${tag_build}-arm64v8
               fi
             done < /tmp/workspace/env/img_build
       - run:
