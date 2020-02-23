@@ -1,4 +1,4 @@
-#!/usr/bin/env ash
+#!/usr/bin/env bash
 
 # MAINTAINER Barcus <barcus@tou.nu>
 
@@ -13,5 +13,5 @@ if [ ! -f /etc/bareos/bareos-config.control ]
   touch /etc/bareos/bareos-config.control
 fi
 
-find /etc/bareos ! -user bareos -exec chown bareos {} \;
+find /etc/bareos/bareos-fd.d ! -user bareos -exec chown bareos {} \;
 exec "$@"
