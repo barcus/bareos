@@ -25,7 +25,7 @@ jobs:
               release=$(echo ${tag} |sed 's#^v\([0-9]*\)-.*$#\1#')
             fi
             mkdir env && touch env/img_build && touch env/img_tags
-            for file in $(find ${BAREOS_APP}*/17-alpine* -name Dockerfile); do
+            for file in $(find ${BAREOS_APP}*/${release}* -name Dockerfile); do
               app_dir=$(echo $file |cut -d'/' -f1)
               release_dir=$(echo $file |cut -d'/' -f2)
               version=$(echo $release_dir |cut -d'-' -f1)
