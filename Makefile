@@ -16,7 +16,7 @@ prepare-old: install
 	docker buildx inspect --bootstrap
 
 build-push:
-	docker buildx build \
+	docker buildx build --push\
 		--build-arg CI_NAME=${CI_NAME} \
 		--platform linux/arm64/v8,linux/amd64 \
-		-t barcus/baros-client:19-test-arm .
+		-t barcus/baros-client-arm .
