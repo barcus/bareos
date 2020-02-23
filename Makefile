@@ -13,6 +13,7 @@ prepare: install
 prepare-old: install
 	docker context create old-style
 	docker buildx create old-style --use
+	docker buildx inspect --bootstrap
 
 build-push:
 	docker buildx build --push \
