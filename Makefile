@@ -17,5 +17,5 @@ prepare-old: install
 build-push:
 	docker buildx build --push \
 		--build-arg CI_NAME=${CI_NAME} \
-		--platform linux/arm/v7,linux/arm64/v8,linux/386,linux/amd64 \
+		--platform linux/arm64/v8,linux/amd64 \
 		-t barcus/baros-client:19-linux-arm .
