@@ -8,12 +8,9 @@ install:
 	chmod a+x ~/.docker/cli-plugins/docker-buildx
 
 prepare: install
-	docker buildx create --use
-
-prepare-old: install
-	docker context create old-style
-	docker buildx create old-style --use
-	docker buildx inspect --bootstrap
+	docker context create mycontext
+	docker buildx create mycontext --use
+	#docker buildx inspect --bootstrap
 
 build-push:
 	docker buildx build --push\
