@@ -2,9 +2,9 @@ version: 2.1
 jobs:
   # Buid template
   build: &build
-    #machine: true
-    docker:
-      - image: circleci/buildpack-deps:stretch
+    machine: true
+    #docker:
+    #  - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
       - run:
