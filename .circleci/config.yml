@@ -50,6 +50,9 @@ jobs:
       - run:
           name: Docker build
           command: |
+            apt-get update && apt-get install -y --no-install-recommends qemu-user-static binfmt-support
+            update-binfmts --enable qemu-arm
+            update-binfmts --display qemu-arm 
             mkdir images
             while read app_dir release_dir base_img tag_build ; do
               docker build -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
