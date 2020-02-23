@@ -1,5 +1,6 @@
 # Bareos director Dockerfile
-FROM       alpine:3.8
+ARG        BASE_ARCH=amd64
+FROM       ${BASE_ARCH}/alpine:3.8
 MAINTAINER Barcus <barcus@tou.nu>
 
 RUN apk add --no-cache bareos mysql-client curl
