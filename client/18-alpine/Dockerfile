@@ -4,7 +4,7 @@ FROM       ${BASE_ARCH}/alpine:3.10
 MAINTAINER Barcus <barcus@tou.nu>
 
 RUN curl -OL https://github.com/multiarch/qemu-user-static/releases/download/v3.1.0-2/qemu-arm-static && \
-    mv qemu-arm-static /usr/bin/qemu-arm-static &&
+    mv qemu-arm-static /usr/bin/qemu-arm-static && \
     chmod +x /usr/bin/qemu-arm-static
 
 RUN set -ex \
