@@ -50,14 +50,15 @@ jobs:
       - run:
           name: Docker build
           command: |
-            apt-get update && apt-get install -y --no-install-recommends qemu-user-static binfmt-support
-            update-binfmts --enable qemu-arm
-            update-binfmts --display qemu-arm 
+            sudo apt-get update && apt-get install -y --no-install-recommends qemu-user-static binfmt-support
+            sudo update-binfmts --enable qemu-arm
+            sudo update-binfmts --display qemu-arm 
             mkdir images
             while read app_dir release_dir base_img tag_build ; do
               docker build -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
               docker save -o images/${app_dir}-${base_img}.tar barcus/bareos-${BAREOS_APP}:${tag_build}
               if [ "$release_dir" == "18-alpine" ]; then
+                cp /usr/bin/qemu-arm-static ${app_dir}/${release_dir}/qemu-arm-static
                 export DOCKER_CLI_EXPERIMENTAL=enabled
                 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
                 docker build --build-arg BASE_ARCH=arm64v8 -t barcus/bareos-${BAREOS_APP}:${tag_build}-arm ${app_dir}/${release_dir}
