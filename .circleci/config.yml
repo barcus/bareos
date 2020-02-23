@@ -2,7 +2,6 @@ version: 2.1
 jobs:
   # Buid template
   build: &build
-    #machine: true
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
@@ -83,7 +82,8 @@ jobs:
           command: |
             while read app_dir build_dir base_img tag_build ; do
               docker load -i /tmp/workspace/images/${app_dir}-${base_img}.tar
-              if [ "$build_dir" == "18-alpine" ]; then
+              re='^.*alpine$'
+              if [[ $release_dir =~ $re ]]; then
                 docker load -i /tmp/workspace/images/${app_dir}-${base_img}-arm64v8.tar
               fi
             done < /tmp/workspace/env/img_build
@@ -101,7 +101,8 @@ jobs:
           command: |
             while read app_dir build_dir base_img tag_build ; do
               docker push barcus/bareos-${BAREOS_APP}:${tag_build}
-              if [ "$build_dir" == "18-alpine" ]; then
+              re='^.*alpine$'
+              if [[ $release_dir =~ $re ]]; then
                 docker push barcus/bareos-${BAREOS_APP}:${tag_build}-arm64v8
               fi
             done < /tmp/workspace/env/img_build
