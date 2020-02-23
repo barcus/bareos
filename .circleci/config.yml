@@ -10,7 +10,7 @@ jobs:
       - setup_remote_docker:
           version: 18.09.3
       - run: docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-      - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
       - run: docker version
       - run: make prepare-old
       - run: make build-push

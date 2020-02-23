@@ -1,4 +1,4 @@
-BUILDX_VER=v0.3.0
+BUILDX_VER=v0.3.1
 CI_NAME?=local
 VERSION?=latest
 
@@ -16,7 +16,7 @@ prepare-old: install
 	docker buildx inspect --bootstrap
 
 build-push:
-	docker buildx build --push \
+	docker buildx build \
 		--build-arg CI_NAME=${CI_NAME} \
-		--platform linux/amd64 \
+		--platform linux/arm64/v8 \
 		-t barcus/baros-client:19-test-arm .
