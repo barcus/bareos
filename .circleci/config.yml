@@ -50,7 +50,7 @@ jobs:
       - run:
           name: Docker build
           command: |
-            sudo apt-get update && apt-get install -y --no-install-recommends qemu-user-static binfmt-support
+            sudo apt-get update && sudo apt-get install -y --no-install-recommends qemu-user-static binfmt-support
             sudo update-binfmts --enable qemu-arm
             sudo update-binfmts --display qemu-arm 
             mkdir images
