@@ -7,9 +7,9 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: apk add make
-      - setup_remote_docker:
-          version: 18.09.3
+      - run: apt install make
+      #- setup_remote_docker:
+      #    version: 18.09.3
       - run: docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
       - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
       - run: docker version
