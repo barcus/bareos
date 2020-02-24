@@ -56,12 +56,12 @@ jobs:
             mkdir images
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
             while read app_dir release_dir base_img tag_build ; do
-              docker build -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
-              docker save -o images/${app_dir}-${base_img}.tar barcus/bareos-${BAREOS_APP}:${tag_build}
+              docker build -t bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
+              docker save -o images/${app_dir}-${base_img}.tar bareos-${BAREOS_APP}:${tag_build}
               re='^.*alpine$'
               if [[ $release_dir =~ $re ]]; then
-                docker build --build-arg BASE_ARCH=arm64v8 -t barcus/bareos-${BAREOS_APP}:${tag_build}-arm64v8 ${app_dir}/${release_dir}
-                docker save -o images/${app_dir}-${base_img}-arm64v8.tar barcus/bareos-${BAREOS_APP}:${tag_build}-arm64v8
+                docker build --build-arg BASE_ARCH=arm64v8 -t bareos-${BAREOS_APP}:${tag_build}-arm64v8 ${app_dir}/${release_dir}
+                docker save -o images/${app_dir}-${base_img}-arm64v8.tar bareos-${BAREOS_APP}:${tag_build}-arm64v8
               fi
             done < env/img_build
       - persist_to_workspace:
@@ -91,7 +91,7 @@ jobs:
           name: Docker add tags
           command: |
             while read tag_build tag ; do
-              docker tag barcus/bareos-${BAREOS_APP}:${tag_build} barcus/bareos-${BAREOS_APP}:${tag}
+              docker tag bareos-${BAREOS_APP}:${tag_build} bareos-${BAREOS_APP}:${tag}
             done < /tmp/workspace/env/img_tags
       - run: 
           name: Docker login
