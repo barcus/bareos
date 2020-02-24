@@ -38,7 +38,7 @@ for file in $docker_files; do
 
   docker context create ${BAREOS_APP}-${tag_build} --description "this is the new $BAREOS_APP image"
   docker buildx create ${BAREOS_APP}-${tag_build} --use
-  docker buildx build \
+  docker buildx build --load \
     --platform "$build_arch" \
     -t barcus/bareos-${BAREOS_APP}-new:${tag_build} ${app_dir}/${version_dir}
   #echo "${app_dir} ${release_dir} ${base_img} ${tag_build}" >> env/img_build
