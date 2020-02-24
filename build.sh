@@ -16,9 +16,10 @@ if [[ -n ${tag} ]]; then
 fi
 
 # if $release is empty, build everything
-docker_files=$(find ${BAREOS_APP}*/${release}-* -name Dockerfile 2>/dev/null)
+docker_files=$(find ${BAREOS_APP}*/18-* -name Dockerfile 2>/dev/null)
 
 mkdir images
+docker login -u $DOCKER_USER -p $DOCKER_PASS
 docker context create ${BAREOS_APP}
 docker buildx create ${BAREOS_APP} --use
 
