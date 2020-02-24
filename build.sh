@@ -33,7 +33,7 @@ for file in $docker_files; do
   fi
 
   build_arch='amd64'
-  [ "${base_img}" == "alpine" ] && build_arch='amd64,arm64v8'
+  [ "${base_img}" == "alpine" ] && build_arch='linux/amd64,linux/arm64/v8'
 
   #if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
   #fi
