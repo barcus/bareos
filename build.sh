@@ -39,9 +39,9 @@ for file in $docker_files; do
   #if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
   #fi
 
-  docker buildx build \
+  docker buildx build --push \
     --platform "$build_arch" \
-    -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${version_dir}
+    -t barcus/bareos-client-new:${tag_build} ${app_dir}/${version_dir}
   #echo "${app_dir} ${release_dir} ${base_img} ${tag_build}" >> env/img_build
 done
 #mkdir env && touch env/img_build && touch env/img_tags
