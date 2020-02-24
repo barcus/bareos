@@ -9,61 +9,27 @@ jobs:
       - setup_remote_docker:
           version: 18.09.3
       - run:
-          name: Prepare build and tags
+          name: Prepare 
           command: |
-            tag=${CIRCLE_TAG}
-            branch=${CIRCLE_BRANCH}
-            release=''
-            latest_ubuntu='19'
-            latest_alpine='18'
-            re='^[0-9]+.*$'
-            if [[ ${branch} =~ $re ]]; then
-              release=$(echo ${branch} |sed 's#^\([0-9]*\).*$#\1#')
-            fi
-            if [[ -n ${tag} ]]; then
-              release=$(echo ${tag} |sed 's#^v\([0-9]*\)-.*$#\1#')
-            fi
-            mkdir env && touch env/img_build && touch env/img_tags
-            for file in $(find ${BAREOS_APP}*/18-* -name Dockerfile); do
-              app_dir=$(echo $file |cut -d'/' -f1)
-              release_dir=$(echo $file |cut -d'/' -f2)
-              version=$(echo $release_dir |cut -d'-' -f1)
-              base_img=$(echo $release_dir |cut -d'-' -f2)
-              tag_build="${release_dir}"
-              if [ "${BAREOS_APP}" == 'director' ]; then
-                backend=$(echo $app_dir |cut -d'-' -f2)
-                tag_build="${release_dir}-${backend}"
-              fi
-              echo "${app_dir} ${release_dir} ${base_img} ${tag_build}" >> env/img_build
-              if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
-                echo "${tag_build} ${version}" >> env/img_tags
-                if [ "${version}" == "$latest_ubuntu" ]; then
-                  echo "${tag_build} ubuntu" >> env/img_tags
-                  echo "${tag_build} latest" >> env/img_tags
-                fi
-                if [ "${BAREOS_APP}" == 'director' ]; then
-                  echo "${tag_build} ${version}-ubuntu" >> env/img_tags
-                fi
-              fi
-              if [ "${base_img}" == 'alpine' ] && [ "${version}" == "$latest_alpine" ]; then
-                echo "${tag_build} alpine" >> env/img_tags
-              fi
-            done
-            cat env/img_build env/img_tags
+            export BUILDX_VER=v0.3.1
+            mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
+	    curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
+	    chmod a+x ~/.docker/cli-plugins/docker-buildx
       - run:
           name: Docker build
           command: |
-            mkdir images
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-            while read app_dir release_dir base_img tag_build ; do
-              docker build -t bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
-              docker save -o images/${app_dir}-${base_img}.tar bareos-${BAREOS_APP}:${tag_build}
-              re='^.*alpine$'
-              if [[ $release_dir =~ $re ]]; then
-                docker build --build-arg BASE_ARCH=arm64v8 -t bareos-${BAREOS_APP}:${tag_build}-arm64v8 ${app_dir}/${release_dir}
-                docker save -o images/${app_dir}-${base_img}-arm64v8.tar bareos-${BAREOS_APP}:${tag_build}-arm64v8
-              fi
-            done < env/img_build
+            mkdir images
+            ./build.sh
+            #while read app_dir release_dir base_img tag_build ; do
+            #  docker build -t bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
+            #  docker save -o images/${app_dir}-${base_img}.tar bareos-${BAREOS_APP}:${tag_build}
+            #  re='^.*alpine$'
+            #  if [[ $release_dir =~ $re ]]; then
+            #    docker build --build-arg BASE_ARCH=arm64v8 -t bareos-${BAREOS_APP}:${tag_build}-arm64v8 ${app_dir}/${release_dir}
+            #    docker save -o images/${app_dir}-${base_img}-arm64v8.tar bareos-${BAREOS_APP}:${tag_build}-arm64v8
+            #  fi
+            #done < env/img_build
       - persist_to_workspace:
           root: .
           paths:
@@ -121,6 +87,7 @@ jobs:
             -e DOCKERHUB_REPOSITORY="barcus/bareos-${BAREOS_APP}" \
             -e README_FILEPATH='/workspace/README.md' \
             peterevans/dockerhub-description:2.1.0
+
   # Build image foreach component
   build-director:
      <<: *build
@@ -177,35 +144,35 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - deploy-director:
-          requires:
-            - build-director
-          filters:
-            tags:
-              only: /^v\d+-\d+$/
-            branches:
-              ignore: /.*/
-      - deploy-client:
-          requires:
-            - build-client
-          filters:
-            tags:
-              only: /^v\d+-\d+$/
-            branches:
-              ignore: /.*/
-      - deploy-storage:
-          requires:
-            - build-storage
-          filters:
-            tags:
-              only: /^v\d+-\d+$/
-            branches:
-              ignore: /.*/
-      - deploy-webui:
-          requires:
-            - build-webui
-          filters:
-            tags:
-              only: /^v\d+-\d+$/
-            branches:
-              ignore: /.*/
+      #- deploy-director:
+      #    requires:
+      #      - build-director
+      #    filters:
+      #      tags:
+      #        only: /^v\d+-\d+$/
+      #      branches:
+      #        ignore: /.*/
+      #- deploy-client:
+      #    requires:
+      #      - build-client
+      #    filters:
+      #      tags:
+      #        only: /^v\d+-\d+$/
+      #      branches:
+      #        ignore: /.*/
+      #- deploy-storage:
+      #    requires:
+      #      - build-storage
+      #    filters:
+      #      tags:
+      #        only: /^v\d+-\d+$/
+      #      branches:
+      #        ignore: /.*/
+      #- deploy-webui:
+      #    requires:
+      #      - build-webui
+      #    filters:
+      #      tags:
+      #        only: /^v\d+-\d+$/
+      #      branches:
+      #        ignore: /.*/
