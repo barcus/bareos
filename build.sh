@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -x
 
 latest_ubuntu='19'
 latest_alpine='18'
@@ -18,7 +17,7 @@ fi
 # if $release is empty, build everything
 docker_files=$(find ${BAREOS_APP}*/18-* -name Dockerfile 2>/dev/null)
 
-mkdir images
+mkdir -p images
 docker login -u $DOCKER_USER -p $DOCKER_PASS
 
 for file in $docker_files; do
@@ -34,7 +33,6 @@ for file in $docker_files; do
 
   build_arch='amd64'
   [ "${base_img}" == "alpine" ] && build_arch='linux/amd64,linux/arm64/v8'
-
   #if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
   #fi
 
