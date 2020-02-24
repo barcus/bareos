@@ -20,8 +20,6 @@ docker_files=$(find ${BAREOS_APP}*/18-* -name Dockerfile 2>/dev/null)
 
 mkdir images
 docker login -u $DOCKER_USER -p $DOCKER_PASS
-docker context create ${BAREOS_APP}
-docker buildx create ${BAREOS_APP} --use
 
 for file in $docker_files; do
   app_dir=$(echo $file |cut -d'/' -f1)
@@ -40,6 +38,8 @@ for file in $docker_files; do
   #if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
   #fi
 
+  docker context create ${BAREOS_APP}-${tag_build}
+  docker buildx create ${BAREOS_APP}-${tag_build} --use
   docker buildx build --push \
     --platform "$build_arch" \
     -t barcus/bareos-client-new:${tag_build} ${app_dir}/${version_dir}
