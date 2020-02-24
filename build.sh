@@ -8,7 +8,7 @@ branch=${CIRCLE_BRANCH}
 
 release=''
 re='^[0-9]+.*$'
-if [ "${branch}" =~ $re ]; then
+if [ "${branch}" =~ "$re" ]; then
   release=$(echo ${branch} |sed 's#^\([0-9]*\).*$#\1#')
 fi
 if [ -n "${tag}" ]; then
