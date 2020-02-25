@@ -19,7 +19,7 @@ jobs:
           name: Build and push image to Docker Hub
           command: |
             ./build.sh
-            if [ "${DEPLOY}" == "yes" ]
+            if [ "${DEPLOY}" == "yes" ]; then
               docker run -v $PWD:/workspace \
                -e DOCKERHUB_USERNAME=$DOCKER_USER \
                -e DOCKERHUB_PASSWORD=$DOCKER_PASS \
