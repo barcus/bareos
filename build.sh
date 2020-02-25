@@ -15,7 +15,7 @@ if [[ -n ${tag} ]]; then
 fi
 
 # if $release is empty, build everything
-docker_files=$(find ${BAREOS_APP}*/${release}* -name Dockerfile 2>/dev/null)
+docker_files=$(find ${BAREOS_APP}*/* -name Dockerfile 2>/dev/null)
 
 docker login -u $DOCKER_USER -p $DOCKER_PASS
 

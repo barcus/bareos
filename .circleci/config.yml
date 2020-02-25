@@ -72,35 +72,36 @@ workflows:
   version: 2
   build-n-deploy:
     jobs:
-      - build-director:
-          filters:
-            tags:
-              only: /.*/
-      - build-client:
-          filters:
-            tags:
-              only: /.*/
-      - build-storage:
-          filters:
-            tags:
-              only: /.*/
-      - build-webui:
-          filters:
-            tags:
-              only: /.*/
+      #- build-director:
+      #    filters:
+      #      tags:
+      #        only: /.*/
+      #- build-client:
+      #    filters:
+      #      tags:
+      #        only: /.*/
+      #- build-storage:
+      #    filters:
+      #      tags:
+      #        only: /.*/
+      #- build-webui:
+      #    filters:
+      #      tags:
+      #        only: /.*/
       - build-and-deploy-director:
           filters:
             tags:
-              only: /^v\d+-\d+$/
+              only: /.*/
+              #only: /^v\d+-\d+$/
       - build-and-deploy-client:
           filters:
             tags:
-              only: /^v\d+-\d+$/
+              only: /.*/
       - build-and-deploy-storage:
           filters:
             tags:
-              only: /^v\d+-\d+$/
+              only: /.*/
       - build-and-deploy-webui:
           filters:
             tags:
-              only: /^v\d+-\d+$/
+              only: /.*/
