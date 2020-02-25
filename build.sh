@@ -33,14 +33,17 @@ for file in $docker_files; do
 
   build_arch='amd64'
   [ "${base_img}" == "alpine" ] && build_arch='linux/amd64,linux/arm64/v8'
-  #if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
-  #fi
 
   docker context create ${BAREOS_APP}-${tag_build} --description "this is the new $BAREOS_APP image"
   docker buildx create ${BAREOS_APP}-${tag_build} --use
   docker buildx build --push \
     --platform "$build_arch" \
     -t barcus/bareos-${BAREOS_APP}-new:${tag_build} ${app_dir}/${version_dir}
+  if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
+    docker buildx build --push \
+    --platform "$build_arch" \
+    -t barcus/bareos-${BAREOS_APP}-new:${version} ${app_dir}/${version_dir}
+  fi
   #echo "${app_dir} ${release_dir} ${base_img} ${tag_build}" >> env/img_build
 done
 #mkdir env && touch env/img_build && touch env/img_tags
