@@ -1,6 +1,5 @@
 version: 2.1
 jobs:
-  # Buid template
   build: &build
     docker:
       - image: circleci/buildpack-deps:stretch
@@ -9,84 +8,25 @@ jobs:
       - setup_remote_docker:
           version: 18.09.3
       - run:
-          name: Prepare 
+          name: Prepare
           command: |
             export BUILDX_VER=v0.3.1
             mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
             curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
             chmod a+x ~/.docker/cli-plugins/docker-buildx
-      - run:
-          name: Docker build
-          command: |
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-            mkdir images
+      - run:
+          name: Build and push image to Docker Hub
+          command: |
             ./build.sh
-            #while read app_dir release_dir base_img tag_build ; do
-            #  docker build -t bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${release_dir}
-            #  docker save -o images/${app_dir}-${base_img}.tar bareos-${BAREOS_APP}:${tag_build}
-            #  re='^.*alpine$'
-            #  if [[ $release_dir =~ $re ]]; then
-            #    docker build --build-arg BASE_ARCH=arm64v8 -t bareos-${BAREOS_APP}:${tag_build}-arm64v8 ${app_dir}/${release_dir}
-            #    docker save -o images/${app_dir}-${base_img}-arm64v8.tar bareos-${BAREOS_APP}:${tag_build}-arm64v8
-            #  fi
-            #done < env/img_build
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ./images
-            - ./env
-
-  # Deploy template
-  deploy: &deploy
-    machine: true
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          name: Docker load
-          command: |
-            while read app_dir build_dir base_img tag_build ; do
-              docker load -i /tmp/workspace/images/${app_dir}-${base_img}.tar
-              re='^.*alpine$'
-              if [[ $release_dir =~ $re ]]; then
-                docker load -i /tmp/workspace/images/${app_dir}-${base_img}-arm64v8.tar
-              fi
-            done < /tmp/workspace/env/img_build
-      - run:
-          name: Docker add tags
-          command: |
-            while read tag_build tag ; do
-              docker tag bareos-${BAREOS_APP}:${tag_build} bareos-${BAREOS_APP}:${tag}
-            done < /tmp/workspace/env/img_tags
-      - run: 
-          name: Docker login
-          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run:
-          name: Docker push original tag
-          command: |
-            while read app_dir build_dir base_img tag_build ; do
-              docker push barcus/bareos-${BAREOS_APP}:${tag_build}
-              re='^.*alpine$'
-              if [[ $release_dir =~ $re ]]; then
-                docker push barcus/bareos-${BAREOS_APP}:${tag_build}-arm64v8
-              fi
-            done < /tmp/workspace/env/img_build
-      - run:
-          name: Docker push additional tag
-          command: |
-            while read tag_build tag ; do
-              docker push barcus/bareos-${BAREOS_APP}:${tag}
-            done < /tmp/workspace/env/img_tags
-      - run:
-          name: Update Docker Hub readme
-          command: |
-            docker run -v $PWD:/workspace \
-            -e DOCKERHUB_USERNAME=$DOCKER_USER \
-            -e DOCKERHUB_PASSWORD=$DOCKER_PASS \
-            -e DOCKERHUB_REPOSITORY="barcus/bareos-${BAREOS_APP}" \
-            -e README_FILEPATH='/workspace/README.md' \
-            peterevans/dockerhub-description:2.1.0
+            if [ "${DEPLOY}" == "yes" ]
+              docker run -v $PWD:/workspace \
+               -e DOCKERHUB_USERNAME=$DOCKER_USER \
+               -e DOCKERHUB_PASSWORD=$DOCKER_PASS \
+               -e DOCKERHUB_REPOSITORY="barcus/bareos-${BAREOS_APP}" \
+               -e README_FILEPATH='/workspace/README.md' \
+               peterevans/dockerhub-description:2.1.0
+            fi
 
   # Build image foreach component
   build-director:
@@ -106,23 +46,27 @@ jobs:
      environment:
        - BAREOS_APP: webui
 
-  # Deploy images for each component
-  deploy-director:
-     <<: *deploy
+  # Build and deploy image foreach component
+  build-and-deploy-director:
+     <<: *build
      environment:
        - BAREOS_APP: director
-  deploy-client:
-     <<: *deploy
+       - DEPLOY: yes
+  build-and-deploy-client:
+     <<: *build
      environment:
        - BAREOS_APP: client
-  deploy-storage:
-     <<: *deploy
+       - DEPLOY: yes
+  build-and-deploy-storage:
+     <<: *build
      environment:
        - BAREOS_APP: storage
-  deploy-webui:
-     <<: *deploy
+       - DEPLOY: yes
+  build-and-deploy-webui:
+     <<: *build
      environment:
        - BAREOS_APP: webui
+       - DEPLOY: yes
 
 workflows:
   version: 2
@@ -144,35 +88,27 @@ workflows:
           filters:
             tags:
               only: /.*/
-      #- deploy-director:
-      #    requires:
-      #      - build-director
-      #    filters:
-      #      tags:
-      #        only: /^v\d+-\d+$/
-      #      branches:
-      #        ignore: /.*/
-      #- deploy-client:
-      #    requires:
-      #      - build-client
-      #    filters:
-      #      tags:
-      #        only: /^v\d+-\d+$/
-      #      branches:
-      #        ignore: /.*/
-      #- deploy-storage:
-      #    requires:
-      #      - build-storage
-      #    filters:
-      #      tags:
-      #        only: /^v\d+-\d+$/
-      #      branches:
-      #        ignore: /.*/
-      #- deploy-webui:
-      #    requires:
-      #      - build-webui
-      #    filters:
-      #      tags:
-      #        only: /^v\d+-\d+$/
-      #      branches:
-      #        ignore: /.*/
+      - build-and-deploy-director:
+          filters:
+            tags:
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
+      - build-and-deploy-client:
+          filters:
+            tags:
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
+      - build-and-deploy-storage:
+          filters:
+            tags:
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
+      - build-and-deploy-webui:
+          filters:
+            tags:
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
