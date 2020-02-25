@@ -37,7 +37,7 @@ for file in $docker_files; do
 
   docker context create ${BAREOS_APP}-${tag_build} --description "this is the new $BAREOS_APP image"
   docker buildx create ${BAREOS_APP}-${tag_build} --use
-  docker buildx $build_cmd --platform "$build_arch" \
+  docker buildx $build_args --platform "$build_arch" \
     -t barcus/bareos-${BAREOS_APP}-new:${tag_build} ${app_dir}/${version_dir}
 
   if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
