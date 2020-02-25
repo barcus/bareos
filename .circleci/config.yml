@@ -92,23 +92,15 @@ workflows:
           filters:
             tags:
               only: /^v\d+-\d+$/
-            branches:
-              ignore: /.*/
       - build-and-deploy-client:
           filters:
             tags:
               only: /^v\d+-\d+$/
-            branches:
-              ignore: /.*/
       - build-and-deploy-storage:
           filters:
             tags:
               only: /^v\d+-\d+$/
-            branches:
-              ignore: /.*/
       - build-and-deploy-webui:
           filters:
             tags:
               only: /^v\d+-\d+$/
-            branches:
-              ignore: /.*/
