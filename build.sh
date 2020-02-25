@@ -18,6 +18,7 @@ fi
 docker_files=$(find ${BAREOS_APP}*/${release}* -name Dockerfile 2>/dev/null)
 
 docker login -u $DOCKER_USER -p $DOCKER_PASS
+
 build_args='build'
 [[ ${DEPLOY} == 'yes' ]] && build_args='build --push'
 
