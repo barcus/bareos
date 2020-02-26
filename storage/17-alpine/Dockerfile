@@ -1,6 +1,5 @@
 # Dockerfile Bareos storage daemon
-ARG        BASE_ARCH=amd64
-FROM       ${BASE_ARCH}/alpine:3.8
+FROM       alpine:3.8
 MAINTAINER Barcus <barcus@tou.nu>
 
 RUN set -ex \
