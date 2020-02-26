@@ -3,7 +3,7 @@ FROM       alpine:3.10
 MAINTAINER Barcus <barcus@tou.nu>
 
 RUN set -ex \
-    && apk add --no-cache bareos openssh-client curl
+    && apk add --no-cache bareos openssh-client
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh
