@@ -94,41 +94,77 @@ workflows:
   version: 2
   build:
     jobs:
-      - build-director
-      - build-client
-      - build-storage
-      - build-webui
+      - build-director:
+          filters:
+            tags:
+              ignore: /.*/
+      - build-client:
+          filters:
+            tags:
+              ignore: /.*/
+      - build-storage:
+          filters:
+            tags:
+              ignore: /.*/
+      - build-webui:
+          filters:
+            tags:
+              ignore: /.*/
   build-n-deploy:
     jobs:
       - build-and-deploy-director:
           filters:
             tags:
               only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
       - build-and-deploy-client:
           filters:
             tags:
               only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
       - build-and-deploy-storage:
           filters:
             tags:
               only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
       - build-and-deploy-webui:
           filters:
             tags:
               only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
       - push-readme-director:
+          requires:
+            - build-and-deploy-director
           filters:
             tags:
               only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
       - push-readme-client:
+          requires:
+            - build-and-deploy-client
           filters:
             tags:
               only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
       - push-readme-storage:
+          requires:
+            - build-and-deploy-storage
           filters:
             tags:
               only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
       - push-readme-webui:
+          requires:
+            - build-and-deploy-webui
           filters:
             tags:
               only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
