@@ -18,7 +18,7 @@ jobs:
       - run:
           name: Build and push image to Docker Hub
           command: ./build.sh
-  push-readme:
+  push-readme: &push-readme
     machine: true
     steps:
       - checkout
@@ -73,7 +73,6 @@ jobs:
      environment:
        - BAREOS_APP: webui
        - DEPLOY: true
-
   push-readme-storage:
      <<: *push-readme
      environment:
