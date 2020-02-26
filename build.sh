@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-set -x
 
 latest_ubuntu='19'
 latest_alpine='18'
 tag=${CIRCLE_TAG}
 branch=${CIRCLE_BRANCH}
 
+# define $release if it exists
 release=''
 re='^[0-9]+.*$'
 if [[ ${branch} =~ $re ]]; then
@@ -16,28 +16,35 @@ if [[ -n ${tag} ]]; then
 fi
 
 # if $release is empty, build everything
-docker_files=$(find ${BAREOS_APP}*/18-alpine* -name Dockerfile 2>/dev/null)
+docker_files=$(find ${BAREOS_APP}*/${release}* -name Dockerfile 2>/dev/null)
 
-docker login -u $DOCKER_USER -p $DOCKER_PASS
-
+# define build args and connect to Docker Hub if required
 build_args='build'
-echo "!!! deploy : ${DEPLOY}"
-[ ${DEPLOY} ] && build_args='build --push'
+if [ ${DEPLOY} ]; then
+  build_args='build --push'
+  docker login -u $DOCKER_USER -p $DOCKER_PASS
+fi
 
 for file in $docker_files; do
   app_dir=$(echo $file |cut -d'/' -f1)
   version_dir=$(echo $file |cut -d'/' -f2)
   version=$(echo $version_dir |cut -d'-' -f1)
   base_img=$(echo $version_dir |cut -d'-' -f2)
+
+  # define initial image tag
   tag_build="${version}-${base_img}"
   if [ "${BAREOS_APP}" == 'director' ]; then
     backend=$(echo $app_dir |cut -d'-' -f2)
     tag_build="${tag_build}-${backend}"
   fi
 
+  # define build arch
   build_arch='linux/amd64'
-  [ "${base_img}" == "alpine" ] && build_arch='linux/amd64,linux/arm64/v8'
+  if [ "${base_img}" == "alpine" ]; then
+    build_arch='linux/amd64,linux/arm64/v8'
+  fi
 
+  # create docker context and build image
   docker context create ${BAREOS_APP}-${tag_build} --description "this is the new $BAREOS_APP image"
   docker buildx create ${BAREOS_APP}-${tag_build} --use
   docker buildx $build_args --platform "$build_arch" \

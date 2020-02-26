@@ -8,7 +8,7 @@ jobs:
       - setup_remote_docker:
           version: 18.09.3
       - run:
-          name: Prepare
+          name: Install buildx plugin and qemu
           command: |
             export BUILDX_VER=v0.3.1
             mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
@@ -25,98 +25,136 @@ jobs:
       - run:
           name: Update Docker Hub readme
           command: |
-            if [ ${DEPLOY} ]; then
-              docker run -v $PWD:/workspace \
-               -e DOCKERHUB_USERNAME=$DOCKER_USER \
-               -e DOCKERHUB_PASSWORD=$DOCKER_PASS \
-               -e DOCKERHUB_REPOSITORY="barcus/bareos-${BAREOS_APP}-new" \
-               -e README_FILEPATH='/workspace/README.md' \
-               peterevans/dockerhub-description:2.1.0
-            fi
+            docker run -v $PWD:/workspace \
+              -e DOCKERHUB_USERNAME=$DOCKER_USER \
+              -e DOCKERHUB_PASSWORD=$DOCKER_PASS \
+              -e DOCKERHUB_REPOSITORY="barcus/bareos-${BAREOS_APP}-new" \
+              -e README_FILEPATH='/workspace/README.md' \
+              peterevans/dockerhub-description:2.1.0
 
-  # Build image foreach component
+  # Build images
   build-director:
-     <<: *build
-     environment:
-       - BAREOS_APP: director
+    <<: *build
+    environment:
+      - BAREOS_APP: director
   build-client:
-     <<: *build
-     environment:
-       - BAREOS_APP: client
+    <<: *build
+    environment:
+      - BAREOS_APP: client
   build-storage:
-     <<: *build
-     environment:
-       - BAREOS_APP: storage
+    <<: *build
+    environment:
+      - BAREOS_APP: storage
   build-webui:
-     <<: *build
-     environment:
-       - BAREOS_APP: webui
+    <<: *build
+    environment:
+      - BAREOS_APP: webui
 
-  # Build and deploy image foreach component
+  # Build and deploy images
   build-and-deploy-director:
-     <<: *build
-     environment:
-       - BAREOS_APP: director
-       - DEPLOY: true
+    <<: *build
+    environment:
+      - BAREOS_APP: director
+      - DEPLOY: true
   build-and-deploy-client:
-     <<: *build
-     environment:
-       - BAREOS_APP: client
-       - DEPLOY: true
+    <<: *build
+    environment:
+      - BAREOS_APP: client
+      - DEPLOY: true
   build-and-deploy-storage:
-     <<: *build
-     environment:
-       - BAREOS_APP: storage
-       - DEPLOY: true
+    <<: *build
+    environment:
+      - BAREOS_APP: storage
+      - DEPLOY: true
   build-and-deploy-webui:
-     <<: *build
-     environment:
-       - BAREOS_APP: webui
-       - DEPLOY: true
+    <<: *build
+    environment:
+      - BAREOS_APP: webui
+      - DEPLOY: true
+
+  # Push readme to Docker Hub
+  push-readme-director:
+    <<: *push-readme
+    environment:
+      - BAREOS_APP: director
+  push-readme-client:
+    <<: *push-readme
+    environment:
+      - BAREOS_APP: client
   push-readme-storage:
-     <<: *push-readme
-     environment:
-       - BAREOS_APP: storage
-       - DEPLOY: true
+    <<: *push-readme
+    environment:
+      - BAREOS_APP: storage
+  push-readme-webui:
+    <<: *push-readme
+    environment:
+      - BAREOS_APP: webui
 
 workflows:
   version: 2
   build-n-deploy:
     jobs:
-      #- build-director:
-      #    filters:
-      #      tags:
-      #        only: /.*/
-      #- build-client:
-      #    filters:
-      #      tags:
-      #        only: /.*/
-      #- build-storage:
-      #    filters:
-      #      tags:
-      #        only: /.*/
-      #- build-webui:
-      #    filters:
-      #      tags:
-      #        only: /.*/
+      - build-director:
+          filters:
+            tags:
+              only: /.*/
+      - build-client:
+          filters:
+            tags:
+              only: /.*/
+      - build-storage:
+          filters:
+            tags:
+              only: /.*/
+      - build-webui:
+          filters:
+            tags:
+              only: /.*/
       - build-and-deploy-director:
           filters:
             tags:
-              only: /.*/
-              #only: /^v\d+-\d+$/
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
       - build-and-deploy-client:
           filters:
             tags:
-              only: /.*/
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
       - build-and-deploy-storage:
           filters:
             tags:
-              only: /.*/
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
       - build-and-deploy-webui:
           filters:
             tags:
-              only: /.*/
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
+      - push-readme-director:
+          filters:
+            tags:
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
+      - push-readme-client:
+          filters:
+            tags:
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
       - push-readme-storage:
           filters:
             tags:
-              only: /.*/
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
+      - push-readme-webui:
+          filters:
+            tags:
+              only: /^v\d+-\d+$/
+            branches:
+              ignore: /.*/
