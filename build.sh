@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 latest_ubuntu='19'
 latest_alpine='18'
@@ -15,11 +16,12 @@ if [[ -n ${tag} ]]; then
 fi
 
 # if $release is empty, build everything
-docker_files=$(find ${BAREOS_APP}*/* -name Dockerfile 2>/dev/null)
+docker_files=$(find ${BAREOS_APP}*/18-alpine* -name Dockerfile 2>/dev/null)
 
 docker login -u $DOCKER_USER -p $DOCKER_PASS
 
 build_args='build'
+echo "!!! deploy : ${DEPLOY}"
 [[ ${DEPLOY} == 'yes' ]] && build_args='build --push'
 
 for file in $docker_files; do
