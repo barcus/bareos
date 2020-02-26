@@ -20,7 +20,7 @@ jobs:
           command: |
             ./build.sh
             if [ ${DEPLOY} ]; then
-              docker run -v $PWD:/workspace \
+              docker run -v /home/circleci/project:/workspace \
                -e DOCKERHUB_USERNAME=$DOCKER_USER \
                -e DOCKERHUB_PASSWORD=$DOCKER_PASS \
                -e DOCKERHUB_REPOSITORY="barcus/bareos-${BAREOS_APP}-new" \
