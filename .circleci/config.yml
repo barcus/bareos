@@ -20,7 +20,9 @@ jobs:
           command: |
             ./build.sh
             if [ ${DEPLOY} ]; then
-              docker run -v /home/circleci/project:/workspace \
+              echo "deploy ok, upgrade readme"
+              cat $PWD/README.md
+              docker run -v $PWD:/workspace \
                -e DOCKERHUB_USERNAME=$DOCKER_USER \
                -e DOCKERHUB_PASSWORD=$DOCKER_PASS \
                -e DOCKERHUB_REPOSITORY="barcus/bareos-${BAREOS_APP}-new" \
