@@ -19,7 +19,7 @@ jobs:
           name: Build and push image to Docker Hub
           command: |
             ./build.sh
-            if [ "${DEPLOY}" == "yes" ]; then
+            if [ ${DEPLOY} ]; then
               docker run -v $PWD:/workspace \
                -e DOCKERHUB_USERNAME=$DOCKER_USER \
                -e DOCKERHUB_PASSWORD=$DOCKER_PASS \
@@ -51,22 +51,22 @@ jobs:
      <<: *build
      environment:
        - BAREOS_APP: director
-       - DEPLOY: yes
+       - DEPLOY: true
   build-and-deploy-client:
      <<: *build
      environment:
        - BAREOS_APP: client
-       - DEPLOY: yes
+       - DEPLOY: true
   build-and-deploy-storage:
      <<: *build
      environment:
        - BAREOS_APP: storage
-       - DEPLOY: yes
+       - DEPLOY: true
   build-and-deploy-webui:
      <<: *build
      environment:
        - BAREOS_APP: webui
-       - DEPLOY: yes
+       - DEPLOY: true
 
 workflows:
   version: 2

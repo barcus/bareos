@@ -22,7 +22,7 @@ docker login -u $DOCKER_USER -p $DOCKER_PASS
 
 build_args='build'
 echo "!!! deploy : ${DEPLOY}"
-[[ ${DEPLOY} == 'yes' ]] && build_args='build --push'
+[ ${DEPLOY} ] && build_args='build --push'
 
 for file in $docker_files; do
   app_dir=$(echo $file |cut -d'/' -f1)
