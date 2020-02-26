@@ -23,7 +23,7 @@ jobs:
               docker run -v $PWD:/workspace \
                -e DOCKERHUB_USERNAME=$DOCKER_USER \
                -e DOCKERHUB_PASSWORD=$DOCKER_PASS \
-               -e DOCKERHUB_REPOSITORY="barcus/bareos-${BAREOS_APP}" \
+               -e DOCKERHUB_REPOSITORY="barcus/bareos-${BAREOS_APP}-new" \
                -e README_FILEPATH='/workspace/README.md' \
                peterevans/dockerhub-description:2.1.0
             fi
