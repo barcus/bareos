@@ -64,8 +64,14 @@ for file in $docker_files; do
         -t barcus/bareos-${BAREOS_APP}:${version}-ubuntu ${app_dir}/${version_dir}
     fi
   fi
-  if [ "${base_img}" == 'alpine' ] && [ "${version}" == "$latest_alpine" ]; then
-    docker buildx $build_args --platform "$build_arch" \
-      -t barcus/bareos-${BAREOS_APP}:alpine ${app_dir}/${version_dir}
+  if [ "${base_img}" == 'alpine' ]; then
+    if [ "${BAREOS_APP}" == "director" ]; then
+      docker buildx $build_args --platform "$build_arch" \
+        -t barcus/bareos-${BAREOS_APP}:${version}-alpine ${app_dir}/${version_dir}
+    fi
+    if [ "${version}" == "$latest_alpine" ]; then
+      docker buildx $build_args --platform "$build_arch" \
+        -t barcus/bareos-${BAREOS_APP}:alpine ${app_dir}/${version_dir}
+    fi
   fi
 done

@@ -28,7 +28,7 @@ Director (bareos-dir)
 * `19-ubuntu-mysql`, `19-ubuntu`, `19`, `ubuntu`, `latest`
 * `18-ubuntu-mysql`, `18-ubuntu`, `18`
 * `18-ubuntu-pgsql`
-* `18-alpine`, `alpine`
+* `18-alpine-mysql`, `18-alpine`, `alpine`
 * `17-ubuntu-mysql`, `17-ubuntu`, `17`
 * `17-ubuntu-pgsql`
 * `17-alpine`
