@@ -8,8 +8,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: build docker image
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: crazy-max/ghaction-docker-buildx@v1
+      with:
+        version: latest
+    - name: Available platforms
+      run: echo ${{ steps.buildx.outputs.platforms }}
+    - name: Build docker image
       run: |
         export BAREOS_APP='client'
         ./build.sh
