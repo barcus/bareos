@@ -11,6 +11,6 @@ jobs:
     - name: checkout
     - uses: actions/checkout@v2
     - name: build docker image
-      run: |
+    - run: |
         export BAREOS_APP='client'
         ./build.sh
