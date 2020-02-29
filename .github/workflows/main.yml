@@ -3,10 +3,8 @@ name: CI
 on: [push]
 
 jobs:
-  build:
-
+  prepare:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -21,5 +19,7 @@ jobs:
       run: |
         export BAREOS_APP='director'
         ./build.sh
+  build:
+    needs: prepare
     - name: Build images
       run: cat file.build
