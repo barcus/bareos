@@ -18,7 +18,7 @@ jobs:
         name: homework
         path: file.build
   build:
-    needs: prepare
+    needs: prepare-build
     runs-on: ubuntu-latest
     steps:
     - name: Set up Docker Buildx
