@@ -31,4 +31,4 @@ jobs:
       with:
         name: homework
     - name: Build images
-      run: cat file.build
+      run: cat homework/file.build
