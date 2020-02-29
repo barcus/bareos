@@ -12,11 +12,11 @@ jobs:
       run: |
         export BAREOS_APP='director'
         ./build.sh
-     - name: Upload file.build
-        uses: actions/upload-artifact@v1
-        with:
-          name: homework
-          path: file.build
+    - name: Upload file.build
+      uses: actions/upload-artifact@v1
+      with:
+        name: homework
+        path: file.build
   build:
     needs: prepare
     runs-on: ubuntu-latest
