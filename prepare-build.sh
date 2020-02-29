@@ -1,21 +1,9 @@
 #!/usr/bin/env bash
-#latest_ubuntu='19'
-#latest_alpine='18'
-#tag=${CIRCLE_TAG}
-#branch=${CIRCLE_BRANCH}
-#
-## define $release if it exists
-#release=''
-#re='^[0-9]+.*$'
-#if [[ ${branch} =~ $re ]]; then
-#  release=$(echo ${branch} |sed 's#^\([0-9]*\).*$#\1#')
-#fi
-#if [[ -n ${tag} ]]; then
-#  release=$(echo ${tag} |sed 's#^v\([0-9]*\)-.*$#\1#')
-#fi
 
-# if $release is empty, build everything
+latest_ubuntu='19'
+latest_alpine='18'
 build_file='app_build.txt'
+
 rm $build_file
 docker_files=$(find . -name Dockerfile 2>/dev/null)
 
@@ -26,14 +14,14 @@ for file in $docker_files; do
   version=$(echo $version_dir |cut -d'-' -f1)
   base_img=$(echo $version_dir |cut -d'-' -f2)
 
-  # define default tag build
+  # Define default tag for each Dockerfile
   tag_build="${version}-${base_img}"
   if [ "${app}" == 'director' ]; then
     backend=$(echo $app_dir |cut -d'-' -f2)
     tag_build="${tag_build}-${backend}"
   fi
 
-  # create build file
+  # Declare each Dockerfile with its tags for building
   if [ "${base_img}" == 'ubuntu' ] ; then
     echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
 

@@ -1,0 +1,12 @@
+name: 'build-bareos-app'
+description: 'Build Bareos app images'
+author: 'Barcus'
+inputs: 
+  bareos_app:
+    description: 'Bareos app'
+    default: 'client'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.bareos_app }}

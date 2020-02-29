@@ -31,7 +31,8 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: homework
-      #- uses: ./.github/actions/build-bareos-app
-      - name: Save Docker images
+      - name: Cat docker build file
         run: cat homework/app_build.txt
-      
+      - uses: ./.github/actions/build-bareos-app
+        with:
+          bareos-app: storage
