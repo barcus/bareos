@@ -40,38 +40,40 @@ for file in $docker_files; do
   # define build arch
   build_arch='linux/amd64'
   if [ "${base_img}" == "alpine" ]; then
-    build_arch='linux/amd64,linux/arm64/v8'
+    build_arch='linux/amd64 linux/arm64 linux/arm'
   fi
 
   # create docker context and build image
   #docker context create ${BAREOS_APP}-${tag_build}
   #docker buildx create ${BAREOS_APP}-${tag_build} --use
-  docker buildx $build_args --platform "$build_arch" \
-    --output "type=image,push=false" \
+  for arch in ${build_arch}
+  docker buildx build \
+    --platform "$arch" \
+    --output type=docker \
     -t barcus/bareos-${BAREOS_APP}:${tag_build} ${app_dir}/${version_dir}
 
-  #if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
-  #  docker buildx $build_args --platform "$build_arch" \
-  #    -t barcus/bareos-${BAREOS_APP}:${version} ${app_dir}/${version_dir}
-  #  if [ "${version}" == "$latest_ubuntu" ]; then
-  #    docker buildx $build_args --platform "$build_arch" \
-  #      -t barcus/bareos-${BAREOS_APP}:ubuntu ${app_dir}/${version_dir}
-  #    docker buildx $build_args --platform "$build_arch" \
-  #      -t barcus/bareos-${BAREOS_APP}:latest ${app_dir}/${version_dir}
-  #  fi
-  #  if [ "${BAREOS_APP}" == 'director' ]; then
-  #    docker buildx $build_args --platform "$build_arch" \
-  #      -t barcus/bareos-${BAREOS_APP}:${version}-ubuntu ${app_dir}/${version_dir}
-  #  fi
-  #fi
-  #if [ "${base_img}" == 'alpine' ]; then
-  #  if [ "${BAREOS_APP}" == "director" ]; then
-  #    docker buildx $build_args --platform "$build_arch" \
-  #      -t barcus/bareos-${BAREOS_APP}:${version}-alpine ${app_dir}/${version_dir}
-  #  fi
-  #  if [ "${version}" == "$latest_alpine" ]; then
-  #    docker buildx $build_args --platform "$build_arch" \
-  #      -t barcus/bareos-${BAREOS_APP}:alpine ${app_dir}/${version_dir}
-  #  fi
-  #fi
+  if [ "${base_img}" == 'ubuntu' ] && [ "${backend}" != 'pgsql' ]; then
+    docker buildx build --platform "$arch" --output type=docker \
+      -t barcus/bareos-${BAREOS_APP}:${version} ${app_dir}/${version_dir}
+    if [ "${version}" == "$latest_ubuntu" ]; then
+      docker buildx build --platform "$arch" --output type=docker \
+        -t barcus/bareos-${BAREOS_APP}:ubuntu ${app_dir}/${version_dir}
+      docker buildx build --platform "$arch" --output type=docker \
+        -t barcus/bareos-${BAREOS_APP}:latest ${app_dir}/${version_dir}
+    fi
+    if [ "${BAREOS_APP}" == 'director' ]; then
+      docker buildx build --platform "$arch" --output type=docker \
+        -t barcus/bareos-${BAREOS_APP}:${version}-ubuntu ${app_dir}/${version_dir}
+    fi
+  fi
+  if [ "${base_img}" == 'alpine' ]; then
+    if [ "${BAREOS_APP}" == "director" ]; then
+      docker buildx build --platform "$arch" --output type=docker \
+        -t barcus/bareos-${BAREOS_APP}:${version}-alpine ${app_dir}/${version_dir}
+    fi
+    if [ "${version}" == "$latest_alpine" ]; then
+      docker buildx build --platform "$arch" --output type=docker \
+        -t barcus/bareos-${BAREOS_APP}:alpine ${app_dir}/${version_dir}
+    fi
+  fi
 done

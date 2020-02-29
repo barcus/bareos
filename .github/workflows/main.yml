@@ -19,5 +19,8 @@ jobs:
       run: echo ${{ steps.buildx.outputs.platforms }}
     - name: Build docker image
       run: |
-        export BAREOS_APP='client'
+        export BAREOS_APP='director'
         ./build.sh
+        docker images
+    - name: Check docker image available
+      run: docker images
