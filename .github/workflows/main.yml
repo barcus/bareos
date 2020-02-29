@@ -3,25 +3,32 @@ name: CI
 on: [push]
 
 jobs:
-  prepare:
+  prepare-build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Prepare build file
+      run: |
+        export BAREOS_APP='director'
+        ./build.sh
+     - name: Upload file.build
+        uses: actions/upload-artifact@v1
+        with:
+          name: homework
+          path: file.build
+  build:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
     - name: Set up Docker Buildx
       id: buildx
       uses: crazy-max/ghaction-docker-buildx@v1
       with:
         version: latest
-    - name: Available platforms
-      run: echo ${{ steps.buildx.outputs.platforms }}
-    - name: Prepare build file
-      run: |
-        export BAREOS_APP='director'
-        ./build.sh
-  build:
-    needs: prepare
-    runs-on: ubuntu-latest
-    steps:
+    - name: Download file.build from prepare-build
+        uses: actions/download-artifact@v1
+        with:
+          name: homework
     - name: Build images
       run: cat file.build
