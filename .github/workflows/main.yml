@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Prepare build file
         run: |
-          export BAREOS_APP=''
+          export BAREOS_APP='director'
           ./prepare-build.sh
       - name: Upload build file
         uses: actions/upload-artifact@v1
