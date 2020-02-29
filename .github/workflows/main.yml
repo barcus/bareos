@@ -21,5 +21,7 @@ jobs:
         ./build.sh
   build:
     needs: prepare
+    runs-on: ubuntu-latest
+    steps:
     - name: Build images
       run: cat file.build
