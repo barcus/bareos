@@ -1,12 +1,6 @@
-name: 'Build '
-description: 'Build '
+name: 'push-bareos-app'
+description: 'Push Bareos docker images to Docker Hub'
 author: 'Barcus'
-inputs: 
-  bareos_app:
-    description: 'Bareos app to push'
-    default: 'client'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.bareos_app }}

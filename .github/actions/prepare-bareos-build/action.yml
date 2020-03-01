@@ -1,5 +1,5 @@
 name: 'prepare-bareos-build'
-description: 'Build Bareos app images'
+description: 'Prepare Bareos app build file'
 author: 'Barcus'
 runs:
   using: 'docker'

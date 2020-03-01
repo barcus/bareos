@@ -15,7 +15,7 @@ docker buildx create --name builder --driver docker-container --use
 workdir="${GITHUB_WORKSPACE}/build-artifact/"
 
 while read app version arch app_path ; do
-  if [ "$app" == "$INPUT_BAREOS_APP" ] ; then
+  #if [ "$app" == "$INPUT_BAREOS_APP" ] ; then
     tag="${version}"
     re='^[0-9]+-alpine.*$'
     if [[ $version =~ $re ]] ; then
@@ -33,7 +33,7 @@ while read app version arch app_path ; do
     docker save \
       --output ${workdir}/bareos-${app}-${tag}.tar \
       barcus/bareos-${app}:${tag}
-  fi
+  #fi
 done < ${workdir}/app_build.txt
 
 chmod 755 ${workdir}/bareos-*.tar
