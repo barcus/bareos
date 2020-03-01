@@ -1,5 +1,6 @@
 #!/bin/sh -l
 set -x
+echo $env
 while read app version arch app_path ; do
   docker buildx build \
     --platform ${arch} \
