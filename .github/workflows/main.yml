@@ -9,8 +9,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Prepare build file
-        run: |
-          ./prepare-build.sh
+        uses: ./.github/actions/prepare-bareos-build
+        #run: |
+        #  ./prepare-build.sh
       - name: Upload build file
         uses: actions/upload-artifact@v1
         with:

@@ -1,0 +1,6 @@
+name: 'prepare-bareos-build'
+description: 'Build Bareos app images'
+author: 'Barcus'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
