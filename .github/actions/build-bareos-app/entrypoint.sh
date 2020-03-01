@@ -13,18 +13,18 @@ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 # Create build and use it for building
 docker buildx create --name builder --driver docker-container --use
 #docker buildx inspect --bootstrap
+workdir="${GITHUB_WORKSPACE}/homework"
 while read app version arch app_path ; do
   if [ "$app" == "$INPUT_BAREOS_APP" ] ; then
     if [[ $version =~ ^18.* ]] ; then
     docker buildx build \
       --platform ${arch} \
-      --output 'type=docker,push=false' \
-      --tag barcus/bareos-${app}:${version} \
+      --output 'type=docker' \
+      --tag barcus/bareos-${app}:${version}-${arch} \
       ${app_path}
     docker save \
-      --output ${GITHUB_WORKSPACE}/bareos-${app}-${version}-${arch}.tar \
-      barcus/bareos-${app}:${version}
+      --output ${workdir}/bareos-${app}-${version}-${arch}.tar \
+      barcus/bareos-${app}:${version}-${arch}
     fi
   fi
 done < /github/workspace/homework/app_build.txt
-ls -l ${GITHUB_WORKSPACE}/

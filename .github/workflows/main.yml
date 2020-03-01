@@ -31,8 +31,11 @@ jobs:
         uses: ./.github/actions/build-bareos-app
         with:
           bareos_app: client
-      - name: List images
-        run: ls -l ${GITHUB_WORKSPACE}/
+      - name: Upload images
+        uses: actions/upload-artifact@v1
+        with:
+          name: homework
+          path: bareos-client-*.tar
 
   #build-director:
   #  needs: prepare-build
@@ -79,13 +82,14 @@ jobs:
   #      with:
   #        bareos_app: webui
 
-  #push:
-  #  needs: [build-client, build-director, build-storage, build-webui]
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - name: Download build file from prepare-build
-  #      uses: actions/download-artifact@v1
-  #      with:
-  #        name: homework
-  #    - name: Test
-  #      run: ls -l ${GITHUB_WORKSPACE}
+  push:
+    #needs: [build-client, build-director, build-storage, build-webui]
+    needs: build-client
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build file from prepare-build
+        uses: actions/download-artifact@v1
+        with:
+          name: homework
+      - name: Test
+        run: ls -l ${GITHUB_WORKSPACE}/homework/
