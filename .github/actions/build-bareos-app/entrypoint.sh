@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh -l
 #export BUILDX_VER=v0.3.1
 #apt update && apt install curl docker-ce
 #mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
@@ -16,9 +16,11 @@ docker version
 #docker buildx create ${bareos_app} --use
 
 while read app version arch app_path ; do
-  docker buildx build \
-    --platform ${arch} \
-    --output 'type=docker,push-false' \
-    --tag barcus/bareos-${app}:${version} \
-    ${app_path}
-done < <(grep $bareos_app /git/workspace/homework/app_build.txt)
+  if [ "$app" = "$bareos_app" ] ; then
+    docker buildx build \
+      --platform ${arch} \
+      --output 'type=docker,push-false' \
+      --tag barcus/bareos-${app}:${version} \
+      ${app_path}
+  fi
+done < /git/workspace/homework/app_build.txt
