@@ -1,4 +1,4 @@
-#!/bin/bash -l
+#!/usr/bin/env bash
 #export BUILDX_VER=v0.3.1
 #apt update && apt install curl docker-ce
 #mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
