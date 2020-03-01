@@ -8,8 +8,8 @@
 
 docker version
 mkdir ~/.docker
-echo '{ "experimental": true }' >> ~/.docker/config.json
-echo '{ "experimental": true }' >> ~/.docker/daemon.json
+cat ~/.docker/config.json
+cat ~/.docker/daemon.json
 
 docker version
 #docker context create ${bareos_app}
@@ -23,4 +23,4 @@ while read app version arch app_path ; do
       --tag barcus/bareos-${app}:${version} \
       ${app_path}
   fi
-done < /git/workspace/homework/app_build.txt
+done < /github/workspace/homework/app_build.txt
