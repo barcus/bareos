@@ -44,7 +44,7 @@ jobs:
       - name: Upload images
         uses: actions/upload-artifact@v1
         with:
-          name: homework
+          name: build-artifact
           path: bareos-client-*.tar
 
   #build-director:
@@ -103,3 +103,5 @@ jobs:
           name: build-artifact
       - name: Test
         run: ls -l ${GITHUB_WORKSPACE}/
+      - name: Test ls
+        run: ls -l ${GITHUB_WORKSPACE}/build-artifact/

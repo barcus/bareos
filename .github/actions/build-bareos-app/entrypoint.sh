@@ -27,5 +27,5 @@ while read app version arch app_path ; do
       barcus/bareos-${app}:${version}-${arch}
     fi
   fi
-done < /github/workspace/homework/app_build.txt
+done < ${workdir}/app_build.txt
 ls -l ${workdir}/
