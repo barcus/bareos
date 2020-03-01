@@ -41,9 +41,10 @@ jobs:
             docker buildx build \
               --platform ${arch} \
               --output 'type=docker,push=false' \
-              --tag barcus/bareos-${app}:${version} \
+              --tag barcus/bareos-${app}:${version}-${arch} \
               ${app_path}
-          done < <(grep 'client' homework/app_build.txt)
+          done < <(grep 'client' homework/app_build.txt|grep '18-alpine')
+          docker images
       #- uses: ./.github/actions/build-bareos-app
       #  with:
       #    bareos_app: client
