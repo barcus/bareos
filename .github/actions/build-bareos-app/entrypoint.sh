@@ -2,6 +2,9 @@
 export BUILDX_VER=v0.3.1
 export DOCKER_CLI_EXPERIMENTAL="enabled"
 
+env 
+echo ${GITHUB_WORKSPACE}
+
 # Install Buildx plugin
 mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
 curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
