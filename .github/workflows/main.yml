@@ -14,8 +14,8 @@ jobs:
       - name: Upload build file
         uses: actions/upload-artifact@v1
         with:
-          name: homework
-          path: app_build.txt
+          name: build-artifact
+          path: build/
 
   build-client:
     needs: prepare-build
@@ -26,7 +26,7 @@ jobs:
       - name: Download build file from prepare-build
         uses: actions/download-artifact@v1
         with:
-          name: homework
+          name: build-artifact
       - name: Build images
         uses: ./.github/actions/build-bareos-app
         with:
@@ -37,15 +37,15 @@ jobs:
           ls -l .
           echo 'ls worksapce'
           ls -l ${GITHUB_WORKSPACE}/
-          echo 'ls homework'
-          ls -l ${GITHUB_WORKSPACE}/homework/
+          echo 'ls build-artifact'
+          ls -l ${GITHUB_WORKSPACE}/build-artifact/
           echo 'ls racine'
           ls -l /
       - name: Upload images
         uses: actions/upload-artifact@v1
         with:
           name: homework
-          path: ${GITHUB_WORKSPACE}/bareos-client-*.tar
+          path: bareos-client-*.tar
 
   #build-director:
   #  needs: prepare-build
@@ -100,6 +100,6 @@ jobs:
       - name: Download build file from prepare-build
         uses: actions/download-artifact@v1
         with:
-          name: homework
+          name: build-artifact
       - name: Test
-        run: ls -l ${GITHUB_WORKSPACE}/homework/
+        run: ls -l ${GITHUB_WORKSPACE}/

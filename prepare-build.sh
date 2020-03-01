@@ -2,7 +2,7 @@
 
 latest_ubuntu='19'
 latest_alpine='18'
-build_file='app_build.txt'
+build_file='build/app_build.txt'
 
 docker_files=$(find . -name Dockerfile 2>/dev/null)
 
