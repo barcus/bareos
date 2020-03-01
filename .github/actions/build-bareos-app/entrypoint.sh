@@ -12,10 +12,8 @@ chmod a+x ~/.docker/cli-plugins/docker-buildx
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
 # Create build and use it for building
-#docker context create ${bareos_app}
-#docker buildx create ${bareos_app} --use
 docker buildx create --name builder --driver docker-container --use
-docker buildx inspect --bootstrap
+#docker buildx inspect --bootstrap
 while read app version arch app_path ; do
   if [ "$app" == "$INPUT_BAREOS_APP" ] ; then
     docker buildx build \
@@ -24,8 +22,8 @@ while read app version arch app_path ; do
       --tag barcus/bareos-${app}:${version} \
       ${app_path}
     docker save \
-      --output /github/workspace/homework/bareos-${app}-${version}.tar \
+      --output /github/workspace/homework/bareos-${app}-${version}-${arch}.tar \
       barcus/bareos-${app}:${version}
   fi
-done < /github/workspace/homework/app_build.txt
+done < <(grep '18' /github/workspace/homework/app_build.txt)
 ls -l /github/workspace/homework/

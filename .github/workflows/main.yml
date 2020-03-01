@@ -76,3 +76,14 @@ jobs:
         uses: ./.github/actions/build-bareos-app
         with:
           bareos_app: webui
+
+  push:
+    needs: [build-client, build-director, build-storage, build-webui]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build file from prepare-build
+        uses: actions/download-artifact@v1
+        with:
+          name: homework
+      - name: Test
+        run: ls -l homework/
