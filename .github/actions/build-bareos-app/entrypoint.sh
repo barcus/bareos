@@ -1,9 +1,8 @@
-#!/bin/sh -l
+#!/usr/bin/env bash
 export BUILDX_VER=v0.3.1
 export DOCKER_CLI_EXPERIMENTAL="enabled"
 
 # Install Buildx plugin
-apk add curl
 mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
 curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
 chmod a+x ~/.docker/cli-plugins/docker-buildx
