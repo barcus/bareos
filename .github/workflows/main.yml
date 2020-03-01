@@ -31,11 +31,21 @@ jobs:
         uses: ./.github/actions/build-bareos-app
         with:
           bareos_app: client
+      - name: check images
+        run: |
+          echo 'ls dossier courant'
+          ls -l .
+          echo 'ls worksapce'
+          ls -l ${GITHUB_WORKSPACE}/
+          echo 'ls homework'
+          ls -l ${GITHUB_WORKSPACE}/homework/
+          echo 'ls racine'
+          ls -l /
       - name: Upload images
         uses: actions/upload-artifact@v1
         with:
           name: homework
-          path: bareos-client-*.tar
+          path: ${GITHUB_WORKSPACE}/bareos-client-*.tar
 
   #build-director:
   #  needs: prepare-build
