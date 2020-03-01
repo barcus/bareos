@@ -46,6 +46,6 @@ jobs:
       #    done < <(grep 'client' homework/app_build.txt|grep '18-alpine')
       #    docker images
       - name: Build images
-      - uses: ./.github/actions/build-bareos-app
+        uses: ./.github/actions/build-bareos-app
         with:
           bareosApp: client
