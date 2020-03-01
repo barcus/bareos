@@ -16,7 +16,7 @@ docker buildx create --name builder --driver docker-container --use
 #docker buildx inspect --bootstrap
 while read app version arch app_path ; do
   if [ "$app" == "$INPUT_BAREOS_APP" ] ; then
-    if [ $version =~ ^18.*$ ] ; then
+    if [[ $version =~ ^18.* ]] ; then
     docker buildx build \
       --platform ${arch} \
       --output 'type=docker,push=false' \
