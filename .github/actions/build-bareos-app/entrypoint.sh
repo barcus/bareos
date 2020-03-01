@@ -13,7 +13,7 @@ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 # Create build and use it for building
 docker buildx create --name builder --driver docker-container --use
 #docker buildx inspect --bootstrap
-workdir="${GITHUB_WORKSPACE}/homework"
+workdir="${GITHUB_WORKSPACE}"
 while read app version arch app_path ; do
   if [ "$app" == "$INPUT_BAREOS_APP" ] ; then
     if [[ $version =~ ^18.* ]] ; then
