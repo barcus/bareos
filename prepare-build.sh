@@ -25,31 +25,32 @@ for file in $docker_files; do
   if [ "${base_img}" == 'ubuntu' ] ; then
     echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
 
-    #if [ "${backend}" != 'pgsql' ]; then
-    #  echo "${app} ${version} amd64 ${app_dir}/${version_dir}" >> $build_file
-    #fi
+    if [ "${backend}" != 'pgsql' ]; then
+      echo "${app} ${version} amd64 ${app_dir}/${version_dir}" >> $build_file
+    fi
 
-    #if [ "${version}" == "$latest_ubuntu" ]; then
-    #  echo "${app} ubuntu amd64 ${app_dir}/${version_dir}" >> $build_file
-    #  echo "${app} latest amd64 ${app_dir}/${version_dir}" >> $build_file
-    #fi
-    #if [ "${app}" == 'director' ]; then
-    #  echo "${app} ${version}-ubuntu amd64 ${app_dir}/${version_dir}" >> $build_file
-    #fi
+    if [ "${version}" == "$latest_ubuntu" ]; then
+      echo "${app} ubuntu amd64 ${app_dir}/${version_dir}" >> $build_file
+      echo "${app} latest amd64 ${app_dir}/${version_dir}" >> $build_file
+    fi
+    if [ "${app}" == 'director' ]; then
+      echo "${app} ${version}-ubuntu amd64 ${app_dir}/${version_dir}" >> $build_file
+    fi
   fi
   if [ "${base_img}" == 'alpine' ]; then
     echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
     echo "${app} ${tag_build} arm64 ${app_dir}/${version_dir}" >> $build_file
     #echo "${app} ${tag_build} arm ${app_dir}/${version_dir}" >> $build_file
 
-    #if [ "${app}" == "director" ]; then
-    #  echo "${app} ${version}-alpine amd64 ${app_dir}/${version_dir}" >> $build_file
-    #  echo "${app} ${version}-alpine arm64 ${app_dir}/${version_dir}" >> $build_file
-    #  echo "${app} ${version}-alpine arm ${app_dir}/${version_dir}" >> $build_file
-    #fi
-    #if [ "${version}" == "$latest_alpine" ]; then
-    #  echo "${app} alpine amd64 ${app_dir}/${version_dir}" >> $build_file
-    #  echo "${app} alpine arm64 ${app_dir}/${version_dir}" >> $build_file
-    #fi
+    if [ "${app}" == "director" ]; then
+      echo "${app} ${version}-alpine amd64 ${app_dir}/${version_dir}" >> $build_file
+      echo "${app} ${version}-alpine arm64 ${app_dir}/${version_dir}" >> $build_file
+      #echo "${app} ${version}-alpine arm ${app_dir}/${version_dir}" >> $build_file
+    fi
+    if [ "${version}" == "$latest_alpine" ]; then
+      echo "${app} alpine amd64 ${app_dir}/${version_dir}" >> $build_file
+      echo "${app} alpine arm64 ${app_dir}/${version_dir}" >> $build_file
+      #echo "${app} alpine arm ${app_dir}/${version_dir}" >> $build_file
+    fi
   fi
 done
