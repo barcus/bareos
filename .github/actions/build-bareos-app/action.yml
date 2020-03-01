@@ -2,11 +2,11 @@ name: 'build-bareos-app'
 description: 'Build Bareos app images'
 author: 'Barcus'
 inputs: 
-  bareos_app:
+  bareosApp:
     description: 'Bareos app'
     default: 'webui'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.bareos_app }}
+    - ${{ inputs.bareosApp }}

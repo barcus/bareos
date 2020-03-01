@@ -17,9 +17,9 @@ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 docker buildx create --name builder --driver docker-container --use
 docker buildx inspect --bootstrap
 
-echo " app : $bareos_app"
+echo " app : $bareosApp"
 while read app version arch app_path ; do
-  if [ "$app" == "$bareos_app" ] ; then
+  if [ "$app" == "$bareosApp" ] ; then
     docker buildx build \
       --platform ${arch} \
       --output 'type=docker,push-false' \
