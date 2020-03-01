@@ -4,7 +4,6 @@ latest_ubuntu='19'
 latest_alpine='18'
 build_file='app_build.txt'
 
-rm $build_file
 docker_files=$(find . -name Dockerfile 2>/dev/null)
 
 for file in $docker_files; do

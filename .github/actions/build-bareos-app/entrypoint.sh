@@ -1,6 +1,8 @@
 #!/bin/sh -l
 set -x
-echo $ENV
+ls -l /
+ls -l /github
+ls -l /github/*
 while read app version arch app_path ; do
   docker buildx build \
     --platform ${arch} \
