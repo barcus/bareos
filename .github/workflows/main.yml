@@ -45,7 +45,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: build-artifact
-          path: build-artifact/bareos-client-*.tar
+          path: build-artifact/bareos-client-.*.tar
 
   #build-director:
   #  needs: prepare-build

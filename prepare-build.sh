@@ -22,7 +22,7 @@ for file in $docker_files; do
 
   # Declare each Dockerfile with its tags for building
   if [ "${base_img}" == 'ubuntu' ] ; then
-    echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
+    #echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
 
     #if [ "${backend}" != 'pgsql' ]; then
     #  echo "${app} ${version} amd64 ${app_dir}/${version_dir}" >> $build_file
@@ -38,7 +38,7 @@ for file in $docker_files; do
   fi
   if [ "${base_img}" == 'alpine' ]; then
     echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
-    echo "${app} ${tag_build} arm64 ${app_dir}/${version_dir}" >> $build_file
+    #echo "${app} ${tag_build} arm64 ${app_dir}/${version_dir}" >> $build_file
     #echo "${app} ${tag_build} arm ${app_dir}/${version_dir}" >> $build_file
 
     #if [ "${app}" == "director" ]; then
