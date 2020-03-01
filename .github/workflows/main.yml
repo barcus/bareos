@@ -31,59 +31,61 @@ jobs:
         uses: ./.github/actions/build-bareos-app
         with:
           bareos_app: client
+      - name: List images
+        run: ls -l ${GITHUB_WORKSPACE}/
 
-  build-director:
-    needs: prepare-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Download build file from prepare-build
-        uses: actions/download-artifact@v1
-        with:
-          name: homework
-      - name: Build images
-        uses: ./.github/actions/build-bareos-app
-        with:
-          bareos_app: director
+  #build-director:
+  #  needs: prepare-build
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Checkout
+  #      uses: actions/checkout@v2
+  #    - name: Download build file from prepare-build
+  #      uses: actions/download-artifact@v1
+  #      with:
+  #        name: homework
+  #    - name: Build images
+  #      uses: ./.github/actions/build-bareos-app
+  #      with:
+  #        bareos_app: director
 
-  build-storage:
-    needs: prepare-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Download build file from prepare-build
-        uses: actions/download-artifact@v1
-        with:
-          name: homework
-      - name: Build images
-        uses: ./.github/actions/build-bareos-app
-        with:
-          bareos_app: storage
+  #build-storage:
+  #  needs: prepare-build
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Checkout
+  #      uses: actions/checkout@v2
+  #    - name: Download build file from prepare-build
+  #      uses: actions/download-artifact@v1
+  #      with:
+  #        name: homework
+  #    - name: Build images
+  #      uses: ./.github/actions/build-bareos-app
+  #      with:
+  #        bareos_app: storage
 
-  build-webui:
-    needs: prepare-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Download build file from prepare-build
-        uses: actions/download-artifact@v1
-        with:
-          name: homework
-      - name: Build images
-        uses: ./.github/actions/build-bareos-app
-        with:
-          bareos_app: webui
+  #build-webui:
+  #  needs: prepare-build
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Checkout
+  #      uses: actions/checkout@v2
+  #    - name: Download build file from prepare-build
+  #      uses: actions/download-artifact@v1
+  #      with:
+  #        name: homework
+  #    - name: Build images
+  #      uses: ./.github/actions/build-bareos-app
+  #      with:
+  #        bareos_app: webui
 
-  push:
-    needs: [build-client, build-director, build-storage, build-webui]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build file from prepare-build
-        uses: actions/download-artifact@v1
-        with:
-          name: homework
-      - name: Test
-        run: ls -l homework/
+  #push:
+  #  needs: [build-client, build-director, build-storage, build-webui]
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Download build file from prepare-build
+  #      uses: actions/download-artifact@v1
+  #      with:
+  #        name: homework
+  #    - name: Test
+  #      run: ls -l ${GITHUB_WORKSPACE}

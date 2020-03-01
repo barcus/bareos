@@ -22,9 +22,9 @@ while read app version arch app_path ; do
       --tag barcus/bareos-${app}:${version} \
       ${app_path}
     docker save \
-      --output /github/workspace/homework/bareos-${app}-${version}-${arch}.tar \
+      --output ${GITHUB_WORKSPACE}/bareos-${app}-${version}-${arch}.tar \
       barcus/bareos-${app}:${version}
     fi
   fi
 done < /github/workspace/homework/app_build.txt
-ls -l /github/workspace/homework/
+ls -l ${GITHUB_WORKSPACE}/
