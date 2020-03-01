@@ -34,17 +34,17 @@ jobs:
           name: homework
       - name: Cat docker build file
         run: cat homework/app_build.txt
-      - name: Build images
-        run: |
-          #export BAREOS_APP='client'
-          while read app version arch app_path ; do
-            docker buildx build \
-              --platform ${arch} \
-              --output 'type=docker,push=false' \
-              --tag barcus/bareos-${app}:${version}-${arch} \
-              ${app_path}
-          done < <(grep 'client' homework/app_build.txt|grep '18-alpine')
-          docker images
+      #- name: Build images
+      #  run: |
+      #    #export BAREOS_APP='client'
+      #    while read app version arch app_path ; do
+      #      docker buildx build \
+      #        --platform ${arch} \
+      #        --output 'type=docker,push=false' \
+      #        --tag barcus/bareos-${app}:${version}-${arch} \
+      #        ${app_path}
+      #    done < <(grep 'client' homework/app_build.txt|grep '18-alpine')
+      #    docker images
       - uses: ./.github/actions/build-bareos-app
         with:
           bareos_app: client
