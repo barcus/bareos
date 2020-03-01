@@ -6,4 +6,4 @@ while read app version arch app_path ; do
     --output 'type=docker,push-false' \
     --tag barcus/bareos-${app}:${version} \
     ${app_path}
-done < <(grep ${bareos_app} homework/app_build.txt)
+done < <(cat homework/app_build.txt |grep ${bareos_app})
