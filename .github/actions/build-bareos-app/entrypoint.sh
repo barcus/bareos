@@ -1,12 +1,14 @@
 #!/bin/sh -l
-set -x
-ls -l /
-ls -l /github
-ls -l /github/*
+export BUILDX_VER=v0.3.1
+mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
+curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
+chmod a+x ~/.docker/cli-plugins/docker-buildx
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
 while read app version arch app_path ; do
   docker buildx build \
     --platform ${arch} \
     --output 'type=docker,push-false' \
     --tag barcus/bareos-${app}:${version} \
     ${app_path}
-done < homework/app_build.txt
+done < <(grep $bareos_app /git/workspace/homework/app_build.txt)
