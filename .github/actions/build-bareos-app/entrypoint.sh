@@ -7,7 +7,7 @@
 #docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
 docker version
-DOCKER_CLI_EXPERIMENTAL="enabled"
+export DOCKER_CLI_EXPERIMENTAL="enabled"
 docker version
 #docker context create ${bareos_app}
 #docker buildx create ${bareos_app} --use
