@@ -17,7 +17,8 @@ workdir="${GITHUB_WORKSPACE}/build-artifact/"
 while read app version arch app_path ; do
   if [ "$app" == "$INPUT_BAREOS_APP" ] ; then
     tag="${version}"
-    if [[ $version =~ ^[\d]+-alpine.* ]] ; then
+    re='^[0-9]+-alpine.*$'
+    if [[ $version =~ $re ]] ; then
       tag="${version}-${arch}"
     fi
 
