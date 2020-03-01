@@ -16,6 +16,7 @@ docker buildx create --name builder --driver docker-container --use
 #docker buildx inspect --bootstrap
 while read app version arch app_path ; do
   if [ "$app" == "$INPUT_BAREOS_APP" ] ; then
+    if [ $version =~ ^18.*$ ] ; then
     docker buildx build \
       --platform ${arch} \
       --output 'type=docker,push=false' \
@@ -24,6 +25,7 @@ while read app version arch app_path ; do
     docker save \
       --output /github/workspace/homework/bareos-${app}-${version}-${arch}.tar \
       barcus/bareos-${app}:${version}
+    fi
   fi
-done < <(grep '18' /github/workspace/homework/app_build.txt)
+done < /github/workspace/homework/app_build.txt
 ls -l /github/workspace/homework/
