@@ -23,11 +23,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1
-        with:
-          version: latest
+      #- name: Set up Docker Buildx
+      #  id: buildx
+      #  uses: crazy-max/ghaction-docker-buildx@v1
+      #  with:
+      #    version: latest
       - name: Download build file from prepare-build job
         uses: actions/download-artifact@v1
         with:
