@@ -48,4 +48,4 @@ jobs:
       - name: Build images
         uses: ./.github/actions/build-bareos-app
         with:
-          bareosApp: client
+          bareos_app: client

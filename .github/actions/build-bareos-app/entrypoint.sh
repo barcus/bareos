@@ -2,6 +2,7 @@
 export BUILDX_VER=v0.3.1
 export DOCKER_CLI_EXPERIMENTAL="enabled"
 
+
 # Install Buildx plugin
 apk add curl
 mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
@@ -17,9 +18,10 @@ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 docker buildx create --name builder --driver docker-container --use
 docker buildx inspect --bootstrap
 
-echo " app : $bareosApp"
+env
+echo " app : $INPUT_BAREOS_APP"
 while read app version arch app_path ; do
-  if [ "$app" == "$bareosApp" ] ; then
+  if [ "$app" == "$INPUT_BAREOS_APP" ] ; then
     docker buildx build \
       --platform ${arch} \
       --output 'type=docker,push-false' \
