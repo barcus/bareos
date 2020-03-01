@@ -1,10 +1,19 @@
 #!/bin/sh -l
-export BUILDX_VER=v0.3.1
-apt update && apt install curl docker-ce
-mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
-curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
-chmod a+x ~/.docker/cli-plugins/docker-buildx
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+#export BUILDX_VER=v0.3.1
+#apt update && apt install curl docker-ce
+#mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
+#curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
+#chmod a+x ~/.docker/cli-plugins/docker-buildx
+#docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+docker version
+mkdir ~/.docker
+echo '{ "experimental": true }' >> ~/.docker/config.json
+echo '{ "experimental": true }' >> ~/.docker/daemon.json
+
+which docker
+#docker context create ${bareos_app}
+#docker buildx create ${bareos_app} --use
 
 while read app version arch app_path ; do
   docker buildx build \

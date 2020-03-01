@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM docker:latest
 
 COPY entrypoint.sh /entrypoint.sh
 #COPY ./../../../ .
