@@ -102,4 +102,4 @@ jobs:
         with:
           name: build-artifact
       - name: Test ls
-        run: ls -l build-artifact/
+        run: ls build-artifact/ && cat build-artifact/app_build.txt

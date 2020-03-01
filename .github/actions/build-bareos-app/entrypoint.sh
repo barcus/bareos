@@ -13,23 +13,27 @@ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 # Create build and use it for building
 docker buildx create --name builder --driver docker-container --use
 workdir="${GITHUB_WORKSPACE}/build-artifact/"
+
 while read app version arch app_path ; do
   if [ "$app" == "$INPUT_BAREOS_APP" ] ; then
-
     tag="${version}"
     if [[ $version =~ ^[\d]+-alpine.* ]] ; then
       tag="${version}-${arch}"
     fi
 
+    # Build with buildx
     docker buildx build \
       --platform ${arch} \
       --output 'type=docker' \
       --tag barcus/bareos-${app}:${tag} \
       ${app_path}
+
+    # Save image to file
     docker save \
       --output ${workdir}/bareos-${app}-${tag}.tar \
       barcus/bareos-${app}:${tag}
   fi
 done < ${workdir}/app_build.txt
+
 chmod 755 ${workdir}/bareos-*.tar
 ls -l  ${workdir}/
