@@ -1,4 +1,4 @@
-#!/bin/sh -l
+#!/bin/bash -l
 #export BUILDX_VER=v0.3.1
 #apt update && apt install curl docker-ce
 #mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
@@ -11,7 +11,7 @@ mkdir ~/.docker
 echo '{ "experimental": true }' >> ~/.docker/config.json
 echo '{ "experimental": true }' >> ~/.docker/daemon.json
 
-which docker
+docker version
 #docker context create ${bareos_app}
 #docker buildx create ${bareos_app} --use
 
