@@ -4,7 +4,6 @@ author: 'Barcus'
 inputs: 
   bareos_app:
     description: 'Bareos app name'
-    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'

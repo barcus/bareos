@@ -1,52 +1,70 @@
-name: CI
+name: CI-client
 
 on: [push]
 
 jobs:
-  prepare:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Prepare build file
         uses: ./.github/actions/prepare-bareos-build
-      - name: Upload build file
+        with:
+          bareos_app: client
+
+      #- name: Upload build file
+      #  uses: actions/upload-artifact@v1
+      #  with:
+      #    name: build-artifact
+      #    path: build/
+
+  #build:
+    #needs: prepare
+    #runs-on: ubuntu-latest
+    #steps:
+      #- name: Checkout
+      #  uses: actions/checkout@v2
+
+      #- name: Download build file
+      #  uses: actions/download-artifact@v1
+      #  with:
+      #    name: build-artifact
+
+      - name: Build images
+        uses: ./.github/actions/build-bareos-app
+        #with:
+        #  bareos_app: client
+
+      - name: Upload images
         uses: actions/upload-artifact@v1
         with:
           name: build-artifact
           path: build/
 
-  build:
-    needs: prepare
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Download build file
-        uses: actions/download-artifact@v1
-        with:
-          name: build-artifact
-      - name: Build images
-        uses: ./.github/actions/build-bareos-app
-        #with:
-        #  bareos_app: client
-      - name: Upload images
-        uses: actions/upload-artifact@v1
-        with:
-          name: build-artifact
-          path: build-artifact/
-
   push:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Download build file
         uses: actions/download-artifact@v1
         with:
           name: build-artifact
-      - name: Test ls
-        run: ls build-artifact/ && cat build-artifact/app_build.txt
+
       - name: Load images
         uses: ./.github/actions/push-bareos-app
-      - name: Docker image
+        with:
+          bareos_app: client
+
+      - name: Run Docker image
         run: docker images
+
+      - name: Create manifests
+        run: echo 'Create manifests'
+     
+      - name: push manifests
+        run: echo 'Push manifests'
