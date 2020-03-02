@@ -1,4 +1,4 @@
-name: CI-client
+name: __BAREOS_APP__
 
 on: [push]
 
@@ -12,30 +12,10 @@ jobs:
       - name: Prepare build file
         uses: ./.github/actions/prepare-bareos-build
         with:
-          bareos_app: client
-
-      #- name: Upload build file
-      #  uses: actions/upload-artifact@v1
-      #  with:
-      #    name: build-artifact
-      #    path: build/
-
-  #build:
-    #needs: prepare
-    #runs-on: ubuntu-latest
-    #steps:
-      #- name: Checkout
-      #  uses: actions/checkout@v2
-
-      #- name: Download build file
-      #  uses: actions/download-artifact@v1
-      #  with:
-      #    name: build-artifact
+          bareos_app: __BAREOS_APP__
 
       - name: Build images
         uses: ./.github/actions/build-bareos-app
-        #with:
-        #  bareos_app: client
 
       - name: Upload images
         uses: actions/upload-artifact@v1
@@ -57,8 +37,6 @@ jobs:
 
       - name: Load images
         uses: ./.github/actions/push-bareos-app
-        with:
-          bareos_app: client
 
       - name: Run Docker image
         run: docker images
