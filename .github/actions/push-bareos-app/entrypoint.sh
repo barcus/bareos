@@ -7,7 +7,7 @@ for file in $docker_files; do
   docker load --input $file
 done
 
-docker login -u barcus -p ${docker_pass}
+docker login -u barcus -p ${INPUT_DOCKER_PASS}
 
 # Push images
 while read app version arch app_path ; do
