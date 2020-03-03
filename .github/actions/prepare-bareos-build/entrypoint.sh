@@ -6,6 +6,7 @@ latest_ubuntu='19'
 latest_alpine='18'
 
 build_file="${GITHUB_WORKSPACE}/build/app_build.txt"
+tag_file="${GITHUB_WORKSPACE}/build/tag_build.txt"
 build_app="$INPUT_BAREOS_APP"
 docker_files=$(find ${build_app}*/ -name Dockerfile 2>/dev/null)
 
