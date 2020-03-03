@@ -37,6 +37,8 @@ jobs:
 
       - name: Load images
         uses: ./.github/actions/push-bareos-app
+        with:
+          docker_pass: ${{ secrets.DOCKER_PASS }}
 
       - name: Run Docker image
         run: docker images
