@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+export DOCKER_CLI_EXPERIMENTAL="enabled"
 workdir="${GITHUB_WORKSPACE}/build-artifact"
 docker_files=$(find ${workdir}/ -name "bareos-*.tar" 2>/dev/null)
 
