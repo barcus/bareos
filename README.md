@@ -1,6 +1,6 @@
 # bareos
 
-![License badge][license-img] [![Build Status][circleci-img]][circleci-url]
+![License badge][license-img]
 
 ## About
 
@@ -202,7 +202,7 @@ Required as catalog backend, simply use the official MySQL/PostgreSQL image
 * `<BAREOS_CONF_PATH>` is the path to share your WebUI config folder from the host side. (optional)
 * default user is `admin`
 
-:warning: Remember variables *_HOST must be set with container name
+:warning: Remember variables `*_HOST` must be set with container name
 
 ### Your own Docker images
 
@@ -255,8 +255,6 @@ Enjoy !
 [docker-url-fd]: https://registry.hub.docker.com/u/barcus/bareos-client
 [docker-img-ui]: https://img.shields.io/docker/pulls/barcus/bareos-webui.svg
 [docker-url-ui]: https://registry.hub.docker.com/u/barcus/bareos-webui
-[circleci-url]: https://circleci.com/gh/barcus/bareos
-[circleci-img]: https://circleci.com/gh/barcus/bareos.svg?style=svg
 [bareos-href]: https://www.bareos.org
 [compose-file]: https://github.com/barcus/bareos/blob/master/docker-compose.yml
 [docker-compose-href]: https://docs.docker.com/compose
