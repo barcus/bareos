@@ -14,6 +14,7 @@ docker login -u barcus -p ${INPUT_DOCKER_PASS}
 while read app version arch app_path ; do
   build_tag=${version}
 
+  manifest=0
   re='^[0-9]+-alpine.*$'
   if [[ $version =~ $re ]] ; then
     build_tag="${version}-${arch}"
