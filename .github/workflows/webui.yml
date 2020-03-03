@@ -1,4 +1,4 @@
-name: __BAREOS_APP__
+name: webui
 
 on: [push]
 
@@ -12,7 +12,7 @@ jobs:
       - name: Prepare build file
         uses: ./.github/actions/prepare-bareos-build
         with:
-          bareos_app: __BAREOS_APP__
+          bareos_app: webui
 
       - name: Build images
         uses: ./.github/actions/build-bareos-app
