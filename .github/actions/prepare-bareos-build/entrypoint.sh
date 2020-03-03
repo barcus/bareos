@@ -28,6 +28,7 @@ for file in $docker_files; do
   if [ "$version" == '18' ]; then
     if [ "${base_img}" == 'ubuntu' ]; then
       echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
+
       if [ "${app}" == 'director' ]; then
         echo "${app} ${tag_build} ${version}-ubuntu" >> $tag_file
       fi
@@ -45,12 +46,10 @@ for file in $docker_files; do
       echo "${app} ${tag_build} arm64 ${app_dir}/${version_dir}" >> $build_file
 
       if [ "${app}" == "director" ]; then
-        echo "${app} ${tag_build}-amd64 ${version}-alpine-amd64" >> $tag_file
-        echo "${app} ${tag_build}-arm64 ${version}-alpine-arm64" >> $tag_file
+        echo "${app} ${tag_build} ${version}-alpine" >> $tag_file
       fi
       if [ "${version}" == "$latest_alpine" ]; then
-        echo "${app} ${tag_build}-amd64 alpine-amd64" >> $tag_file
-        echo "${app} ${tag_build}-arm64 alpine-arm64" >> $tag_file
+        echo "${app} ${tag_build} alpine" >> $tag_file
       fi
     fi
   fi

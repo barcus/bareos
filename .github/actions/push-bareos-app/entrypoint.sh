@@ -14,32 +14,31 @@ docker login -u barcus -p ${INPUT_DOCKER_PASS}
 while read app version arch app_path ; do
   echo "on traite le tag build : $app $version $arch $app_path"
   build_tag=${version}
-
-  manifest=0
+  is_alpine=0
   re='^[0-9]+-alpine.*$'
   if [[ $version =~ $re ]] ; then
     build_tag="${version}-${arch}"
-    manifest=1
+    is_alpine=1
   fi
 
+  # Push build_tag
   docker push barcus/bareos-${app}:${build_tag}
-  while read app s_tag t_tag ; do
-    echo "on traite le tag : $app $s_tag $t_tag"
-    if [ "${s_tag}" == ${build_tag} ]; then
-      docker tag barcus/bareos-${app}:${s_tag} barcus/bareos-${app}:${t_tag}
-      docker push barcus/bareos-${app}:${t_tag}
-      echo "on ajoute le tag : barcus/bareos-${app}:${t_tag}"
-      tag_list="${tag_list} barcus/bareos-${app}:${t_tag}"
+
+  while read build_app s_tag t_tag ; do
+    echo "on traite le tag : $build_app $s_tag $t_tag"
+    if [ $is_alpine == 0 ]; then
+      docker tag barcus/bareos-${build_app}:${s_tag} barcus/bareos-${build_app}:${t_tag}
+      docker push barcus/bareos-${build_app}:${t_tag}
+    fi
+
+    if [ $is_alpine == 1 ]; then
+      echo "on cree la manifest : barcus/bareos-${build_app}:${t_tag} avec les tags : bareos-${build_app}:${s_tag}-amd64 et bareos-${build_app}:${s_tag}-arm64"
+      docker manifest create barcus/bareos-${build_app}:${t_tag} \
+        barcus/bareos-${build_app}:${s_tag}-amd64 \
+        barcus/bareos-${build_app}:${s_tag}-arm64
+      docker manifest inspect barcus/bareos-${build_app}:${t_tag}
+      echo "on push le manifest barcus/bareos-${build_app}:${t_tag}"
+      docker manifest push barcus/bareos-${build_app}:${t_tag}
     fi
   done < ${workdir}/tag_build.txt
-  echo "list des tags : $tag_list"
-
-  # Create manifest if required
-  if [ $manifest == 1 ]; then
-    echo "on cree la manifest : barcus/bareos-${app}:${build_tag} avec les tags : ${tag_list}"
-    docker manifest create barcus/bareos-${app}:${build_tag} ${tag_list}
-    docker manifest inspect barcus/bareos-${app}:${build_tag}
-    echo "on push le manifest barcus/bareos-${app}:${build_tag}"
-    docker manifest push barcus/bareos-${app}:${build_tag}
-  fi
 done < ${workdir}/app_build.txt
