@@ -23,7 +23,7 @@ Images are based on Ubuntu or Alpine, check tags below
 
 ## Tags
 
-Director (bareos-dir)
+bareos-director (dir)
 
 * `19-ubuntu-mysql`, `19-ubuntu`, `19`, `ubuntu`, `latest`
 * `18-ubuntu-mysql`, `18-ubuntu`, `18`
@@ -33,7 +33,7 @@ Director (bareos-dir)
 * `17-ubuntu-pgsql`
 * `17-alpine`
 
-Client (bareos-fd) - Storage (bareos-sd) - Webui
+bareos-client (fd) - bareos-storage (sd) - bareos-webui
 
 * `19-ubuntu`, `19`, `ubuntu`, `latest`
 * `18-ubuntu`, `18`
