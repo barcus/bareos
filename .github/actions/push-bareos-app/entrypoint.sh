@@ -30,4 +30,4 @@ workdir="${GITHUB_WORKSPACE}"
 #chmod 755 ${workdir}/bareos-*.tar
 #ls -l  ${workdir}/
 
-ls -l ${workdir}/
+ls -l ${workdir}/build-artifact/
