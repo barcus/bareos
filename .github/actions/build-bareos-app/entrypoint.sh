@@ -16,7 +16,7 @@ workdir="${GITHUB_WORKSPACE}/build"
 
 while read app version arch app_path ; do
   #if [ "$app" == "$INPUT_BAREOS_APP" ] ; then
-    env
+    #env
     tag="${version}"
     re='^[0-9]+-alpine.*$'
     if [[ $version =~ $re ]] ; then
@@ -26,14 +26,14 @@ while read app version arch app_path ; do
     # Build with buildx
     docker buildx build \
       --platform ${arch} \
-      --output "type=tar,dest=${workdir}/bareos-${app}-${tag}" \
+      --output 'type=docker,push=false' \
       --tag barcus/bareos-${app}:${tag} \
       ${app_path}
 
     # Save image to file
-    #docker save \
-    #  --output ${workdir}/bareos-${app}-${tag}.tar \
-    #  barcus/bareos-${app}:${tag}
+    docker save \
+      --output ${workdir}/bareos-${app}-${tag}.tar \
+      barcus/bareos-${app}:${tag}
   #fi
 done < ${workdir}/app_build.txt
 
