@@ -44,6 +44,7 @@ for file in $docker_files; do
     if [ "${base_img}" == 'alpine' ]; then
       echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
       echo "${app} ${tag_build} arm64 ${app_dir}/${version_dir}" >> $build_file
+      echo "${app} ${tag_build} ${tag_build}" >> $tag_file
 
       if [ "${app}" == "director" ]; then
         echo "${app} ${tag_build} ${version}-alpine" >> $tag_file
