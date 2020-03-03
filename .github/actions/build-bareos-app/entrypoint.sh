@@ -4,6 +4,7 @@
 docker buildx create --name builder --driver docker-container --use
 workdir="${GITHUB_WORKSPACE}/build"
 
+mkdir -p "$workdir"
 while read app version arch app_path ; do
   tag="${version}"
   re='^[0-9]+-alpine.*$'

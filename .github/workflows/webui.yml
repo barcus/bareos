@@ -7,6 +7,8 @@ on:
       - 'director-*/*'
       - 'storage/*'
       - 'webui/*'
+      - '.github/actions/*'
+      - '.github/workflows/*'
     branches:
       - master
   pull_request:
@@ -15,6 +17,8 @@ on:
       - 'director-*/*'
       - 'storage/*'
       - 'webui/*'
+      - '.github/actions/*'
+      - '.github/workflows/*'
     branches:
       - master
 

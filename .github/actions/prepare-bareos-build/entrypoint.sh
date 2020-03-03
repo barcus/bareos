@@ -10,6 +10,8 @@ tag_file="${GITHUB_WORKSPACE}/build/tag_build.txt"
 build_app="$INPUT_BAREOS_APP"
 docker_files=$(find ${build_app}*/ -name Dockerfile 2>/dev/null)
 
+mkdir -p "${GITHUB_WORKSPACE}/build"
+
 for file in $docker_files; do
   app=$(echo $file| sed -n 's#^\([a-z]*\).*#\1#p')
   app_dir=$(echo $file |cut -d'/' -f1)
