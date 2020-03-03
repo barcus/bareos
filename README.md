@@ -6,7 +6,7 @@
 
 This package provides images for [Bareos][bareos-href] :
 
-module|pulls|build
+module|pulls|latest build
 -----|-----|-----
 Director| [![Docker badge][docker-img-dir]][docker-url-dir]| ![director](https://github.com/barcus/bareos/workflows/director/badge.svg)
 Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]| ![storage](https://github.com/barcus/bareos/workflows/storage/badge.svg)
