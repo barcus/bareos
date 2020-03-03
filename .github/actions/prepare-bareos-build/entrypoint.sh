@@ -24,9 +24,11 @@ for file in $docker_files; do
   fi
 
   # Declare each Dockerfile with its tags for building
-  echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
-  if [ "${base_img}" == 'alpine' ]; then
-    echo "${app} ${tag_build} arm64 ${app_dir}/${version_dir}" >> $build_file
+  if [ "$version" == '18' ]; then
+    #echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
+    if [ "${base_img}" == 'alpine' ]; then
+      echo "${app} ${tag_build} arm64 ${app_dir}/${version_dir}" >> $build_file
+    fi
   fi
 done
 

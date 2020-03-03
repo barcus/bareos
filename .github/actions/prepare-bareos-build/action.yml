@@ -1,6 +1,11 @@
 name: 'prepare-bareos-build'
 description: 'Prepare Bareos app build file'
 author: 'Barcus'
+inputs:
+  bareos_app:
+    description: 'Bareos app name'
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ inputs.bareos_app }}

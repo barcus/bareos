@@ -1,4 +1,8 @@
-FROM alpine:3.10
+FROM docker
+
+RUN set -x \
+    && apk update \
+    && apk add curl bash
 
 COPY entrypoint.sh /entrypoint.sh
 

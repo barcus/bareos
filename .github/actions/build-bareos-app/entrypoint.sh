@@ -26,14 +26,15 @@ while read app version arch app_path ; do
     # Build with buildx
     docker buildx build \
       --platform ${arch} \
-      --output 'type=docker' \
+      #--output 'type=docker' \
+      --output "type=tar,dest=${workdir}/bareos-${app}-${tag}" 
       --tag barcus/bareos-${app}:${tag} \
       ${app_path}
 
     # Save image to file
-    docker save \
-      --output ${workdir}/bareos-${app}-${tag}.tar \
-      barcus/bareos-${app}:${tag}
+    #docker save \
+    #  --output ${workdir}/bareos-${app}-${tag}.tar \
+    #  barcus/bareos-${app}:${tag}
   #fi
 done < ${workdir}/app_build.txt
 
