@@ -27,7 +27,7 @@ while read app version arch app_path ; do
     docker buildx build \
       --platform ${arch} \
       #--output 'type=docker' \
-      --output "type=tar,dest=${workdir}/bareos-${app}-${tag}" 
+      --output "type=tar,dest=${workdir}/bareos-${app}-${tag}" \
       --tag barcus/bareos-${app}:${tag} \
       ${app_path}
 
