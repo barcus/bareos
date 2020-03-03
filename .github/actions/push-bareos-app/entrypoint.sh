@@ -38,5 +38,5 @@ while read build_app s_tag t_tag ; do
 done < ${workdir}/tag_build.txt
 
 # Clean Alpine build_tag
-docker run --rm -it lumir/remove-dockerhub-tag --user barcus \
-  --password ${INPUT_DOCKER_PASS} $rm_tag
+docker run --rm lumir/remove-dockerhub-tag \
+  --user barcus --password ${INPUT_DOCKER_PASS} $rm_tag
