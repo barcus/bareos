@@ -6,12 +6,12 @@
 
 This package provides images for [Bareos][bareos-href] :
 
-module|pulls
------|-----
-Director| [![Docker badge][docker-img-dir]][docker-url-dir]
-Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]
-Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]
-webUI| [![Docker badge][docker-img-ui]][docker-url-ui]
+module|pulls|latest build
+-----|-----|-----
+Director| [![Docker badge][docker-img-dir]][docker-url-dir]| ![director](https://github.com/barcus/bareos/workflows/director/badge.svg)
+Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]| ![storage](https://github.com/barcus/bareos/workflows/storage/badge.svg)
+Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]| ![client](https://github.com/barcus/bareos/workflows/client/badge.svg)
+webUI| [![Docker badge][docker-img-ui]][docker-url-ui]| ![webui](https://github.com/barcus/bareos/workflows/webui/badge.svg)
 
 Images are based on Ubuntu or Alpine, check tags below
 
