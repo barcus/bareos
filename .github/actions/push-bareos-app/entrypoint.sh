@@ -13,3 +13,4 @@ done < ${workdir}/tag_build.txt
 
 cat ${workdir}/tag_build.txt
 cat ${workdir}/app_build.txt
+echo 'app and tag ok'
