@@ -25,9 +25,32 @@ for file in $docker_files; do
 
   # Declare each Dockerfile with its tags for building
   if [ "$version" == '18' ]; then
+    #if [ "${base_img}" == 'ubuntu' ]; then
+    #  echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
+    #  if [ "${app}" == 'director' ]; then
+    #    echo "${app} ${tag_build}-amd64 ${version}-ubuntu-amd64" >> $tag_file
+    #  fi
+    #  if [ "${backend}" != 'pgsql' ]; then
+    #    echo "${app} ${tag_build}-amd64 ${version}-amd64" >> $tag_file
+    #  fi
+    #  if [ "${version}" == "$latest_ubuntu" ]; then
+    #    echo "${app} ${tag_build}-amd64 ubuntu-amd64" >> $tag_file
+    #    echo "${app} ${tag_build}-arm64 latest-amd64" >> $tag_file
+    #  fi
+    #fi
+
     if [ "${base_img}" == 'alpine' ]; then
       echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
       echo "${app} ${tag_build} arm64 ${app_dir}/${version_dir}" >> $build_file
+
+      if [ "${app}" == "director" ]; then
+        echo "${app} ${tag_build}-amd64 ${version}-alpine-amd64" >> $tag_file
+        echo "${app} ${tag_build}-arm64 ${version}-alpine-arm64" >> $tag_file
+      fi
+      if [ "${version}" == "$latest_alpine" ]; then
+        echo "${app} ${tag_build}-amd64 alpine-amd64" >> $tag_file
+        echo "${app} ${tag_build}-arm64 alpine-arm64" >> $tag_file
+      fi
     fi
   fi
 done
