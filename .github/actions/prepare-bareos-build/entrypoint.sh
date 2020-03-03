@@ -29,14 +29,14 @@ for file in $docker_files; do
     if [ "${base_img}" == 'ubuntu' ]; then
       echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
       if [ "${app}" == 'director' ]; then
-        echo "${app} ${tag_build}-amd64 ${version}-ubuntu-amd64" >> $tag_file
+        echo "${app} ${tag_build} ${version}-ubuntu" >> $tag_file
       fi
     #  if [ "${backend}" != 'pgsql' ]; then
-    #    echo "${app} ${tag_build}-amd64 ${version}-amd64" >> $tag_file
+    #    echo "${app} ${tag_build} ${version}" >> $tag_file
     #  fi
     #  if [ "${version}" == "$latest_ubuntu" ]; then
-    #    echo "${app} ${tag_build}-amd64 ubuntu-amd64" >> $tag_file
-    #    echo "${app} ${tag_build}-arm64 latest-amd64" >> $tag_file
+    #    echo "${app} ${tag_build} ubuntu" >> $tag_file
+    #    echo "${app} ${tag_build} latest" >> $tag_file
     #  fi
     fi
 
