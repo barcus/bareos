@@ -10,3 +10,6 @@ done
 while read app s_tag t_tag ; do
   docker tag barcus/bareos-${app}:${s_tag} barcus/bareos-${app}:${t_tag}
 done < ${workdir}/tag_build.txt
+
+cat ${workdir}/tag_build.txt
+cat ${workdir}/app_build.txt
