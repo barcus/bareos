@@ -1,6 +1,22 @@
 name: client
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'client/*'
+      - 'director-*/*'
+      - 'storage/*'
+      - 'webui/*'
+    branches:
+      - master
+  pull_request:
+    paths:
+      - 'client/*'
+      - 'director-*/*'
+      - 'storage/*'
+      - 'webui/*'
+    branches:
+      - master
 
 jobs:
   build:
