@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
-env
-export DOCKER_CLI_EXPERIMENTAL="enabled"
-workdir="${GITHUB_WORKSPACE}/build-artifact-"
+
+build_app=${INPUT_BAREOS_APP}
+workdir="${GITHUB_WORKSPACE}/build-artifact-${build_app}"
 docker_files=$(find ${workdir}/ -name "bareos-*.tar" 2>/dev/null)
 
+export DOCKER_CLI_EXPERIMENTAL="enabled"
+
+# Load Dockerfiles
 for file in $docker_files; do
   docker load --input $file
 done
 
+# Connect Docker Hub
 docker login -u barcus -p ${INPUT_DOCKER_PASS}
 
 # Push images and manifests
@@ -45,7 +49,7 @@ docker run --rm lumir/remove-dockerhub-tag \
 docker run -v $PWD:/workspace \
   -e DOCKERHUB_USERNAME=barcus \
   -e DOCKERHUB_PASSWORD=$INPUT_DOCKER_PASS \
-  -e DOCKERHUB_REPOSITORY="barcus/bareos-${CI_APP}" \
+  -e DOCKERHUB_REPOSITORY="barcus/bareos-${build_app}" \
   -e README_FILEPATH='/workspace/README.md' \
   peterevans/dockerhub-description:2.1.0
 
