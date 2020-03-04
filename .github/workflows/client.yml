@@ -11,6 +11,7 @@ on:
       - '.github/workflows/*.yml'
     branches:
       - master
+      - ci_optim
   pull_request:
     paths:
       - 'client/**'

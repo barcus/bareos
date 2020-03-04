@@ -25,6 +25,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [client, director, storage, webui]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -32,7 +35,7 @@ jobs:
       - name: Prepare build file
         uses: ./.github/actions/prepare-bareos-build
         with:
-          bareos_app: __BAREOS_APP__
+          bareos_app: ${{ matrix.module }}
 
       - name: Build images
         uses: ./.github/actions/build-bareos-app
@@ -46,6 +49,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [client, director, storage, webui]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -59,3 +65,4 @@ jobs:
         uses: ./.github/actions/push-bareos-app
         with:
           docker_pass: ${{ secrets.DOCKER_PASS }}
+          bareos_app: ${{ matrix.module }}
