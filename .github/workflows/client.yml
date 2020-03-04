@@ -3,22 +3,22 @@ name: client
 on:
   push:
     paths:
-      - 'client/*'
-      - 'director-*/*'
-      - 'storage/*'
-      - 'webui/*'
-      - '.github/actions/*'
-      - '.github/workflows/*'
+      - 'client/**'
+      - 'director-*/**'
+      - 'storage/**'
+      - 'webui/**'
+      - '.github/actions/**'
+      - '.github/workflows/*.yml'
     branches:
       - master
   pull_request:
     paths:
-      - 'client/*'
-      - 'director-*/*'
-      - 'storage/*'
-      - 'webui/*'
-      - '.github/actions/*'
-      - '.github/workflows/*'
+      - 'client/**'
+      - 'director-*/**'
+      - 'storage/**'
+      - 'webui/**'
+      - '.github/actions/**'
+      - '.github/workflows/*.yml'
     branches:
       - master
 
