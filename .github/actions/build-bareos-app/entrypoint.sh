@@ -26,3 +26,5 @@ while read app version arch app_path ; do
 done < ${workdir}/app_build.txt
 
 chmod 755 ${workdir}/bareos-*.tar
+
+#EOF

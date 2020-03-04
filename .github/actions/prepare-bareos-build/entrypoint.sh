@@ -63,3 +63,5 @@ chmod a+x ~/.docker/cli-plugins/docker-buildx
 
 # Run qemu
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+#EOF

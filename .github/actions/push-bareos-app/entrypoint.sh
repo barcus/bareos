@@ -40,3 +40,13 @@ done < ${workdir}/tag_build.txt
 # Clean Alpine build_tag
 docker run --rm lumir/remove-dockerhub-tag \
   --user barcus --password ${INPUT_DOCKER_PASS} $rm_tag
+
+# Update Dockr Hub Readme
+docker run -v $PWD:/workspace \
+  -e DOCKERHUB_USERNAME=barcus \
+  -e DOCKERHUB_PASSWORD=$INPUT_DOCKER_PASS \
+  -e DOCKERHUB_REPOSITORY="barcus/bareos-${GITHUB_WORKFLOW}" \
+  -e README_FILEPATH='/workspace/README.md' \
+  peterevans/dockerhub-description:2.1.0
+
+#EOF
