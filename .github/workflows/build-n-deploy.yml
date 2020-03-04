@@ -44,25 +44,28 @@ jobs:
       - name: Upload images
         uses: actions/upload-artifact@v1
         with:
-          name: build-artifact
+          name: build-artifact-${{ matrix.module }}
           path: build/
      
       - name: check build
         run: ls -l build/
 
-  #deploy:
-  #  needs: build
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - name: Checkout
-  #      uses: actions/checkout@v2
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [client, director, storage, webui]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-  #    - name: Download build file
-  #      uses: actions/download-artifact@v1
-  #      with:
-  #        name: build-artifact
+      - name: Download build file
+        uses: actions/download-artifact@v1
+        with:
+          name: build-artifact-${{ matrix.module }}
 
-  #    - name: Load and push images
-  #      uses: ./.github/actions/push-bareos-app
-  #      with:
-  #        docker_pass: ${{ secrets.DOCKER_PASS }}
+      - name: Load and push images
+        uses: ./.github/actions/push-bareos-app
+        with:
+          docker_pass: ${{ secrets.DOCKER_PASS }}
