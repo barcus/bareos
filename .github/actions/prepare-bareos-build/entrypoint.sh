@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+env
 export DOCKER_CLI_EXPERIMENTAL="enabled"
 BUILDX_VER='v0.3.1'
 latest_ubuntu='19'
