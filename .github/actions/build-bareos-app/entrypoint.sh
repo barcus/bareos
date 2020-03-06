@@ -24,13 +24,13 @@ while read app version arch app_path ; do
   docker buildx build \
     --platform ${arch} \
     --output 'type=docker,push=false' \
-    --tag barcus/bareos-${app}:${tag} \
+    --tag ${GITHUB_REPOSITORY}-${app}:${tag} \
     ${app_path}
 
   # Save image to tar file
   docker save \
     --output ${workdir}/bareos-${app}-${tag}.tar \
-    barcus/bareos-${app}:${tag}
+    ${GITHUB_REPOSITORY}-${app}:${tag}
 done < ${workdir}/app_build.txt
 
 chmod 755 ${workdir}/bareos-*.tar

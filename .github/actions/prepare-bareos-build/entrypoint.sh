@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-env
-
-exit
-
 BUILDX_VER='v0.3.1'
 latest_ubuntu='19'
 latest_alpine='18'

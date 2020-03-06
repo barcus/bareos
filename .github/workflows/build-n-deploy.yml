@@ -44,51 +44,51 @@ jobs:
           name: build-artifact-${{ matrix.module }}
           path: build
 
-  #build:
-  #  needs: prepare
-  #  runs-on: ubuntu-latest
-  #  strategy:
-  #    matrix:
-  #      module: [client, director, storage, webui]
-  #  steps:
-  #    - name: Checkout
-  #      uses: actions/checkout@v2
+  build:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [client, director, storage, webui]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-  #    - name: Download artifact
-  #      uses: actions/download-artifact@v1
-  #      with:
-  #        name: build-artifact-${{ matrix.module }}
-  #        path: build
+      - name: Download artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: build-artifact-${{ matrix.module }}
+          path: build
 
-  #    - name: Build images
-  #      uses: ./.github/actions/build-bareos-app
-  #      with:
-  #        bareos_app: ${{ matrix.module }}
-  #     
-  #    - name: Upload artifact
-  #      uses: actions/upload-artifact@v1
-  #      with:
-  #        name: build-artifact-${{ matrix.module }}
-  #        path: build
-  #   
-  #deploy:
-  #  needs: build
-  #  runs-on: ubuntu-latest
-  #  strategy:
-  #    matrix:
-  #      module: [client, director, storage, webui]
-  #  steps:
-  #    - name: Checkout
-  #      uses: actions/checkout@v2
+      - name: Build images
+        uses: ./.github/actions/build-bareos-app
+        with:
+          bareos_app: ${{ matrix.module }}
 
-  #    - name: Download artifact
-  #      uses: actions/download-artifact@v1
-  #      with:
-  #        name: build-artifact-${{ matrix.module }}
-  #        path: build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-artifact-${{ matrix.module }}
+          path: build
 
-  #    - name: Load and push images
-  #      uses: ./.github/actions/push-bareos-app
-  #      with:
-  #        docker_pass: ${{ secrets.DOCKER_PASS }}
-  #        bareos_app: ${{ matrix.module }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [client, director, storage, webui]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: build-artifact-${{ matrix.module }}
+          path: build
+
+      - name: Load and push images
+        uses: ./.github/actions/push-bareos-app
+        with:
+          docker_pass: ${{ secrets.DOCKER_PASS }}
+          bareos_app: ${{ matrix.module }}
