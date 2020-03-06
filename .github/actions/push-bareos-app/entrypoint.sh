@@ -6,10 +6,6 @@ docker_files=$(find ${workdir}/ -name "bareos-*.tar" 2>/dev/null)
 
 export DOCKER_CLI_EXPERIMENTAL="enabled"
 
-echo "build app : $build_app"
-echo "workdir : $workdir"
-echo " docker files : $docker_files"
-
 # Load Dockerfiles
 for file in $docker_files; do
   docker load --input $file
@@ -50,8 +46,9 @@ docker run --rm lumir/remove-dockerhub-tag \
   --user barcus --password ${INPUT_DOCKER_PASS} $rm_tag
 
 # Update Dockr Hub Readme
+set -x
 docker run -v $PWD:/workspace \
-  -e DOCKERHUB_USERNAME=barcus \
+  -e DOCKERHUB_USERNAME='barcus' \
   -e DOCKERHUB_PASSWORD=$INPUT_DOCKER_PASS \
   -e DOCKERHUB_REPOSITORY="barcus/bareos-${build_app}" \
   -e README_FILEPATH='/workspace/README.md' \
