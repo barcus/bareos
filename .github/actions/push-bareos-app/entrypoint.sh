@@ -47,12 +47,4 @@ done < ${workdir}/tag_build.txt
 docker run --rm lumir/remove-dockerhub-tag \
   --user ${GITHUB_ACTOR} --password ${INPUT_DOCKER_PASS} $rm_tag
 
-# Update Docker Hub overview
-docker run -v $PWD:/workspace \
-  -e DOCKERHUB_USERNAME='barcus' \
-  -e DOCKERHUB_PASSWORD=$INPUT_DOCKER_PASS \
-  -e DOCKERHUB_REPOSITORY="${GITHUB_REPOSITORY}-${workflow_app}" \
-  -e README_FILEPATH='/workspace/README.md' \
-  peterevans/dockerhub-description:2.1.0
-
 #EOF

@@ -1,0 +1,29 @@
+name: push-readme
+
+on:
+  push:
+    paths:
+      - 'README.md'
+    branches:
+      - master
+  pull_request:
+    paths:
+      - 'README.md'
+    branches:
+      - master
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [client, director, storage, webui]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Push readme to Docker Hub
+        uses: ./.github/actions/push-bareos-readme
+        with:
+          docker_pass: ${{ secrets.DOCKER_PASS }}
+          bareos_app: ${{ matrix.module }}
