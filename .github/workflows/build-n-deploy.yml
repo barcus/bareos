@@ -28,8 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        #module: [client, director, storage, webui]
-        module: [client]
+        module: [client, director, storage, webui]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -50,8 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        #module: [client, director, storage, webui]
-        module: [client]
+        module: [client, director, storage, webui]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -74,13 +72,12 @@ jobs:
           name: build-artifact-${{ matrix.module }}
           path: build
      
-  push:
+  deploy:
     needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        #module: [client, director, storage, webui]
-        module: [client]
+        module: [client, director, storage, webui]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
