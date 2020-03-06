@@ -4,6 +4,7 @@ workflow_app=${INPUT_BAREOS_APP}
 workdir="${GITHUB_WORKSPACE}/build"
 docker_files=$(find ${workdir}/ -name "bareos-*.tar" 2>/dev/null)
 
+# Enable experimental feature in Docker
 export DOCKER_CLI_EXPERIMENTAL="enabled"
 
 # Load Dockerfiles
@@ -41,11 +42,11 @@ while read build_app s_tag t_tag ; do
   fi
 done < ${workdir}/tag_build.txt
 
-# Clean Alpine build_tag
+# Clean Alpine build_tag by arch
 docker run --rm lumir/remove-dockerhub-tag \
   --user barcus --password ${INPUT_DOCKER_PASS} $rm_tag
 
-# Update Dockr Hub Readme
+# Update Dockr Hub overview
 docker run -v $PWD:/workspace \
   -e DOCKERHUB_USERNAME='barcus' \
   -e DOCKERHUB_PASSWORD=$INPUT_DOCKER_PASS \

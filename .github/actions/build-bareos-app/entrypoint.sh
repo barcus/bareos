@@ -3,8 +3,6 @@
 workdir="${GITHUB_WORKSPACE}/build"
 export DOCKER_CLI_EXPERIMENTAL="enabled"
 
-cat ${workdir}/app_build.txt
-
 # Load buildx binary
 mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
 cp ${workdir}/docker-buildx ~/.docker/cli-plugins/
@@ -15,11 +13,9 @@ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
 # Create build context and build
 docker buildx create --name builder --driver docker-container --use
-
 while read app version arch app_path ; do
   tag="${version}"
   re='^[0-9]+-alpine.*$'
-
   if [[ $version =~ $re ]] ; then
     tag="${version}-${arch}"
   fi
