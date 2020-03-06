@@ -6,6 +6,10 @@ docker_files=$(find ${workdir}/ -name "bareos-*.tar" 2>/dev/null)
 
 export DOCKER_CLI_EXPERIMENTAL="enabled"
 
+echo "build app : $build_app"
+echo "workdir : $workdir"
+echo " docker files : $docker_files"
+
 # Load Dockerfiles
 for file in $docker_files; do
   docker load --input $file
