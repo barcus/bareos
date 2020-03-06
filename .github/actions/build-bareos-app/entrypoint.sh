@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
 workdir="${GITHUB_WORKSPACE}/build"
+export DOCKER_CLI_EXPERIMENTAL="enabled"
 
 # Load buildx binary
-export DOCKER_CLI_EXPERIMENTAL="enabled"
 mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
 cp ${workdir}/docker-buildx ~/.docker/cli-plugins/
+ls -l ~/.docker/cli-plugins/
 
 # Run qemu
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes

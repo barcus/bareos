@@ -57,7 +57,7 @@ done
 
 # Download  Buildx plugin
 buildx_url="https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64"
-curl --silent -L $buildx_url > ${GITHUB_WORKSPACE}/build/docker-buildx
+curl --silent -L "${buildx_url}" > ${GITHUB_WORKSPACE}/build/docker-buildx
 chmod a+x ${GITHUB_WORKSPACE}/build/docker-buildx
 
 #EOF
