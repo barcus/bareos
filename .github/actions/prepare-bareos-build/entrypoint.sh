@@ -57,7 +57,8 @@ for file in $docker_files; do
 done
 
 # Download  Buildx plugin
-curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ${GITHUB_WORKSPACE}/docker-buildx
+buildx_url="https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64"
+curl --silent -L $buildx_url > ${GITHUB_WORKSPACE}/build/docker-buildx
 chmod a+x ${GITHUB_WORKSPACE}/build/docker-buildx
 
 #EOF
