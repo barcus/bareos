@@ -13,13 +13,13 @@ Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]| ![storage](http
 Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]| ![client](https://github.com/barcus/bareos/workflows/client/badge.svg)
 webUI| [![Docker badge][docker-img-ui]][docker-url-ui]| ![webui](https://github.com/barcus/bareos/workflows/webui/badge.svg)
 
-Images are based on Ubuntu or Alpine, check tags below
+Images are based on **Ubuntu** or **Alpine**, check tags below
 
 :+1: Tested with Bareos 16.2, 17.2, 18.2 and 19.2
 
-* Ubuntu images for Bareos 16 and 17 are based on Xenial
-* Ubuntu images for Bareos 18+ are based on Bionic
-* Alpine images are available for linux/amd64 and linux/arm64/v8 platform
+* Ubuntu images for Bareos 16 and 17 are based on **Xenial**
+* Ubuntu images for Bareos 18+ are based on **Bionic**
+* Alpine images are available for **linux/amd64** and **linux/arm64/v8** platform
 
 ## Tags
 
@@ -32,6 +32,8 @@ bareos-director (dir)
 * `17-ubuntu-mysql`, `17-ubuntu`, `17`
 * `17-ubuntu-pgsql`
 * `17-alpine`
+* `16-ubuntu-mysql`, `16-ubuntu`, `16`
+* `16-ubuntu-pgsql`
 
 bareos-client (fd) - bareos-storage (sd) - bareos-webui
 
@@ -40,6 +42,7 @@ bareos-client (fd) - bareos-storage (sd) - bareos-webui
 * `18-alpine`, `alpine`
 * `17-ubuntu`, `17`
 * `17-alpine`
+* `16-ubuntu`, `16`
 
 ## Security advice
 
