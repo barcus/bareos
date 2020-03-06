@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 
-# Create build and use it for building
-docker buildx create --name builder --driver docker-container --use
 workdir="${GITHUB_WORKSPACE}/build"
+export DOCKER_CLI_EXPERIMENTAL="enabled"
 
-mkdir -p "$workdir"
+# Load buildx binary
+mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
+cp ${workdir}/docker-buildx ~/.docker/cli-plugins/
+chmod a+x ~/.docker/cli-plugins/docker-buildx
+
+# Run qemu
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+# Create build context and build
+docker buildx create --name builder --driver docker-container --use
 while read app version arch app_path ; do
   tag="${version}"
   re='^[0-9]+-alpine.*$'
@@ -16,13 +24,13 @@ while read app version arch app_path ; do
   docker buildx build \
     --platform ${arch} \
     --output 'type=docker,push=false' \
-    --tag barcus/bareos-${app}:${tag} \
+    --tag ${GITHUB_REPOSITORY}-${app}:${tag} \
     ${app_path}
 
-  # Save image to file
+  # Save image to tar file
   docker save \
     --output ${workdir}/bareos-${app}-${tag}.tar \
-    barcus/bareos-${app}:${tag}
+    ${GITHUB_REPOSITORY}-${app}:${tag}
 done < ${workdir}/app_build.txt
 
 chmod 755 ${workdir}/bareos-*.tar

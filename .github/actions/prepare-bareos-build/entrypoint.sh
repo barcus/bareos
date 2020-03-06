@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-export DOCKER_CLI_EXPERIMENTAL="enabled"
 BUILDX_VER='v0.3.1'
 latest_ubuntu='19'
 latest_alpine='18'
@@ -19,14 +18,14 @@ for file in $docker_files; do
   version=$(echo $version_dir |cut -d'-' -f1)
   base_img=$(echo $version_dir |cut -d'-' -f2)
 
-  # Define default tag for each Dockerfile
+  # Define default tag
   tag_build="${version}-${base_img}"
   if [ "${app}" == 'director' ]; then
     backend=$(echo $app_dir |cut -d'-' -f2)
     tag_build="${tag_build}-${backend}"
   fi
 
-  # Declare each Dockerfile with its tags for building
+  # Declare each Dockerfile and tags related
   if [ "${base_img}" == 'ubuntu' ]; then
     echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
 
@@ -41,7 +40,6 @@ for file in $docker_files; do
       echo "${app} ${tag_build} latest" >> $tag_file
     fi
   fi
-
   if [ "${base_img}" == 'alpine' ]; then
     echo "${app} ${tag_build} amd64 ${app_dir}/${version_dir}" >> $build_file
     echo "${app} ${tag_build} arm64 ${app_dir}/${version_dir}" >> $build_file
@@ -56,12 +54,8 @@ for file in $docker_files; do
   fi
 done
 
-# Install Buildx plugin
-mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
-curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
-chmod a+x ~/.docker/cli-plugins/docker-buildx
-
-# Run qemu
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+# Download Docker Buildx plugin
+buildx_url="https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64"
+curl --silent -L "${buildx_url}" > ${GITHUB_WORKSPACE}/build/docker-buildx
 
 #EOF
