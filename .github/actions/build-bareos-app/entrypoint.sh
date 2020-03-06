@@ -3,6 +3,7 @@
 workdir="${GITHUB_WORKSPACE}/build"
 
 # Load buildx binary
+export DOCKER_CLI_EXPERIMENTAL="enabled"
 mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
 cp ${workdir}/docker-buildx ~/.docker/cli-plugins/
 

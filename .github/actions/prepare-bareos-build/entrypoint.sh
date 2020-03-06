@@ -4,7 +4,6 @@ BUILDX_VER='v0.3.1'
 latest_ubuntu='19'
 latest_alpine='18'
 
-export DOCKER_CLI_EXPERIMENTAL="enabled"
 build_file="${GITHUB_WORKSPACE}/build/app_build.txt"
 tag_file="${GITHUB_WORKSPACE}/build/tag_build.txt"
 build_app="$INPUT_BAREOS_APP"
