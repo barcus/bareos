@@ -13,7 +13,7 @@ for file in $docker_files; do
 done
 
 # Connect Docker Hub
-docker login -u ${GITHUB_ACTOR} -p ${INPUT_DOCKER_PASS}
+docker login -u 'barcus' -p ${INPUT_DOCKER_PASS}
 
 # Push images and manifests
 while read app version arch app_path ; do
@@ -47,9 +47,9 @@ done < ${workdir}/tag_build.txt
 docker run --rm lumir/remove-dockerhub-tag \
   --user ${GITHUB_ACTOR} --password ${INPUT_DOCKER_PASS} $rm_tag
 
-# Update Dockr Hub overview
+# Update Docker Hub overview
 docker run -v $PWD:/workspace \
-  -e DOCKERHUB_USERNAME=${GITHUB_ACTOR} \
+  -e DOCKERHUB_USERNAME='barcus' \
   -e DOCKERHUB_PASSWORD=$INPUT_DOCKER_PASS \
   -e DOCKERHUB_REPOSITORY="${GITHUB_REPOSITORY}-${workflow_app}" \
   -e README_FILEPATH='/workspace/README.md' \
