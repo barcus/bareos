@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 workflow_app=${INPUT_BAREOS_APP}
-workdir="${GITHUB_WORKSPACE}/build-artifact-${workflow_app}"
+workdir="${GITHUB_WORKSPACE}/build"
 docker_files=$(find ${workdir}/ -name "bareos-*.tar" 2>/dev/null)
 
 export DOCKER_CLI_EXPERIMENTAL="enabled"

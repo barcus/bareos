@@ -60,15 +60,19 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: build-artifact-${{ matrix.module }}
+          path: build
 
       - name: Build images
         uses: ./.github/actions/build-bareos-app
+        with:
+          bareos_app: ${{ matrix.module }}
+       
 
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
           name: build-artifact-${{ matrix.module }}
-          path: build/
+          path: build
      
   push:
     needs: build
@@ -85,6 +89,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: build-artifact-${{ matrix.module }}
+          path: build
 
       - name: Load and push images
         uses: ./.github/actions/push-bareos-app

@@ -56,12 +56,8 @@ for file in $docker_files; do
   fi
 done
 
-# Install Buildx plugin
-mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
-curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
-chmod a+x ~/.docker/cli-plugins/docker-buildx
-
-# Run qemu
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+# Download  Buildx plugin
+curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ${GITHUB_WORKSPACE}/docker-buildx
+chmod a+x ${GITHUB_WORKSPACE}/docker-buildx
 
 #EOF
