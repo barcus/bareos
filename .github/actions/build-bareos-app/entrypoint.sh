@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
+workdir="${GITHUB_WORKSPACE}/build"
+
 # Create build and use it for building
 docker buildx create --name builder --driver docker-container --use
-workdir="${GITHUB_WORKSPACE}/build"
 
 mkdir -p "$workdir"
 while read app version arch app_path ; do
@@ -24,12 +25,6 @@ while read app version arch app_path ; do
   docker save \
     --output ${workdir}/bareos-${app}-${tag}.tar \
     barcus/bareos-${app}:${tag}
-
-  #docker buildx build \
-  #  --platform ${arch} \
-  #  --output "type=tar,dest=${workdir}/bareos-${app}-${tag}.tar" \
-  #  --tag barcus/bareos-${app}:${tag} \
-  #  ${app_path}
 done < ${workdir}/app_build.txt
 
 chmod 755 ${workdir}/bareos-*.tar

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -x
 
 workflow_app=${INPUT_BAREOS_APP}
 workdir="${GITHUB_WORKSPACE}/build-artifact-${workflow_app}"

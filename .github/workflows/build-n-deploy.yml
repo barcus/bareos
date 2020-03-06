@@ -24,7 +24,7 @@ on:
       - master
 
 jobs:
-  build:
+  prepare:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -39,6 +39,28 @@ jobs:
         with:
           bareos_app: ${{ matrix.module }}
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-artifact-${{ matrix.module }}
+          path: build/
+
+  build:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        #module: [client, director, storage, webui]
+        module: [client]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: build-artifact-${{ matrix.module }}
+
       - name: Build images
         uses: ./.github/actions/build-bareos-app
 
@@ -48,10 +70,7 @@ jobs:
           name: build-artifact-${{ matrix.module }}
           path: build/
      
-      - name: check build
-        run: ls -l build/
-
-  deploy:
+  push:
     needs: build
     runs-on: ubuntu-latest
     strategy:
