@@ -32,7 +32,7 @@ jobs:
         env:
           DOCKERHUB_USERNAME: barcus
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASS }}
-          DOCKERHUB_REPOSITORY: barcus/bareos-${{ matrix.module }}
+          DOCKERHUB_REPOSITORY: barcus/bareos-client
 
       #- name: Push readme to Docker Hub
       #  uses: ./.github/actions/push-bareos-readme
