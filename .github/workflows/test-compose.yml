@@ -27,7 +27,8 @@ jobs:
 
       - name: Create required folder
         run: |
-          sudo mkdir /data && sudo chmod 777 /data
+          sudo chmod 777 /data
+          ls -l /data
           mkdir -p /data/bareos/config/director
           mkdir -p /data/bareos/data/director
           mkdir -p /data/bareos/config/storage
