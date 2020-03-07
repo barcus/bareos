@@ -27,8 +27,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Push readme to Docker Hub
-        uses: ./.github/actions/push-bareos-readme
-        with:
-          docker_pass: ${{ secrets.DOCKER_PASS }}
-          bareos_app: ${{ matrix.module }}
+      - name: Update Docker Hub description
+        uses: peter-evans/dockerhub-description@v2.1.0
+        env:
+          DOCKERHUB_USERNAME: barcus
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASS }}
+          DOCKERHUB_REPOSITORY: barcus/bareos-${{ matrix.module }}
+
+      #- name: Push readme to Docker Hub
+      #  uses: ./.github/actions/push-bareos-readme
+      #  with:
+      #    docker_pass: ${{ secrets.DOCKER_PASS }}
+      #    bareos_app: ${{ matrix.module }}
