@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+set -x
 # Update Docker Hub overview
 docker run -v $PWD:/workspace \
   -e DOCKERHUB_USERNAME='barcus' \

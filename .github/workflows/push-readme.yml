@@ -4,16 +4,20 @@ on:
   push:
     paths:
       - 'README.md'
+      - '.github/workflows/push-readme.yml'
+      - '.github/actions/push-bareos-readme/*'
     branches:
       - master
   pull_request:
     paths:
       - 'README.md'
+      - '.github/workflows/push-readme.yml'
+      - '.github/actions/push-bareos-readme/*'
     branches:
       - master
 
 jobs:
-  push:
+  dockerhub:
     runs-on: ubuntu-latest
     strategy:
       matrix:
