@@ -8,10 +8,10 @@ This package provides images for [Bareos][bareos-href] :
 
 module|pulls|latest build
 -----|-----|-----
-Director| [![Docker badge][docker-img-dir]][docker-url-dir]| ![director](https://github.com/barcus/bareos/workflows/director/badge.svg)
-Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]| ![storage](https://github.com/barcus/bareos/workflows/storage/badge.svg)
-Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]| ![client](https://github.com/barcus/bareos/workflows/client/badge.svg)
-webUI| [![Docker badge][docker-img-ui]][docker-url-ui]| ![webui](https://github.com/barcus/bareos/workflows/webui/badge.svg)
+Director| [![Docker badge][docker-img-dir]][docker-url-dir]| ![director][build-n-deploy-png]
+Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]| ![storage][build-n-deploy-png]
+Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]| ![client][build-n-deploy-png]
+webUI| [![Docker badge][docker-img-ui]][docker-url-ui]| ![webui][build-n-deploy-png]
 
 Images are based on **Ubuntu** or **Alpine**, check tags below
 
@@ -80,10 +80,12 @@ docker-compose -f /path/to/your/docker-compose.yml up -d
 
 docker-compose files are available for Alpine and Ubuntu based stack:
 
-* [alpine-v1/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v1.yml) (compose v3, required Docker 1.13.0+)
-* [alpine-v2/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v2.yml) (compose v3.7, required Docker 18.06.0+)
-* [ubuntu/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-mysql.yml) (compose v3, required Docker 1.13.0+)
-* [ubuntu/pgsql](https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-pgsql.yml) (compose v3, required Docker 1.13.0+)
+file|compose|docker|latest build
+-----|-----|-----|-----
+[alpine-v1/mysql][compose-alpinev1-href]|v3+ |v1.13.0+|![test-compose][test-compose-png]
+[alpine-v2/mysql][compose-alpinev2-href]|v3.7+ |v18.06.0+|![test-compose][test-compose-png]
+[ubuntu/mysql][compose-ubuntu-mysql-href]|v3+ |v1.13.0+|![test-compose][test-compose-png]
+[ubuntu/pgsql][compose-ubuntu-pgsql-href]|v3+ |v1.13.0+|![test-compose][test-compose-png]
 
 Remember to change your mail address in `ADMIN_MAIL` and maybe some passwords :grin:
 
@@ -259,7 +261,13 @@ Enjoy !
 [docker-url-fd]: https://registry.hub.docker.com/u/barcus/bareos-client
 [docker-img-ui]: https://img.shields.io/docker/pulls/barcus/bareos-webui.svg
 [docker-url-ui]: https://registry.hub.docker.com/u/barcus/bareos-webui
+[build-n-deploy-png]: https://github.com/barcus/bareos/workflows/build-n-deploy/badge.svg
 [bareos-href]: https://www.bareos.org
 [compose-file]: https://github.com/barcus/bareos/blob/master/docker-compose.yml
 [docker-compose-href]: https://docs.docker.com/compose
 [docker-href]: https://docs.docker.com/install
+[compose-alpinev1-href]: https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v1.yml
+[compose-alpinev2-href]: https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v2.yml
+[compose-ubuntu-mysql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-mysql.yml
+[compose-ubuntu-pgsql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-pgsql.yml
+[test-compose-png]: https://github.com/barcus/bareos/workflows/test-compose/badge.svg
