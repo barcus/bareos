@@ -27,16 +27,19 @@ jobs:
 
       - name: Create required folder
         run: |
-          sudo chmod 777 /data
-          ls -l /data
-          mkdir -p /data/bareos/config/director
-          mkdir -p /data/bareos/data/director
-          mkdir -p /data/bareos/config/storage
-          mkdir -p /data/bareos/data/storage
-          mkdir -p /data/bareos/config/client
-          mkdir -p /data/bareos/config/webui
-          mkdir -p /data/bareos/data/webui
-          mkdir -p /data/mysql/data
+          sudo mkdir -p /data/bareos/config/director
+          sudo mkdir -p /data/bareos/data/director
+          sudo mkdir -p /data/bareos/config/storage
+          sudo mkdir -p /data/bareos/data/storage
+          sudo mkdir -p /data/bareos/config/client
+          sudo mkdir -p /data/bareos/config/webui
+          sudo mkdir -p /data/bareos/data/webui
+          sudo mkdir -p /data/mysql/data
+          sudo mkdir -p /data/pgsql/data
+          sudo chmod 777 /data/bareos /data/mysql /data/pgsql
 
       - name: Run docker-compose
-        run: docker-compose -f docker-compose-${{ matrix.module }}.yml up
+        run: docker-compose -f docker-compose-${{ matrix.module }}.yml up -d
+
+      - name: Run Bareos console
+        run: docker exec bareos_bareos-dir_1 bconsole
