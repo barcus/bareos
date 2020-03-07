@@ -25,5 +25,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Create required folder
+        run: |
+          mkdir -p '/data/bareos/config/director'
+          mkdir -p '/data/bareos/data/director'
+          mkdir -p '/data/bareos/config/storage'
+          mkdir -p '/data/bareos/data/storage'
+          mkdir -p '/data/bareos/config/client'
+          mkdir -p '/data/bareos/config/webui'
+          mkdir -p '/data/bareos/data/webui'
+          mkdir -p '/data/mysql/data'
+
       - name: Run docker-compose
         run: docker-compose -f docker-compose-${{ matrix.module }}.yml up
