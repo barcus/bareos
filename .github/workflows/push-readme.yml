@@ -8,6 +8,7 @@ on:
       - '.github/actions/push-bareos-readme/*'
     branches:
       - master
+      - ci_fix_path
   pull_request:
     paths:
       - 'README.md'
