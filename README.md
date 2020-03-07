@@ -79,10 +79,10 @@ docker-compose -f /path/to/your/docker-compose.yml up -d
 
 docker-compose files are available for Alpine and Ubuntu based stack:
 
-* [alpine/mysql](https://github.com/barcus/bareos/blob/master/docker-compose.yml) (compose v3.7, required Docker 18.06.0+)
-* [alpine/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-alpine.yml) (compose v3, required Docker 1.13.0+)
-* [ubuntu/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-mysql.yml) (compose v3, required Docker 1.13.0+)
-* [ubuntu/pgsql](https://github.com/barcus/bareos/blob/master/docker-compose-pgsql.yml) (compose v3, required Docker 1.13.0+)
+* [alpine-v1/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v1.yml) (compose v3, required Docker 1.13.0+)
+* [alpine-v2/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v2.yml) (compose v3.7, required Docker 18.06.0+)
+* [ubuntu/mysql](https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-mysql.yml) (compose v3, required Docker 1.13.0+)
+* [ubuntu/pgsql](https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-pgsql.yml) (compose v3, required Docker 1.13.0+)
 
 Remember to change your mail address in `ADMIN_MAIL` and maybe some passwords :grin:
 
