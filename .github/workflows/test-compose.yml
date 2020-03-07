@@ -42,4 +42,6 @@ jobs:
         run: docker-compose -f docker-compose-${{ matrix.module }}.yml up -d
 
       - name: Run Bareos console
-        run: docker exec bareos_bareos-dir_1 bconsole
+        run: |
+          docker-compose ps
+          docker exec bareos_bareos-dir_1 bconsole
