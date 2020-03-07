@@ -26,6 +26,7 @@ Images are based on **Ubuntu** or **Alpine**, check tags below
 bareos-director (dir)
 
 * `19-ubuntu-mysql`, `19-ubuntu`, `19`, `ubuntu`, `latest`
+* `19-ubuntu-pqsql`
 * `18-ubuntu-mysql`, `18-ubuntu`, `18`
 * `18-ubuntu-pgsql`
 * `18-alpine-mysql`, `18-alpine`, `alpine`
