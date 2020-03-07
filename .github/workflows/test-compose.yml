@@ -41,7 +41,7 @@ jobs:
       - name: Run docker-compose
         run: docker-compose -f docker-compose-${{ matrix.module }}.yml up -d
 
-      - name: Run Bareos console
+      - name: Wait 60s and run Bareos console
         run: |
-          docker-compose ps
+          sleep 60
           docker exec bareos_bareos-dir_1 bconsole
