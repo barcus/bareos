@@ -7,8 +7,10 @@ on:
       - 'director-*/**'
       - 'storage/**'
       - 'webui/**'
-      - '.github/actions/**'
-      - '.github/workflows/*.yml'
+      - '.github/workflows/build-n-deploy.yml'
+      - '.github/actions/prepare-bareos-build/*'
+      - '.github/actions/build-bareos-app/*'
+      - '.github/actions/push-bareos-app/*'
     branches:
       - master
   pull_request:
@@ -17,8 +19,10 @@ on:
       - 'director-*/**'
       - 'storage/**'
       - 'webui/**'
-      - '.github/actions/**'
-      - '.github/workflows/*.yml'
+      - '.github/workflows/build-n-deploy.yml'
+      - '.github/actions/prepare-bareos-build/*'
+      - '.github/actions/build-bareos-app/*'
+      - '.github/actions/push-bareos-app/*'
     branches:
       - master
 
