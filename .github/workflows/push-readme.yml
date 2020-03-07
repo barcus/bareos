@@ -5,15 +5,12 @@ on:
     paths:
       - 'README.md'
       - '.github/workflows/push-readme.yml'
-      - '.github/actions/push-bareos-readme/*'
     branches:
       - master
-      - ci_fix_path
   pull_request:
     paths:
       - 'README.md'
       - '.github/workflows/push-readme.yml'
-      - '.github/actions/push-bareos-readme/*'
     branches:
       - master
 
@@ -33,9 +30,3 @@ jobs:
           DOCKERHUB_USERNAME: barcus
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASS }}
           DOCKERHUB_REPOSITORY: barcus/bareos-${{ matrix.module }}
-
-      #- name: Push readme to Docker Hub
-      #  uses: ./.github/actions/push-bareos-readme
-      #  with:
-      #    docker_pass: ${{ secrets.DOCKER_PASS }}
-      #    bareos_app: ${{ matrix.module }}
