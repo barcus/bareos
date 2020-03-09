@@ -2,16 +2,18 @@
 
 ![License badge][license-img]
 
+[![Actions Status][build-director-img]][build-director-href] [![Actions Status][build-storage-img]][build-storage-href] [![Actions Status][build-client-img]][build-client-href] [![Actions Status][build-webui-img]][build-webui-href]
+
 ## About
 
 This package provides images for [Bareos][bareos-href] :
 
-module|pulls|ubuntu:latest|alpine:latest
+module|pulls|ubuntu|alpine
 -----|-----|-----|-----
-Director| [![Docker badge][docker-img-dir]][docker-url-dir]|![][[size-latest-director-png]]| ![][[size-alpine-director-png]]
-Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]| ![][[size-latest-storage-png]]| ![][[size-alpine-storage-png]]
-Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]| ![][[size-latest-client-png]]| ![][[size-alpine-client-png]]
-webUI| [![Docker badge][docker-img-ui]][docker-url-ui]| ![][[size-latest-webui-png]]| ![][[size-alpine-webui-png]]
+Director| [![Docker badge][docker-img-dir]][docker-url-dir]| ![Size badge][size-latest-director-png]| ![Size badge][size-alpine-director-png]
+Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]| ![Size badge][size-latest-storage-png]| ![Size badge][size-alpine-storage-png]
+Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]| ![Size badge][size-latest-client-png]| ![Size badged][size-alpine-client-png]
+webUI| [![Docker badge][docker-img-ui]][docker-url-ui]| ![Size badge][size-latest-webui-png]| ![Size badge][size-alpine-webui-png]
 
 Images are based on **Ubuntu** or **Alpine**, check tags below
 
@@ -271,11 +273,20 @@ Enjoy !
 [compose-ubuntu-mysql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-mysql.yml
 [compose-ubuntu-pgsql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-pgsql.yml
 [test-compose-png]: https://github.com/barcus/bareos/workflows/test-compose/badge.svg
-[size-latest-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/latest?style=plastic
-[size-latest-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/latest?style=plastic
-[size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?style=plastic
-[size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?style=plastic
-[size-alpine-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/alpine?style=plastic
-[size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?style=plastic
-[size-alpine-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/alpine?style=plastic
-[size-alpine-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/alpine?style=plastic
+[size-latest-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/latest?label=19-ubuntu&style=plastic
+[size-latest-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/latest?label=19-ubuntu&style=plastic
+[size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?label=19-ubuntu&style=plastic
+[size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?label=19-ubuntu&style=plastic
+[size-alpine-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/alpine?label=18-alpine&style=plastic
+[size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?label=18-alpine&style=plastic
+[size-alpine-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/alpine?label=18-alpine&style=plastic
+[size-alpine-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/alpine?label=18-alpine&style=plastic
+[build-director-img]: https://github.com/barcus/bareos/workflows/ci-bareos-director/badge.svg
+[build-director-href]: https://github.com/barcus/bareos/actions
+[build-client-img]: https://github.com/barcus/bareos/workflows/ci-bareos-client/badge.svg
+[build-client-href]: https://github.com/barcus/bareos/actions
+[build-storage-img]: https://github.com/barcus/bareos/workflows/ci-bareos-storage/badge.svg
+[build-storage-href]: https://github.com/barcus/bareos/actions
+[build-webui-img]: https://github.com/barcus/bareos/workflows/ci-bareos-webui/badge.svg
+[build-webui-href]: https://github.com/barcus/bareos/actions
+
