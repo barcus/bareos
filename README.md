@@ -6,12 +6,12 @@
 
 This package provides images for [Bareos][bareos-href] :
 
-module|pulls|latest build
------|-----|-----
-Director| [![Docker badge][docker-img-dir]][docker-url-dir]| ![director][build-n-deploy-png]
-Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]| ![storage][build-n-deploy-png]
-Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]| ![client][build-n-deploy-png]
-webUI| [![Docker badge][docker-img-ui]][docker-url-ui]| ![webui][build-n-deploy-png]
+module|pulls|ubuntu:latest|alpine:latest
+-----|-----|-----|-----
+Director| [![Docker badge][docker-img-dir]][docker-url-dir]|![][[size-latest-director-png]]| ![][[size-alpine-director-png]]
+Storage Daemon| [![Docker badge][docker-img-sd]][docker-url-sd]| ![][[size-latest-storage-png]]| ![][[size-alpine-storage-png]]
+Client/File Daemon| [![Docker badge][docker-img-fd]][docker-url-fd]| ![][[size-latest-client-png]]| ![][[size-alpine-client-png]]
+webUI| [![Docker badge][docker-img-ui]][docker-url-ui]| ![][[size-latest-webui-png]]| ![][[size-alpine-webui-png]]
 
 Images are based on **Ubuntu** or **Alpine**, check tags below
 
@@ -271,3 +271,11 @@ Enjoy !
 [compose-ubuntu-mysql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-mysql.yml
 [compose-ubuntu-pgsql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-pgsql.yml
 [test-compose-png]: https://github.com/barcus/bareos/workflows/test-compose/badge.svg
+[size-latest-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/latest?style=plastic
+[size-latest-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/latest?style=plastic
+[size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?style=plastic
+[size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?style=plastic
+[size-alpine-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/alpine?style=plastic
+[size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?style=plastic
+[size-alpine-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/alpine?style=plastic
+[size-alpine-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/alpine?style=plastic
