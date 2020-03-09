@@ -2,8 +2,6 @@
 
 ![License badge][license-img]
 
-[![Actions Status][build-director-img]][build-bareos-href] [![Actions Status][build-storage-img]][build-bareos-href] [![Actions Status][build-client-img]][build-bareos-href] [![Actions Status][build-webui-img]][build-bareos-href]
-
 ## About
 
 This package provides images for [Bareos][bareos-href] :
