@@ -281,10 +281,10 @@ Enjoy !
 [docker-img-fd]: https://img.shields.io/docker/pulls/barcus/bareos-client?label=bareos-client&logo=docker
 [docker-img-sd]: https://img.shields.io/docker/pulls/barcus/bareos-storage?label=bareos-storage&logo=docker
 [docker-img-ui]: https://img.shields.io/docker/pulls/barcus/bareos-webui?label=bareos-webui&logo=docker
-[docker-url-dir]: https://registry.hub.docker.com/u/barcus/bareos-director
-[docker-url-fd]: https://registry.hub.docker.com/u/barcus/bareos-client
-[docker-url-sd]: https://registry.hub.docker.com/u/barcus/bareos-storage
-[docker-url-ui]: https://registry.hub.docker.com/u/barcus/bareos-webui
+[docker-url-dir]: https://registry.hub.docker.com/r/barcus/bareos-director
+[docker-url-fd]: https://registry.hub.docker.com/r/barcus/bareos-client
+[docker-url-sd]: https://registry.hub.docker.com/r/barcus/bareos-storage
+[docker-url-ui]: https://registry.hub.docker.com/r/barcus/bareos-webui
 [license-img]: https://img.shields.io/badge/license-ISC-blue.svg
 [size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?label=18-alpine&style=plastic
 [size-alpine-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/alpine?label=18-alpine&style=plastic
