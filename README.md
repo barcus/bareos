@@ -12,7 +12,7 @@ module|build|size ubuntu|size alpine|pull
 -----|-----|-----|-----|-----
 Director | [![Actions Status][build-director-img]][build-director-href] | ![Size badge][size-latest-director-png] | ![Size badge][size-alpine-director-png] | [![Docker badge][docker-img-dir]][docker-url-dir]
 Storage Daemon | [![Actions Status][build-storage-img]][build-storage-href] | ![Size badge][size-latest-storage-png] | ![Size badge][size-alpine-storage-png] | [![Docker badge][docker-img-sd]][docker-url-sd]
-Client/File Daemoni | [![Actions Status][build-client-img]][build-client-href] | ![Size badge][size-latest-client-png] | ![Size badged][size-alpine-client-png] | [![Docker badge][docker-img-fd]][docker-url-fd]
+Client/File Daemoni | [![Actions Status][build-client-img]][build-client-href] | ![Size badge][size-latest-client-png] | ![Size badge][size-alpine-client-png] | [![Docker badge][docker-img-fd]][docker-url-fd]
 webUI | [![Actions Status][build-webui-img]][build-webui-href] | ![Size badge][size-latest-webui-png] | ![Size badge][size-alpine-webui-png] | [![Docker badge][docker-img-ui]][docker-url-ui]
 
 Images are based on **Ubuntu** or **Alpine**, check tags below
@@ -295,12 +295,19 @@ Enjoy !
 [license-img]: https://img.shields.io/badge/license-ISC-blue.svg
 [os-based-alpine]: https://img.shields.io/badge/os-alpine-red
 [os-based-ubuntu]: https://img.shields.io/badge/os-ubuntu-red
-[size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?label=18-alpine&style=plastic
-[size-alpine-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/alpine?label=18-alpine&style=plastic
-[size-alpine-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/alpine?label=18-alpine&style=plastic
-[size-alpine-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/alpine?label=18-alpine&style=plastic
+#[size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?label=18-alpine&style=plastic
+[size-alpine-client-png]: https://images.microbadger.com/badges/image/barcus/bareos-client:alpine.svg
+#[size-alpine-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/alpine?label=18-alpine&style=plastic
+[size-alpine-director-png]: https://images.microbadger.com/badges/image/barcus/bareos-director:alpine.svg
+#[size-alpine-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/alpine?label=18-alpine&style=plastic
+[size-alpine-storage-png]: https://images.microbadger.com/badges/image/barcus/bareos-storage:alpine.svg
+#[size-alpine-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/alpine?label=18-alpine&style=plastic
+[size-alpine-webui-png]: https://images.microbadger.com/badges/image/barcus/bareos-webui:alpine.svg
 [size-latest-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/latest?label=19-ubuntu&style=plastic
 [size-latest-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/latest?label=19-ubuntu&style=plastic
 [size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?label=19-ubuntu&style=plastic
 [size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?label=19-ubuntu&style=plastic
 [test-compose-png]: https://github.com/barcus/bareos/workflows/test-compose/badge.svg
+
+
+[![](https://images.microbadger.com/badges/image/barcus/bareos-director.svg)](https://microbadger.com/images/barcus/bareos-director "Get your own image badge on microbadger.com")
