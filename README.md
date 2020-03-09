@@ -2,7 +2,7 @@
 
 ![License badge][license-img]
 
-[![Actions Status][build-director-img]][build-director-href] [![Actions Status][build-storage-img]][build-storage-href] [![Actions Status][build-client-img]][build-client-href] [![Actions Status][build-webui-img]][build-webui-href]
+[![Actions Status][build-director-img]][build-bareos-href] [![Actions Status][build-storage-img]][build-bareos-href] [![Actions Status][build-client-img]][build-bareos-href] [![Actions Status][build-webui-img]][build-bareos-href]
 
 ## About
 
@@ -281,12 +281,8 @@ Enjoy !
 [size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?label=18-alpine&style=plastic
 [size-alpine-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/alpine?label=18-alpine&style=plastic
 [size-alpine-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/alpine?label=18-alpine&style=plastic
-[build-director-img]: https://github.com/barcus/bareos/workflows/ci-bareos-director/badge.svg
-[build-director-href]: https://github.com/barcus/bareos/actions
-[build-client-img]: https://github.com/barcus/bareos/workflows/ci-bareos-client/badge.svg
-[build-client-href]: https://github.com/barcus/bareos/actions
-[build-storage-img]: https://github.com/barcus/bareos/workflows/ci-bareos-storage/badge.svg
-[build-storage-href]: https://github.com/barcus/bareos/actions
-[build-webui-img]: https://github.com/barcus/bareos/workflows/ci-bareos-webui/badge.svg
-[build-webui-href]: https://github.com/barcus/bareos/actions
-
+[build-director-img]: https://github.com/barcus/bareos/workflows/ci-director/badge.svg
+[build-client-img]: https://github.com/barcus/bareos/workflows/ci-client/badge.svg
+[build-storage-img]: https://github.com/barcus/bareos/workflows/ci-storage/badge.svg
+[build-webui-img]: https://github.com/barcus/bareos/workflows/ci-webui/badge.svg
+[build-bareos-href]: https://github.com/barcus/bareos/actions
