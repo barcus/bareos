@@ -1,20 +1,19 @@
-name: ci-bareos-director
+name: ci-__BAREOS_APP__
 
 on:
   push:
     paths:
-      - 'director/**'
-      - '.github/workflows/ci-bareos-director.yml'
+      - '__BAREOS_APP__/**'
+      - '.github/workflows/ci-__BAREOS_APP__.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'
       - '.github/actions/push-bareos-app/*'
     branches:
       - master
-      - work_lint
   pull_request:
     paths:
-      - 'director/**'
-      - '.github/workflows/ci-bareos-director.yml'
+      - '__BAREOS_APP__/**'
+      - '.github/workflows/ci-__BAREOS_APP__.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'
       - '.github/actions/push-bareos-app/*'
@@ -31,12 +30,12 @@ jobs:
       - name: Prepare build file
         uses: ./.github/actions/prepare-bareos-build
         with:
-          bareos_app: director
+          bareos_app: __BAREOS_APP__
 
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
-          name: build-artifact-director
+          name: build-artifact-__BAREOS_APP__
           path: build
 
   build:
@@ -49,18 +48,18 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
-          name: build-artifact-director
+          name: build-artifact-__BAREOS_APP__
           path: build
 
       - name: Build images
         uses: ./.github/actions/build-bareos-app
         with:
-          bareos_app: director
+          bareos_app: __BAREOS_APP__
 
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
-          name: build-artifact-director
+          name: build-artifact-__BAREOS_APP__
           path: build
 
   deploy:
@@ -73,11 +72,11 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
-          name: build-artifact-director
+          name: build-artifact-__BAREOS_APP__
           path: build
 
       - name: Load and push images
         uses: ./.github/actions/push-bareos-app
         with:
           docker_pass: ${{ secrets.DOCKER_PASS }}
-          bareos_app: director
+          bareos_app: __BAREOS_APP__

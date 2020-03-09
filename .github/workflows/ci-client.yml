@@ -1,25 +1,20 @@
-name: build-n-deploy
+name: ci-client
 
 on:
   push:
     paths:
-      #- 'client/**'
-      #- 'director-*/**'
-      #- 'storage/**'
-      #- 'webui/**'
-      - '.github/workflows/build-n-deploy.yml'
+      - 'client/**'
+      - '.github/workflows/ci-client.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'
       - '.github/actions/push-bareos-app/*'
     branches:
       - master
+      - work_lint
   pull_request:
     paths:
-      #- 'client/**'
-      #- 'director-*/**'
-      #- 'storage/**'
-      #- 'webui/**'
-      - '.github/workflows/build-n-deploy.yml'
+      - 'client/**'
+      - '.github/workflows/ci-client.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'
       - '.github/actions/push-bareos-app/*'
@@ -27,11 +22,8 @@ on:
       - master
 
 jobs:
-  prepare:
+  install:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        module: [client, director, storage, webui]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -39,20 +31,17 @@ jobs:
       - name: Prepare build file
         uses: ./.github/actions/prepare-bareos-build
         with:
-          bareos_app: ${{ matrix.module }}
+          bareos_app: client
 
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
-          name: build-artifact-${{ matrix.module }}
+          name: build-artifact-client
           path: build
 
   build:
-    needs: prepare
+    needs: install
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        module: [client, director, storage, webui]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -60,26 +49,23 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
-          name: build-artifact-${{ matrix.module }}
+          name: build-artifact-client
           path: build
 
       - name: Build images
         uses: ./.github/actions/build-bareos-app
         with:
-          bareos_app: ${{ matrix.module }}
+          bareos_app: client
 
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
-          name: build-artifact-${{ matrix.module }}
+          name: build-artifact-client
           path: build
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        module: [client, director, storage, webui]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -87,11 +73,11 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
-          name: build-artifact-${{ matrix.module }}
+          name: build-artifact-client
           path: build
 
       - name: Load and push images
         uses: ./.github/actions/push-bareos-app
         with:
           docker_pass: ${{ secrets.DOCKER_PASS }}
-          bareos_app: ${{ matrix.module }}
+          bareos_app: client
