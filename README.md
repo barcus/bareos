@@ -1,6 +1,6 @@
 # bareos
 
-![License badge][license-img]
+![License badge][license-img] ![Badge amd64][arch-amd64-img] ![Badge arm64][arch-arm64/v8-img]
 
 ## About
 
@@ -263,6 +263,8 @@ My Docker hub :
 
 Enjoy !
 
+[arch-amd64-img]: https://img.shields.io/badge/arch-amd64-purple
+[arch-arm64/v8-img]: https://img.shields.io/badge/arch-amd64/v8-purple
 [bareos-href]: https://www.bareos.org
 [build-client-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-client
 [build-client-img]: https://github.com/barcus/bareos/workflows/ci-client/badge.svg
