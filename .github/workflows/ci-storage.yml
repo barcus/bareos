@@ -3,7 +3,7 @@ name: ci-storage
 on:
   push:
     paths:
-      - 'storage/**'
+      - 'storage*/**'
       - '.github/workflows/ci-storage.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'
@@ -13,7 +13,7 @@ on:
       - work_lint
   pull_request:
     paths:
-      - 'storage/**'
+      - 'storage*/**'
       - '.github/workflows/ci-storage.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'

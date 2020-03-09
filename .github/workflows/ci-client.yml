@@ -3,7 +3,7 @@ name: ci-client
 on:
   push:
     paths:
-      - 'client/**'
+      - 'client*/**'
       - '.github/workflows/ci-client.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'
@@ -13,7 +13,7 @@ on:
       - work_lint
   pull_request:
     paths:
-      - 'client/**'
+      - 'client*/**'
       - '.github/workflows/ci-client.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'

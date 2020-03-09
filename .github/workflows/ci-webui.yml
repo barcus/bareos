@@ -3,17 +3,16 @@ name: ci-webui
 on:
   push:
     paths:
-      - 'webui/**'
+      - 'webui*/**'
       - '.github/workflows/ci-webui.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'
       - '.github/actions/push-bareos-app/*'
     branches:
       - master
-      - work_lint
   pull_request:
     paths:
-      - 'webui/**'
+      - 'webui*/**'
       - '.github/workflows/ci-webui.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'

@@ -3,7 +3,7 @@ name: ci-__BAREOS_APP__
 on:
   push:
     paths:
-      - '__BAREOS_APP__/**'
+      - '__BAREOS_APP__*/**'
       - '.github/workflows/ci-__BAREOS_APP__.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'
@@ -12,7 +12,7 @@ on:
       - master
   pull_request:
     paths:
-      - '__BAREOS_APP__/**'
+      - '__BAREOS_APP__*/**'
       - '.github/workflows/ci-__BAREOS_APP__.yml'
       - '.github/actions/prepare-bareos-build/*'
       - '.github/actions/build-bareos-app/*'
