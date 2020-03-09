@@ -7,11 +7,11 @@
 This package provides images for [Bareos][bareos-href] :
 
 module|build|size ubuntu|size alpine|pull
------|-----|-----|-----
-Director| [![Actions Status][build-director-img]][build-bareos-href]|![Size badge][size-latest-director-png]| ![Size badge][size-alpine-director-png]|[![Docker badge][docker-img-dir]][docker-url-dir]
-Storage Daemon| [![Actions Status][build-storage-img]][build-bareos-href]|![Size badge][size-latest-storage-png]| ![Size badge][size-alpine-storage-png]|[![Docker badge][docker-img-sd]][docker-url-sd]
-Client/File Daemon| [![Actions Status][build-client-img]][build-bareos-href]|![Size badge][size-latest-client-png]| ![Size badged][size-alpine-client-png]|[![Docker badge][docker-img-fd]][docker-url-fd]
-webUI| [![Actions Status][build-webui-img]][build-bareos-href]|![Size badge][size-latest-webui-png]| ![Size badge][size-alpine-webui-png]|[![Docker badge][docker-img-ui]][docker-url-ui]
+-----|-----|-----|-----|-----
+Director| [![Actions Status][build-director-img]][build-bareos-href]| ![Size badge][size-latest-director-png]| ![Size badge][size-alpine-director-png]| [![Docker badge][docker-img-dir]][docker-url-dir]
+Storage Daemon| [![Actions Status][build-storage-img]][build-bareos-href]|![Size badge][size-latest-storage-png]| ![Size badge][size-alpine-storage-png]| [![Docker badge][docker-img-sd]][docker-url-sd]
+Client/File Daemon| [![Actions Status][build-client-img]][build-bareos-href]|![Size badge][size-latest-client-png]| ![Size badged][size-alpine-client-png]| [![Docker badge][docker-img-fd]][docker-url-fd]
+webUI| [![Actions Status][build-webui-img]][build-bareos-href]|![Size badge][size-latest-webui-png]| ![Size badge][size-alpine-webui-png]| [![Docker badge][docker-img-ui]][docker-url-ui]
 
 Images are based on **Ubuntu** or **Alpine**, check tags below
 
