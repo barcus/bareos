@@ -12,5 +12,8 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   touch /etc/bareos/bareos-config.control
 fi
 
+# Fix permissions
 find /etc/bareos/bareos-fd.d ! -user bareos -exec chown bareos {} \;
+
+# Run Dockerfile CMD
 exec "$@"

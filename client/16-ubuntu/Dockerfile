@@ -1,5 +1,4 @@
 # Dockerfile Bareos client/file daemon
-
 FROM ubuntu:xenial
 
 LABEL maintainer="barcus@tou.nu"

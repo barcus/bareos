@@ -1,5 +1,4 @@
 # Dockerfile Bareos client/file daemon
-
 FROM alpine:3.8
 
 LABEL maintainer="barcus@tou.nu"
