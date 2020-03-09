@@ -1,6 +1,8 @@
 # bareos
 
-![License badge][license-img] ![Badge amd64][arch-amd64-img] ![Badge arm64][arch-arm64/v8-img]
+![License badge][license-img]
+![Based OS][os-based-ubuntu] ![Based OS][os-based-alpine]
+![Badge amd64][arch-amd64-img] ![Badge arm64][arch-arm64/v8-img]
 
 ## About
 
@@ -291,6 +293,8 @@ Enjoy !
 [docker-url-sd]: https://registry.hub.docker.com/r/barcus/bareos-storage
 [docker-url-ui]: https://registry.hub.docker.com/r/barcus/bareos-webui
 [license-img]: https://img.shields.io/badge/license-ISC-blue.svg
+[os-based-alpine]: https://img.shields.io/badge/os-alpine-red
+[os-based-ubuntu]: https://img.shields.io/badge/os-ubuntu-red
 [size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?label=18-alpine&style=plastic
 [size-alpine-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/alpine?label=18-alpine&style=plastic
 [size-alpine-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/alpine?label=18-alpine&style=plastic
