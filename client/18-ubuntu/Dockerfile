@@ -36,7 +36,7 @@ RUN apt-get update -qq \
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh
 
-RUN tar cfvz /bareos-fd.tgz /etc/bareos/bareos-fd.d
+RUN tar czf /bareos-fd.tgz /etc/bareos/bareos-fd.d
 
 EXPOSE 9102
 

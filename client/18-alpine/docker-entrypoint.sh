@@ -3,7 +3,7 @@
 bareos_fd_config="/etc/bareos/bareos-fd.d/director/bareos-dir.conf"
 
 if [ ! -f /etc/bareos/bareos-config.control ]; then
-  tar xfz /bareos-fd.tgz
+  tar xzf /bareos-fd.tgz
 
   # Force client/file daemon password
   sed -i 's#Password = .*#Password = '\""${BAREOS_FD_PASSWORD}"\"'#' $bareos_fd_config

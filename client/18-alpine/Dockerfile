@@ -19,7 +19,7 @@ SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
 RUN apk add --no-cache bareos openssh-client
 
-RUN tar cfvz /bareos-fd.tgz /etc/bareos/bareos-fd.d
+RUN tar czf /bareos-fd.tgz /etc/bareos/bareos-fd.d
 RUN mkdir /run/bareos \
  && chown bareos /run/bareos
 

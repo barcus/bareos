@@ -1,21 +1,20 @@
 #!/usr/bin/env ash
 
-# MAINTAINER Barcus <barcus@tou.nu>
+bareos_sd_config="/etc/bareos/bareos-sd.d/director/bareos-dir.conf"
 
-if [ ! -f /etc/bareos/bareos-config.control ]
-  then
-  tar xfvz /bareos-sd.tgz
+if [ ! -f /etc/bareos/bareos-config.control ]; then
+  tar xfz /bareos-sd.tgz
 
   # Update bareos-storage configs
-  sed -i "s#Password = .*#Password = \"${BAREOS_SD_PASSWORD}\"#" /etc/bareos/bareos-sd.d/director/bareos-dir.conf
-
-  # correct owner of volume
-  chown -R bareos /var/lib/bareos
-  chown -R bareos /etc/bareos
+  sed -i 's#Password = .*#Password = '\""${BAREOS_SD_PASSWORD}"\"'#' $bareos_sd_config
 
   # Control file
   touch /etc/bareos/bareos-config.control
 fi
 
-find /etc/bareos ! -user bareos -exec chown bareos {} \;
+# Fix permissions
+find /etc/bareos/bareos-sd.d ! -user bareos -exec chown bareos {} \;
+chown -R bareos /var/lib/bareos/storage
+
+# Run Dockerfile CMD
 exec "$@"

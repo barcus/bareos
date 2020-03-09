@@ -44,7 +44,7 @@ RUN apt-get update -qq \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-RUN tar cfvz /bareos-dir.tgz /etc/bareos
+RUN tar czf /bareos-dir.tgz /etc/bareos
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh

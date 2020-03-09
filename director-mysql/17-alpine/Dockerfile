@@ -19,7 +19,7 @@ SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
 RUN apk add --no-cache bareos mysql-client curl
 
-RUN tar cfvz /bareos-dir.tgz /etc/bareos
+RUN tar czf /bareos-dir.tgz /etc/bareos
 RUN mkdir /run/bareos \
  && chown bareos /run/bareos
 
