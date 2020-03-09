@@ -308,6 +308,3 @@ Enjoy !
 [size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?label=19-ubuntu&style=plastic
 [size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?label=19-ubuntu&style=plastic
 [test-compose-png]: https://github.com/barcus/bareos/workflows/test-compose/badge.svg
-
-
-[![](https://images.microbadger.com/badges/image/barcus/bareos-director.svg)](https://microbadger.com/images/barcus/bareos-director "Get your own image badge on microbadger.com")
