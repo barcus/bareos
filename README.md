@@ -8,10 +8,22 @@ This package provides images for [Bareos][bareos-href] :
 
 module|build|size|pull
 -----|-----|-----|-----
-Director| [![Actions Status][build-director-img]][build-bareos-href] | ![Size badge][size-latest-director-png]<br> ![Size badge][size-alpine-director-png] | [![Docker badge][docker-img-dir]][docker-url-dir]
-Storage Daemon| [![Actions Status][build-storage-img]][build-bareos-href] | ![Size badge][size-latest-storage-png]<br> ![Size badge][size-alpine-storage-png] | [![Docker badge][docker-img-sd]][docker-url-sd]
-Client/File Daemon| [![Actions Status][build-client-img]][build-bareos-href] | ![Size badge][size-latest-client-png]<br> ![Size badged][size-alpine-client-png] | [![Docker badge][docker-img-fd]][docker-url-fd]
-webUI| [![Actions Status][build-webui-img]][build-bareos-href] | ![Size badge][size-latest-webui-png]<br> ![Size badge][size-alpine-webui-png] | [![Docker badge][docker-img-ui]][docker-url-ui]
+Director| [![Actions Status][build-director-img]][build-bareos-href]
+|![Size badge][size-latest-director-png]<br/>
+![Size badge][size-alpine-director-png]
+|[![Docker badge][docker-img-dir]][docker-url-dir]
+Storage Daemon| [![Actions Status][build-storage-img]][build-bareos-href]
+|![Size badge][size-latest-storage-png]<br/>
+![Size badge][size-alpine-storage-png]
+|[![Docker badge][docker-img-sd]][docker-url-sd]
+Client/File Daemon| [![Actions Status][build-client-img]][build-bareos-href]
+|![Size badge][size-latest-client-png]<br/>
+![Size badged][size-alpine-client-png]
+|[![Docker badge][docker-img-fd]][docker-url-fd]
+webUI| [![Actions Status][build-webui-img]][build-bareos-href]
+|![Size badge][size-latest-webui-png]<br/>
+![Size badge][size-alpine-webui-png]
+|[![Docker badge][docker-img-ui]][docker-url-ui]
 
 Images are based on **Ubuntu** or **Alpine**, check tags below
 
@@ -47,9 +59,12 @@ bareos-client (fd) - bareos-storage (sd) - bareos-webui
 
 ## Security advice
 
-The default passwords inside the configuration files are created when building the docker image. Hence for production either build the image yourself using the sources from Github.
+The default passwords inside the configuration files are created when building
+the docker image. Hence for production either build the image yourself using
+the sources from Github.
 
-:o: Do not use this container for anything else, as passwords get expose to the Bareos containers.
+:o: Do not use this container for anything else, as passwords get expose to
+the Bareos containers.
 
 ## Setup
 
@@ -66,7 +81,8 @@ Bareos Webui requires (Alpine images only) :
 
 Bareos Client (fd) and Storage (sd) have no depencies.
 
-Each component have to run in an single container and must linked together through docker-compose, see exemple below
+Each component have to run in an single container and must linked together
+through docker-compose, see exemple below
 
 ## Requirements
 
@@ -89,7 +105,8 @@ file|compose|docker|latest build
 
 Remember to change your mail address in `ADMIN_MAIL` and maybe some passwords :grin:
 
-:file_folder: Those docker-compose file are configured to store data inside `/data/(bareos|mysql|pgsql)`
+:file_folder: Those docker-compose file are configured to store data inside
+`/data/(bareos|mysql|pgsql)`
 
 Finaly, when your containers are up and runing access Bareos through
 
@@ -178,22 +195,28 @@ services:
 
 **Bareos Director** (bareos-dir)
 
-* `<BAREOS_CONF_PATH>` is the path to share your Director config folder from the host side (optional/recommended)
-* `<BAREOS_DATA_PATH>` is the path to share your Director data folder from the host side (recommended)
+* `<BAREOS_CONF_PATH>` is the path to share your Director config folder from
+ the host side (optional/recommended)
+* `<BAREOS_DATA_PATH>` is the path to share your Director data folder from
+ the host side (recommended)
 * DB_PASSWORD must be same as Bareos Database section
 * SMTP_HOST is the name of smtp container
-* SENDER_MAIL is the email address you want to use for send the email # optional, if you don't specify it the ADMIN_MAIL will be used
+* SENDER_MAIL is the email address you want to use for send the email
+ # optional, if you don't specify it the ADMIN_MAIL will be used
 * ADMIN_MAIL is your email address
 
 **Bareos Storage Daemon** (bareos-sd)
 
-* `<BAREOS_CONF_PATH>` is the path to share your Storage config folder from the host side (optional/recommended)
-* `<BAREOS_BKP_VOLUME_PATH>` is the path to share your data folder from the host side. (optional)
+* `<BAREOS_CONF_PATH>` is the path to share your Storage config folder from
+ the host side (optional/recommended)
+* `<BAREOS_BKP_VOLUME_PATH>` is the path to share your data folder from the
+ host side. (optional)
 * BAREOS_SD_PASSWORD must be same as Bareos Director section
 
 **Bareos Client/File Daemon** (bareos-fd)
 
-* `<BAREOS_CONF_PATH>` is the path to share your Client config folder from the host side (optional/recommended)
+* `<BAREOS_CONF_PATH>` is the path to share your Client config folder from the
+ host side (optional/recommended)
 * `<BAREOS_DATA_PATH>` is the path to access Director data folder (recommended)
 * BAREOS_FD_PASSWORD must be same as Bareos Director section
 
@@ -201,11 +224,13 @@ services:
 
 Required as catalog backend, simply use the official MySQL/PostgreSQL image
 
-* `<DB_DATA_PATH>` is the path to share your MySQL/PostgreSQL data from the host side
+* `<DB_DATA_PATH>` is the path to share your MySQL/PostgreSQL data from the host
+ side
 
 **Bareos webUI** (bareos-webui)
 
-* `<BAREOS_CONF_PATH>` is the path to share your WebUI config folder from the host side. (optional)
+* `<BAREOS_CONF_PATH>` is the path to share your WebUI config folder from the
+ host side. (optional)
 * default user is `admin`
 
 :warning: Remember variables `*_HOST` must be set with container name
@@ -250,36 +275,35 @@ My Docker hub :
 
 Enjoy !
 
-[license-img]: https://img.shields.io/badge/license-ISC-blue.svg
-[build-img]: https://travis-ci.org/barcus/bareos.svg?branch=master
-[build-url]: https://travis-ci.org/barcus/bareos
-[docker-img-dir]: https://img.shields.io/docker/pulls/barcus/bareos-director?label=bareos-director&logo=docker
-[docker-url-dir]: https://registry.hub.docker.com/u/barcus/bareos-director
-[docker-img-sd]: https://img.shields.io/docker/pulls/barcus/bareos-storage?label=bareos-storage&logo=docker
-[docker-url-sd]: https://registry.hub.docker.com/u/barcus/bareos-storage
-[docker-img-fd]: https://img.shields.io/docker/pulls/barcus/bareos-client?label=bareos-client&logo=docker
-[docker-url-fd]: https://registry.hub.docker.com/u/barcus/bareos-client
-[docker-img-ui]: https://img.shields.io/docker/pulls/barcus/bareos-webui?label=bareos-webui&logo=docker
-[docker-url-ui]: https://registry.hub.docker.com/u/barcus/bareos-webui
 [bareos-href]: https://www.bareos.org
-[compose-file]: https://github.com/barcus/bareos/blob/master/docker-compose.yml
-[docker-compose-href]: https://docs.docker.com/compose
-[docker-href]: https://docs.docker.com/install
+[build-bareos-href]: https://github.com/barcus/bareos/actions
+[build-client-img]: https://github.com/barcus/bareos/workflows/ci-client/badge.svg
+[build-director-img]: https://github.com/barcus/bareos/workflows/ci-director/badge.svg
+[build-img]: https://travis-ci.org/barcus/bareos.svg?branch=master
+[build-storage-img]: https://github.com/barcus/bareos/workflows/ci-storage/badge.svg
+[build-url]: https://travis-ci.org/barcus/bareos
+[build-webui-img]: https://github.com/barcus/bareos/workflows/ci-webui/badge.svg
 [compose-alpinev1-href]: https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v1.yml
 [compose-alpinev2-href]: https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v2.yml
 [compose-ubuntu-mysql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-mysql.yml
 [compose-ubuntu-pgsql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-pgsql.yml
-[test-compose-png]: https://github.com/barcus/bareos/workflows/test-compose/badge.svg
-[size-latest-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/latest?label=19-ubuntu&style=plastic
-[size-latest-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/latest?label=19-ubuntu&style=plastic
-[size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?label=19-ubuntu&style=plastic
-[size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?label=19-ubuntu&style=plastic
-[size-alpine-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/alpine?label=18-alpine&style=plastic
+[docker-compose-href]: https://docs.docker.com/compose
+[docker-href]: https://docs.docker.com/install
+[docker-img-dir]: https://img.shields.io/docker/pulls/barcus/bareos-director?label=bareos-director&logo=docker
+[docker-img-fd]: https://img.shields.io/docker/pulls/barcus/bareos-client?label=bareos-client&logo=docker
+[docker-img-sd]: https://img.shields.io/docker/pulls/barcus/bareos-storage?label=bareos-storage&logo=docker
+[docker-img-ui]: https://img.shields.io/docker/pulls/barcus/bareos-webui?label=bareos-webui&logo=docker
+[docker-url-dir]: https://registry.hub.docker.com/u/barcus/bareos-director
+[docker-url-fd]: https://registry.hub.docker.com/u/barcus/bareos-client
+[docker-url-sd]: https://registry.hub.docker.com/u/barcus/bareos-storage
+[docker-url-ui]: https://registry.hub.docker.com/u/barcus/bareos-webui
+[license-img]: https://img.shields.io/badge/license-ISC-blue.svg
 [size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?label=18-alpine&style=plastic
+[size-alpine-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/alpine?label=18-alpine&style=plastic
 [size-alpine-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/alpine?label=18-alpine&style=plastic
 [size-alpine-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/alpine?label=18-alpine&style=plastic
-[build-director-img]: https://github.com/barcus/bareos/workflows/ci-director/badge.svg
-[build-client-img]: https://github.com/barcus/bareos/workflows/ci-client/badge.svg
-[build-storage-img]: https://github.com/barcus/bareos/workflows/ci-storage/badge.svg
-[build-webui-img]: https://github.com/barcus/bareos/workflows/ci-webui/badge.svg
-[build-bareos-href]: https://github.com/barcus/bareos/actions
+[size-latest-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/latest?label=19-ubuntu&style=plastic
+[size-latest-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/latest?label=19-ubuntu&style=plastic
+[size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?label=19-ubuntu&style=plastic
+[size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?label=19-ubuntu&style=plastic
+[test-compose-png]: https://github.com/barcus/bareos/workflows/test-compose/badge.svg
