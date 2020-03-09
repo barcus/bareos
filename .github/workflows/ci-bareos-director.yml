@@ -10,6 +10,7 @@ on:
       - '.github/actions/push-bareos-app/*'
     branches:
       - master
+      - work_lint
   pull_request:
     paths:
       - 'director/**'
