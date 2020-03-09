@@ -253,13 +253,13 @@ Enjoy !
 [license-img]: https://img.shields.io/badge/license-ISC-blue.svg
 [build-img]: https://travis-ci.org/barcus/bareos.svg?branch=master
 [build-url]: https://travis-ci.org/barcus/bareos
-[docker-img-dir]: https://img.shields.io/docker/pulls/barcus/bareos-director?label=bareos-director
+[docker-img-dir]: https://img.shields.io/docker/pulls/barcus/bareos-director?label=bareos-director&logo=docker
 [docker-url-dir]: https://registry.hub.docker.com/u/barcus/bareos-director
-[docker-img-sd]: https://img.shields.io/docker/pulls/barcus/bareos-storage?label=bareos-storage
+[docker-img-sd]: https://img.shields.io/docker/pulls/barcus/bareos-storage?label=bareos-storage&logo=docker
 [docker-url-sd]: https://registry.hub.docker.com/u/barcus/bareos-storage
-[docker-img-fd]: https://img.shields.io/docker/pulls/barcus/bareos-client?label=bareos-client
+[docker-img-fd]: https://img.shields.io/docker/pulls/barcus/bareos-client?label=bareos-client&logo=docker
 [docker-url-fd]: https://registry.hub.docker.com/u/barcus/bareos-client
-[docker-img-ui]: https://img.shields.io/docker/pulls/barcus/bareos-webui?label=bareos-webui
+[docker-img-ui]: https://img.shields.io/docker/pulls/barcus/bareos-webui?label=bareos-webui&logo=docker
 [docker-url-ui]: https://registry.hub.docker.com/u/barcus/bareos-webui
 [bareos-href]: https://www.bareos.org
 [compose-file]: https://github.com/barcus/bareos/blob/master/docker-compose.yml
