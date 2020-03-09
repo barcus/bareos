@@ -12,7 +12,7 @@ chmod a+x ~/.docker/cli-plugins/docker-buildx
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
 # Install git
-apt-get install -y -qq git
+sudo apt-get install -y -qq git
 
 # Create build context and build
 docker buildx create --name builder --driver docker-container --use
