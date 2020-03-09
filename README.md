@@ -295,13 +295,9 @@ Enjoy !
 [license-img]: https://img.shields.io/badge/license-ISC-blue.svg
 [os-based-alpine]: https://img.shields.io/badge/os-alpine-red
 [os-based-ubuntu]: https://img.shields.io/badge/os-ubuntu-red
-#[size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?label=18-alpine&style=plastic
 [size-alpine-client-png]: https://images.microbadger.com/badges/image/barcus/bareos-client:alpine.svg
-#[size-alpine-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/alpine?label=18-alpine&style=plastic
 [size-alpine-director-png]: https://images.microbadger.com/badges/image/barcus/bareos-director:alpine.svg
-#[size-alpine-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/alpine?label=18-alpine&style=plastic
 [size-alpine-storage-png]: https://images.microbadger.com/badges/image/barcus/bareos-storage:alpine.svg
-#[size-alpine-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/alpine?label=18-alpine&style=plastic
 [size-alpine-webui-png]: https://images.microbadger.com/badges/image/barcus/bareos-webui:alpine.svg
 [size-latest-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/latest?label=19-ubuntu&style=plastic
 [size-latest-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/latest?label=19-ubuntu&style=plastic
