@@ -1,26 +1,53 @@
 # Bareos director Dockerfile
-FROM       ubuntu:bionic
-MAINTAINER Barcus <barcus@tou.nu>
+FROM ubuntu:bionic
+
+LABEL maintainer="barcus@tou.nu"
+
+ARG BUILD_DATE
+ARG NAME
+ARG VCS_REF
+ARG VERSION
+
+LABEL org.label-schema.schema-version="1.0" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name=$NAME \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/barcus/bareos" \
+      org.label-schema.version=$VERSION
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV BAREOS_KEY http://download.bareos.org/bareos/release/19.2/xUbuntu_18.04/Release.key
+ENV BAREOS_REPO http://download.bareos.org/bareos/release/19.2/xUbuntu_18.04/
+ENV BAREOS_DPKG_CONF bareos-database-common bareos-database-common
 
-RUN apt-get update -qq && \
-    apt-get install -qq curl gnupg && \
-    curl -Ls http://download.bareos.org/bareos/release/19.2/xUbuntu_18.04/Release.key | apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg add - && \
-    echo 'deb http://download.bareos.org/bareos/release/19.2/xUbuntu_18.04/ /' > /etc/apt/sources.list.d/bareos.list && \
-    echo 'bareos-database-common bareos-database-common/dbconfig-install boolean false' | debconf-set-selections && \
-    echo 'bareos-database-common bareos-database-common/install-error select ignore' | debconf-set-selections && \
-    echo 'bareos-database-common bareos-database-common/database-type select psql' | debconf-set-selections && \
-    echo 'bareos-database-common bareos-database-common/missing-db-package-error select ignore' | debconf-set-selections && \
-    echo 'postfix postfix/main_mailer_type select No configuration' | debconf-set-selections && \
-    apt-get update -qq && \
-    apt-get install -qq -y bareos postgresql-client bareos-tools && \
-    apt-get clean -qq -y && \
-    apt-get autoremove --purge -qq -y
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-COPY docker-entrypoint.sh /
-RUN chmod u+x /docker-entrypoint.sh
+RUN apt-get update -qq \
+ && apt-get -qq -y install --no-install-recommends curl gnupg \
+ && curl -Ls $BAREOS_KEY -o /tmp/bareos.key \
+ && apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg \
+    add /tmp/bareos.key \
+ && echo "deb $BAREOS_REPO /" > /etc/apt/sources.list.d/bareos.list \
+ && echo "${BAREOS_DPKG_CONF}/dbconfig-install boolean false" \
+    | debconf-set-selections \
+ && echo "${BAREOS_DPKG_CONF}/install-error select ignore" \
+    | debconf-set-selections \
+ && echo "${BAREOS_DPKG_CONF}/database-type select pgsql" \
+    | debconf-set-selections \
+ && echo "${BAREOS_DPKG_CONF}/missing-db-package-error select ignore" \
+    | debconf-set-selections \
+ && echo 'postfix postfix/main_mailer_type select No configuration' \
+    | debconf-set-selections \
+ && apt-get update -qq \
+ && apt-get install -qq -y --no-install-recommends \
+    bareos postgresql-client bareos-tools \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
 RUN tar cfvz /bareos-dir.tgz /etc/bareos
+
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod u+x /docker-entrypoint.sh
 
 EXPOSE 9101
 

@@ -1,14 +1,30 @@
 # Bareos director Dockerfile
 FROM       alpine:3.8
-MAINTAINER Barcus <barcus@tou.nu>
+
+LABEL maintainer="barcus@tou.nu"
+
+ARG BUILD_DATE
+ARG NAME
+ARG VCS_REF
+ARG VERSION
+
+LABEL org.label-schema.schema-version="1.0" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name=$NAME \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/barcus/bareos" \
+      org.label-schema.version=$VERSION
+
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
 RUN apk add --no-cache bareos mysql-client curl
 
-COPY docker-entrypoint.sh /
-RUN chmod u+x /docker-entrypoint.sh
 RUN tar cfvz /bareos-dir.tgz /etc/bareos
-RUN mkdir /run/bareos
-RUN chown bareos /run/bareos
+RUN mkdir /run/bareos \
+ && chown bareos /run/bareos
+
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod u+x /docker-entrypoint.sh
 
 EXPOSE 9101
 
