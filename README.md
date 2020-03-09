@@ -264,12 +264,15 @@ My Docker hub :
 Enjoy !
 
 [bareos-href]: https://www.bareos.org
-[build-bareos-href]: https://github.com/barcus/bareos/actions
+[build-client-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-client
 [build-client-img]: https://github.com/barcus/bareos/workflows/ci-client/badge.svg
+[build-director-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-director
 [build-director-img]: https://github.com/barcus/bareos/workflows/ci-director/badge.svg
 [build-img]: https://travis-ci.org/barcus/bareos.svg?branch=master
+[build-storage-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-storage
 [build-storage-img]: https://github.com/barcus/bareos/workflows/ci-storage/badge.svg
 [build-url]: https://travis-ci.org/barcus/bareos
+[build-webui-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-webui
 [build-webui-img]: https://github.com/barcus/bareos/workflows/ci-webui/badge.svg
 [compose-alpinev1-href]: https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v1.yml
 [compose-alpinev2-href]: https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v2.yml
