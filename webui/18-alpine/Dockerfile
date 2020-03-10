@@ -1,6 +1,6 @@
 # Bareos Web-ui Dockerfile
 FROM       alpine:3.10
-MAINTAINER Barcus <barcus@tou.nu>
+
 
 RUN apk add --no-cache bareos-webui-nginx
 

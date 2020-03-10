@@ -3,7 +3,7 @@
 bareos_sd_config="/etc/bareos/bareos-sd.d/director/bareos-dir.conf"
 
 if [ ! -f /etc/bareos/bareos-config.control ]; then
-  tar xfz /bareos-sd.tgz
+  tar xfz /bareos-sd.tgz --backup=simple --suffix=.before-control
 
   # Update bareos-storage configs
   sed -i 's#Password = .*#Password = '\""${BAREOS_SD_PASSWORD}"\"'#' $bareos_sd_config

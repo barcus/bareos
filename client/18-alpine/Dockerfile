@@ -17,7 +17,7 @@ LABEL org.label-schema.schema-version="1.0" \
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
-RUN apk add --no-cache bareos openssh-client
+RUN apk add --no-cache bareos openssh-client tar
 
 RUN tar czf /bareos-fd.tgz /etc/bareos/bareos-fd.d
 RUN mkdir /run/bareos \
