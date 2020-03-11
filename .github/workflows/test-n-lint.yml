@@ -21,8 +21,10 @@ jobs:
           url_api="https://api.github.com/repos/hadolint/hadolint/releases/latest"
           version=$(curl --silent $url_api | jq -r .tag_name)
           url_rlz="https://github.com/hadolint/hadolint/releases/download/${version}"
-          curl "${url_rlz}/hadolint-Linux-x86_64" -o hadolint
-          chmod u+x hadolint
+          file='hadolint-Linux-x86_64'
+          wget "${url_rlz}/$file"
+          chmod u+x "$file"
+          ln -s "$file" hadolint
 
       - name: Check Docker files
         run: |
