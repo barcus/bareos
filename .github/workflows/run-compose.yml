@@ -1,17 +1,17 @@
-name: test-compose
+name: run-compose-file
 
 on:
   push:
     paths:
       - 'docker-compose*'
-      - '.github/workflows/test-compose.yml'
+      - '.github/workflows/run-compose-file.yml'
     branches:
       - master
       - ci_compose
   pull_request:
     paths:
       - 'docker-compose*'
-      - '.github/workflows/test-compose.yml'
+      - '.github/workflows/run-compose-file.yml'
     branches:
       - master
 
