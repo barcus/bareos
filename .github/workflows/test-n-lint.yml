@@ -1,0 +1,31 @@
+name: test-n-lint
+
+on:
+  push:
+    paths:
+      - '*.yml'
+      - '.github/**/.yml'
+      - '**/Dockerfile'
+    branches:
+      - master
+      - ci_compose
+  pull_request:
+    paths:
+      - '*.yml'
+      - '.github/**/.yml'
+      - '**/Dockerfile'
+    branches:
+      - master
+
+jobs:
+  test-compose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Check Docker files
+        run: |
+          for file in $(find . -name Dockerfile); do
+            docker run --rm -i hadolint/hadolint < $file
+          done
