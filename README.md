@@ -1,5 +1,7 @@
 # bareos
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f0762a66b1dc4b749b6012843b85f7f2)](https://app.codacy.com/manual/barcus/bareos?utm_source=github.com&utm_medium=referral&utm_content=barcus/bareos&utm_campaign=Badge_Grade_Settings)
+
 ![License badge][license-img]
 ![Based OS][os-based-ubuntu] ![Based OS][os-based-alpine]
 ![Badge amd64][arch-amd64-img] ![Badge arm64][arch-arm64/v8-img]
