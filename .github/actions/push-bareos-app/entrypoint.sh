@@ -15,7 +15,7 @@ done
 docker login -u 'barcus' -p "${INPUT_DOCKER_PASS}"
 
 # Push images and manifests
-while read app version arch ; do
+while read app version arch app_path ; do
   build_tag=${version}
   re='^[0-9]+-alpine.*$'
   if [[ $version =~ $re ]] ; then
