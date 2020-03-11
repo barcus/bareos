@@ -10,7 +10,7 @@ on:
       - master
 
 jobs:
-  test-compose:
+  lint-docker:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
