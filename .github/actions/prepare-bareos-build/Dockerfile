@@ -1,8 +1,10 @@
-FROM docker
+FROM docker:stable
 
-RUN set -x \
-    && apk update \
-    && apk add curl bash
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+
+RUN apk update \
+ && apk add --no-cache curl bash \
+ && rm -rf /var/cache/apk/*
 
 COPY entrypoint.sh /entrypoint.sh
 

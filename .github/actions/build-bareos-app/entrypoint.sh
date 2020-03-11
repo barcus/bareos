@@ -11,6 +11,9 @@ chmod a+x ~/.docker/cli-plugins/docker-buildx
 # Run qemu
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
+# Install git
+apk add --no-cache git
+
 # Create build context and build
 docker buildx create --name builder --driver docker-container --use
 while read app version arch app_path ; do
@@ -23,6 +26,10 @@ while read app version arch app_path ; do
   # Build with buildx
   docker buildx build \
     --platform ${arch} \
+    --build-arg VERSION=$(echo $version |cut -d'-' -f1) \
+    --build-arg VCS_REF=$(git rev-parse --short HEAD) \
+    --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+    --build-arg NAME="${GITHUB_REPOSITORY}-${app}" \
     --output 'type=docker,push=false' \
     --tag ${GITHUB_REPOSITORY}-${app}:${tag} \
     ${app_path}

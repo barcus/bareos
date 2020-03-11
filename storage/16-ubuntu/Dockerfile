@@ -1,19 +1,43 @@
 # Dockerfile Bareos storage daemon
 
-FROM       barcus/ubuntu:xenial
-MAINTAINER Barcus <barcus@tou.nu>
+FROM ubuntu:xenial
 
+LABEL maintainer="barcus@tou.nu"
+
+ARG BUILD_DATE
+ARG NAME
+ARG VCS_REF
+ARG VERSION
+
+LABEL org.label-schema.schema-version="1.0" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name=$NAME \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/barcus/bareos" \
+      org.label-schema.version=$VERSION
+
+ENV BAREOS_KEY http://download.bareos.org/bareos/release/16.2/xUbuntu_16.04/Release.key
+ENV BAREOS_REPO http://download.bareos.org/bareos/release/16.2/xUbuntu_16.04/
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN curl -Ls http://download.bareos.org/bareos/release/16.2/xUbuntu_16.04/Release.key | apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg add - && \
-    echo 'deb http://download.bareos.org/bareos/release/16.2/xUbuntu_16.04/ /' > /etc/apt/sources.list.d/bareos.list && \
-    apt-get update -qq && \
-    apt-get install -qq -y bareos-storage bareos-tools bareos-storage-tape mtx scsitools sg3-utils mt-st && \
-    apt-clean
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+RUN apt-get update -qq \
+ && apt-get -qq -y install --no-install-recommends curl \
+ && curl -Ls $BAREOS_KEY -o /tmp/bareos.key \
+ && apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg \
+    add /tmp/bareos.key \
+ && echo "deb $BAREOS_REPO /" > /etc/apt/sources.list.d/bareos.list \
+ && apt-get update -qq \
+ && apt-get install -qq -y --no-install-recommends \
+    bareos-storage bareos-tools bareos-storage-tape mtx scsitools sg3-utils mt-st \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh
-RUN tar cfvz /bareos-sd.tgz /etc/bareos/bareos-sd.d
+
+RUN tar czf /bareos-sd.tgz /etc/bareos/bareos-sd.d
 
 EXPOSE 9103
 

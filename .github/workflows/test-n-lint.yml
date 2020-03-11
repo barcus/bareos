@@ -1,0 +1,33 @@
+name: test-n-lint
+
+on:
+  push:
+    branches:
+      - master
+      - work_lint
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  lint-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install hadolint
+        run: |
+          url_api="https://api.github.com/repos/hadolint/hadolint/releases/latest"
+          version=$(curl --silent $url_api | jq -r .tag_name)
+          url_rlz="https://github.com/hadolint/hadolint/releases/download/${version}"
+          file='hadolint-Linux-x86_64'
+          wget "${url_rlz}/$file"
+          chmod u+x "$file"
+          ln -s "$file" hadolint
+
+      - name: Check Docker files
+        run: |
+          for file in $(find . -name Dockerfile); do
+            ./hadolint --ignore DL3008 --ignore DL3018 $file
+          done

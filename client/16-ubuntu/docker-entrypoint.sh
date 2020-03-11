@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
 
-# MAINTAINER Barcus <barcus@tou.nu>
+bareos_fd_config="/etc/bareos/bareos-fd.d/director/bareos-dir.conf"
 
-if [ ! -f /etc/bareos/bareos-config.control ]
-  then
-  tar xfvz /bareos-fd.tgz
+if [ ! -f /etc/bareos/bareos-config.control ]; then
+  tar xzf /bareos-fd.tgz --backup=simple --suffix=.before-control
 
   # Force client/file daemon password
-  sed -i "s#Password = .*#Password = \"${BAREOS_FD_PASSWORD}\"#" /etc/bareos/bareos-fd.d/director/bareos-dir.conf
+  sed -i 's#Password = .*#Password = '\""${BAREOS_FD_PASSWORD}"\"'#' $bareos_fd_config
 
   # Control file
   touch /etc/bareos/bareos-config.control
 fi
 
+# Fix permissions
 find /etc/bareos/bareos-fd.d ! -user bareos -exec chown bareos {} \;
+
+# Run Dockerfile CMD
 exec "$@"
