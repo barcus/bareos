@@ -1,4 +1,4 @@
-FROM docker
+FROM docker:latest
 
 RUN set -x \
  && apk update \
