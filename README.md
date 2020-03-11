@@ -8,12 +8,12 @@
 
 This package provides images for [Bareos][bareos-href] :
 
-module|build|size ubuntu|size alpine|pull
------|-----|-----|-----|-----
-Director | [![Actions Status][build-director-img]][build-director-href] | ![Size badge][size-latest-director-png] | ![Size badge][size-alpine-director-png] | [![Docker badge][docker-img-dir]][docker-url-dir]
-Storage Daemon | [![Actions Status][build-storage-img]][build-storage-href] | ![Size badge][size-latest-storage-png] | ![Size badge][size-alpine-storage-png] | [![Docker badge][docker-img-sd]][docker-url-sd]
-Client/File Daemoni | [![Actions Status][build-client-img]][build-client-href] | ![Size badge][size-latest-client-png] | ![Size badge][size-alpine-client-png] | [![Docker badge][docker-img-fd]][docker-url-fd]
-webUI | [![Actions Status][build-webui-img]][build-webui-href] | ![Size badge][size-latest-webui-png] | ![Size badge][size-alpine-webui-png] | [![Docker badge][docker-img-ui]][docker-url-ui]
+| module | build | size ubuntu | size alpine | pull |
+|:-------------------:|:------------------------------------------------------------:|:---------------------------------------:|:---------------------------------------:|:-------------------------------------------------:|
+| Director | [![Actions Status][build-director-img]][build-director-href] | ![Size badge][size-latest-director-png] | ![Size badge][size-alpine-director-png] | [![Docker badge][docker-img-dir]][docker-url-dir] |
+| Storage Daemon | [![Actions Status][build-storage-img]][build-storage-href] | ![Size badge][size-latest-storage-png] | ![Size badge][size-alpine-storage-png] | [![Docker badge][docker-img-sd]][docker-url-sd] |
+| Client/File Daemoni | [![Actions Status][build-client-img]][build-client-href] | ![Size badge][size-latest-client-png] | ![Size badge][size-alpine-client-png] | [![Docker badge][docker-img-fd]][docker-url-fd] |
+| webUI | [![Actions Status][build-webui-img]][build-webui-href] | ![Size badge][size-latest-webui-png] | ![Size badge][size-alpine-webui-png] | [![Docker badge][docker-img-ui]][docker-url-ui] |
 
 Images are based on **Ubuntu** or **Alpine**, check tags below
 
@@ -86,12 +86,12 @@ docker-compose -f /path/to/your/docker-compose.yml up -d
 
 docker-compose files are available for Alpine and Ubuntu based stack:
 
-file|compose|docker|latest build
------|-----|-----|-----
-[alpine-v1/mysql][compose-alpinev1-href]|v3+ |v1.13.0+|![test-compose][test-compose-png]
-[alpine-v2/mysql][compose-alpinev2-href]|v3.7+ |v18.06.0+|![test-compose][test-compose-png]
-[ubuntu/mysql][compose-ubuntu-mysql-href]|v3+ |v1.13.0+|![test-compose][test-compose-png]
-[ubuntu/pgsql][compose-ubuntu-pgsql-href]|v3+ |v1.13.0+|![test-compose][test-compose-png]
+| file | compose | docker | latest build |
+|:-----------------------------------------:|:-------:|:---------:|:-------------------------------:|
+| [alpine-v1/mysql][compose-alpinev1-href] | v3+ | v1.13.0+ | ![run-compose][run-compose-png] |
+| [alpine-v2/mysql][compose-alpinev2-href] | v3.7+ | v18.06.0+ | ![run-compose][run-compose-png] |
+| [ubuntu/mysql][compose-ubuntu-mysql-href] | v3+ | v1.13.0+ | ![run-compose][run-compose-png] |
+| [ubuntu/pgsql][compose-ubuntu-pgsql-href] | v3+ | v1.13.0+ | ![run-compose][run-compose-png] |
 
 Remember to change your mail address in `ADMIN_MAIL` and maybe some passwords :grin:
 
@@ -232,10 +232,10 @@ Build your own Bareos images :
 ```bash
 git clone https://github.com/barcus/bareos
 cd bareos
-docker build director-mysql/
-docker build storage/
-docker build client/
-docker build webui/
+docker build -t director-mysql:18-alpine director-mysql/18-alpine
+docker build -t storage:18-alpine storage/18-alpine
+docker build -t client:18-alpine client/18-alpine
+docker build -t webui:18-alpine webui/18-alpine
 ```
 
 Build your own Xenial base system image :
@@ -265,8 +265,8 @@ My Docker hub :
 
 Enjoy !
 
-[arch-amd64-img]: https://img.shields.io/badge/arch-amd64-purple
-[arch-arm64/v8-img]: https://img.shields.io/badge/arch-amd64/v8-purple
+[arch-amd64-img]: https://img.shields.io/badge/arch-amd64-inactive
+[arch-arm64/v8-img]: https://img.shields.io/badge/arch-arm64/v8-inactive
 [bareos-href]: https://www.bareos.org
 [build-client-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-client
 [build-client-img]: https://github.com/barcus/bareos/workflows/ci-client/badge.svg
@@ -293,14 +293,15 @@ Enjoy !
 [docker-url-sd]: https://registry.hub.docker.com/r/barcus/bareos-storage
 [docker-url-ui]: https://registry.hub.docker.com/r/barcus/bareos-webui
 [license-img]: https://img.shields.io/badge/license-ISC-blue.svg
-[os-based-alpine]: https://img.shields.io/badge/os-alpine-red
-[os-based-ubuntu]: https://img.shields.io/badge/os-ubuntu-red
-[size-alpine-client-png]: https://images.microbadger.com/badges/image/barcus/bareos-client:alpine.svg
-[size-alpine-director-png]: https://images.microbadger.com/badges/image/barcus/bareos-director:alpine.svg
-[size-alpine-storage-png]: https://images.microbadger.com/badges/image/barcus/bareos-storage:alpine.svg
-[size-alpine-webui-png]: https://images.microbadger.com/badges/image/barcus/bareos-webui:alpine.svg
-[size-latest-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/latest?label=19-ubuntu&style=plastic
-[size-latest-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/latest?label=19-ubuntu&style=plastic
-[size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?label=19-ubuntu&style=plastic
-[size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?label=19-ubuntu&style=plastic
-[test-compose-png]: https://github.com/barcus/bareos/workflows/test-compose/badge.svg
+[os-based-alpine]: https://img.shields.io/badge/os-alpine-9cf
+[os-based-ubuntu]: https://img.shields.io/badge/os-ubuntu-9cf
+[size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?label=alpine&style=plastic
+[size-alpine-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/alpine?label=alpine&style=plastic
+[size-alpine-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/alpine?label=alpine&style=plastic
+[size-alpine-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/alpine?label=alpine&style=plastic
+[size-latest-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/latest?label=latest&style=plastic
+[size-latest-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/latest?label=latest&style=plastic
+[size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?label=latest&style=plastic
+[size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?label=latest&style=plastic
+[run-compose-png]: https://github.com/barcus/bareos/workflows/run-compose/badge.svg
+
