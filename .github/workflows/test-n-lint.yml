@@ -19,5 +19,5 @@ jobs:
       - name: Check Docker files
         run: |
           for file in $(find . -name Dockerfile); do
-            docker run --rm -i hadolint/hadolint < $file
+            docker run --rm -i hadolint/hadolint --ignore DL3008 --ignore DL3018 < $file
           done
