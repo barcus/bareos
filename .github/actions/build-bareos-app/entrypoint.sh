@@ -40,6 +40,6 @@ while read app version arch app_path ; do
     "${GITHUB_REPOSITORY}-${app}:${tag}"
 done < "${workdir}/app_build.txt"
 
-chmod 755 "${workdir}/bareos-*.tar"
+chmod 755 "${workdir}"/bareos-*.tar
 
 #EOF
