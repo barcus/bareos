@@ -2,18 +2,10 @@ name: test-n-lint
 
 on:
   push:
-    paths:
-      - '*.yml'
-      - '.github/**/.yml'
-      - '**Dockerfile'
     branches:
       - master
       - work_lint
   pull_request:
-    paths:
-      - '*.yml'
-      - '.github/**/.yml'
-      - '**Dockerfile'
     branches:
       - master
 
