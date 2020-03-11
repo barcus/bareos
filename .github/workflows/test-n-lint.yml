@@ -8,7 +8,7 @@ on:
       - '**/Dockerfile'
     branches:
       - master
-      - ci_compose
+      - work_lint
   pull_request:
     paths:
       - '*.yml'
