@@ -16,8 +16,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install hadolint
+        run: |
+          url_api="https://api.github.com/repos/hadolint/hadolint/releases/latest"
+          version=$(curl --silent $url_api | jq -r .tag_name)
+          url_rlz="https://github.com/hadolint/hadolint/releases/download/${version"
+          curl "${url_rlw}/v1.17.5/hadolint-Linux-x86_64" -o /usr/bin/hadolint
+          chmod u+x /usr/bin/hadolint
+
       - name: Check Docker files
         run: |
           for file in $(find . -name Dockerfile); do
-            docker run --rm -i hadolint/hadolint --ignore DL3008 --ignore DL3018 < $file
+            /usr/bin/hadolint --ignore DL3008 --ignore DL3018 $file
           done
