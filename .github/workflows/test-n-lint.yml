@@ -21,11 +21,11 @@ jobs:
           url_api="https://api.github.com/repos/hadolint/hadolint/releases/latest"
           version=$(curl --silent $url_api | jq -r .tag_name)
           url_rlz="https://github.com/hadolint/hadolint/releases/download/${version}"
-          curl "${url_rlz}/v1.17.5/hadolint-Linux-x86_64" -o /usr/bin/hadolint
-          chmod u+x /usr/bin/hadolint
+          curl "${url_rlz}/hadolint-Linux-x86_64" -o hadolint
+          chmod u+x hadolint
 
       - name: Check Docker files
         run: |
           for file in $(find . -name Dockerfile); do
-            /usr/bin/hadolint --ignore DL3008 --ignore DL3018 $file
+            ./hadolint --ignore DL3008 --ignore DL3018 $file
           done
