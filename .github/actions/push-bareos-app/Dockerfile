@@ -1,7 +1,8 @@
 FROM docker:stable
 
-RUN set -x \
- && apk update \
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+
+RUN apk update \
  && apk add --no-cache curl bash \
  && rm -rf /var/cache/apk/*
 
