@@ -7,7 +7,6 @@ on:
       - '.github/workflows/push-readme.yml'
     branches:
       - master
-      - work_lint
   pull_request:
     paths:
       - 'README.md'

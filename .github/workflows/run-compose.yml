@@ -4,14 +4,14 @@ on:
   push:
     paths:
       - 'docker-compose*'
-      - '.github/workflows/run-compose-file.yml'
+      - '.github/workflows/run-compose.yml'
     branches:
       - master
       - work_lint
   pull_request:
     paths:
       - 'docker-compose*'
-      - '.github/workflows/run-compose-file.yml'
+      - '.github/workflows/run-compose.yml'
     branches:
       - master
 
@@ -41,7 +41,7 @@ jobs:
       - name: Run docker-compose
         run: docker-compose -f docker-compose-${{ matrix.module }}.yml up -d
 
-      - name: Wait 60s and run Bareos console
+      - name: Wait 60s then run Bareos console
         run: |
           sleep 60
           docker exec bareos_bareos-dir_1 bconsole
