@@ -88,14 +88,14 @@ echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/
 if [ ! -f /etc/bareos/bareos-db.control ]
   then
     # Init MySQL DB
-    /usr/lib/bareos/scripts/create_bareos_database
-    /usr/lib/bareos/scripts/make_bareos_tables
+    /etc/bareos/scripts/create_bareos_database
+    /etc/bareos/scripts/make_bareos_tables
 
     # Control file
     touch /etc/bareos/bareos-db.control
   else
     # Try MySQL DB upgrade
-    /usr/lib/bareos/scripts/update_bareos_tables
+    /etc/bareos/scripts/update_bareos_tables
 fi
 
 # Fix permissions
