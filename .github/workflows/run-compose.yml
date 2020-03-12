@@ -1,4 +1,4 @@
-name: run-compose-file
+name: run-compose
 
 on:
   push:
