@@ -14,7 +14,7 @@ fi
 
 # Fix permissions
 find /etc/bareos/bareos-sd.d ! -user bareos -exec chown bareos {} \;
-chown -R bareos /var/lib/bareos/storage
+chown -R bareos /var/lib/bareos
 
 # Run Dockerfile CMD
 exec "$@"
