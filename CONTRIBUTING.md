@@ -21,11 +21,11 @@ Pull requests are the best way to propose changes to the codebase (we use
 [Github Flow][github-flow]. We actively welcome your pull requests:
 
 1. Fork the repo and create your branch from `master`.
-2. If you've added code that should be tested, add tests.
-3. If you've changed APIs, update the documentation.
-4. Ensure the test suite passes.
-5. Make sure your code lints.
-6. Issue that pull request!
+1. If you've added code that should be tested, add tests.
+1. If you've changed APIs, update the documentation.
+1. Ensure the test suite passes.
+1. Make sure your code lints.
+1. Issue that pull request!
 
 ## Any contributions you make will be under the MIT Software License
 
@@ -47,11 +47,12 @@ opening a new issue; it's that easy!
 - What you expected would happen
 - What actually happens
 - Notes (possibly including why you think this might be happening, or
-stuff you tried that didn't work)
+  stuff you tried that didn't work)
 
 People *love* thorough bug reports. I'm not even kidding.
 
 ## References
+
 This document was adapted from the open-source contribution guidelines
 for [Facebook's Draft][source-md]
 
