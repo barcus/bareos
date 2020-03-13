@@ -22,7 +22,7 @@ ENV BAREOS_REPO http://download.bareos.org/bareos/release/17.2/xUbuntu_16.04/
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update -qq \
- && apt-get -qq -y install --no-install-recommends  curl tzdata \
+ && apt-get -qq -y install --no-install-recommends curl tzdata \
  && curl -Ls $BAREOS_KEY -o /tmp/bareos.key \
  && apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg \
     add /tmp/bareos.key \

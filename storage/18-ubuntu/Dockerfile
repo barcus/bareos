@@ -22,7 +22,7 @@ ENV DEBIAN_FRONTEND noninteractive
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update -qq \
- && apt-get -qq -y install --no-install-recommends  curl tzdata gnupg \
+ && apt-get -qq -y install --no-install-recommends curl tzdata gnupg \
  && curl -Ls $BAREOS_KEY -o /tmp/bareos.key \
  && apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg \
     add /tmp/bareos.key \
