@@ -30,3 +30,12 @@ jobs:
           for file in $(find . -name Dockerfile); do
             ./hadolint --ignore DL3008 --ignore DL3018 $file
           done
+
+      - name: Install mardownlint
+        run: apt-get install ruby-full && gem install mdl
+
+      - name: Check md files
+        run: |
+          for file in $(find . -name "*.md"; do
+            mdl $file
+          done
