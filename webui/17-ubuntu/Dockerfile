@@ -23,7 +23,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update -qq \
  && apt-get -qq -y install --no-install-recommends  curl tzdata \
- &&  curl tzdata -Ls $BAREOS_KEY -o /tmp/bareos.key \
+ &&  curl -Ls $BAREOS_KEY -o /tmp/bareos.key \
  && apt-key --keyring /etc/apt/trusted.gpg.d/breos-keyring.gpg \
     add /tmp/bareos.key \
  && echo "deb $BAREOS_REPO /" > /etc/apt/sources.list.d/bareos.list \
