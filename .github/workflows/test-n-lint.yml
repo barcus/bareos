@@ -43,6 +43,6 @@ jobs:
 
       - name: Check md files
         run: |
-          for file in $(find . -name "*.md"; do
+          for file in $(find . -name "*.md"); do
             mdl $file
           done
