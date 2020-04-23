@@ -3,8 +3,8 @@
 #!/usr/bin/env bash
 
 github_bareos='raw.githubusercontent.com/bareos/bareos'
-webui_admin_conf='/master/webui/install/bareos/bareos-dir.d/profile/webui-admin.conf'
-admin_conf='/master/webui//install/bareos/bareos-dir.d/console/admin.conf.example'
+webui_admin_conf='master/webui/install/bareos/bareos-dir.d/profile/webui-admin.conf'
+admin_conf='master/webui/install/bareos/bareos-dir.d/console/admin.conf.example'
 
 if [ ! -f /etc/bareos/bareos-config.control ]; then
   tar xzf /bareos-dir.tgz --backup=simple --suffix=.before-control
