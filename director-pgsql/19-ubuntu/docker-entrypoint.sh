@@ -90,7 +90,7 @@ if [ ! -f /etc/bareos/bareos-db.control ]
 fi
 
 # Fix permissions
-find /etc/bareos/bareos-dir.d ! -user bareos -exec chown bareos {} \;
+find /etc/bareos ! -user bareos -exec chown bareos {} \;
 chown -R bareos:bareos /var/lib/bareos
 
 # Run Dockerfile CMD
