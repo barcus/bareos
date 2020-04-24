@@ -21,9 +21,9 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
 
   # Update bareos-director configs
   # Director / mycatalog & mail report
-  sed -i "s#dbuser = bareos#dbuser = bareos\n  dbpassword = ${DB_PASSWORD}#" \
+  sed -i 's#dbpassword = ""#dbpassword = '\"${DB_PASSWORD}\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
-  sed -i 's#dbname = bareos#dbname = bareos\n  dbaddress = '\""${DB_HOST}"\"'\n  dbport = '\""${DB_PORT}"\"'#' \
+  sed -i 's#dbname = "bareos"#dbname = bareos\n  dbaddress = '\"${DB_HOST}\"'\n  dbport = '\"${DB_PORT}\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   sed -i "s#/usr/bin/bsmtp -h localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#" \
     /etc/bareos/bareos-dir.d/messages/Daemon.conf
