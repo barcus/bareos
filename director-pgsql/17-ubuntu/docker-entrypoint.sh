@@ -21,9 +21,9 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
 
   # Update bareos-director configs
   # Director / mycatalog & mail report
-  sed -i "s#dbuser = bareos#dbuser = bareos\n  dbpassword = ${DB_PASSWORD}#" \
+  sed -i 's#dbpassword = ""#dbpassword = '\"${DB_PASSWORD}\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
-  sed -i 's#dbname = bareos#dbname = bareos\n  dbaddress = '\""${DB_HOST}"\"'\n  dbport = '\""${DB_PORT}"\"'#' \
+  sed -i 's#dbname = "bareos"#dbname = bareos\n  dbaddress = '\"${DB_HOST}\"'\n  dbport = '\"${DB_PORT}\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   sed -i "s#/usr/bin/bsmtp -h localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#" \
     /etc/bareos/bareos-dir.d/messages/Daemon.conf
@@ -51,8 +51,8 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
     /etc/bareos/bareos-dir.d/console/admin.conf
 
   # MyCatalog Backup
-  #sed -i "s#/var/lib/bareos/bareos.sql#/var/lib/bareos-director/bareos.sql#" \
-  #  /etc/bareos/bareos-dir.d/fileset/Catalog.conf
+  sed -i "s#/var/lib/bareos/bareos.sql#/var/lib/bareos-director/bareos.sql#" \
+    /etc/bareos/bareos-dir.d/fileset/Catalog.conf
 
   # Control file
   touch /etc/bareos/bareos-config.control
@@ -83,7 +83,7 @@ if [ ! -f /etc/bareos/bareos-db.control ]
 fi
 
 # Fix permissions
-find /etc/bareos/bareos-dir.d ! -user bareos -exec chown bareos {} \;
+find /etc/bareos ! -user bareos -exec chown bareos {} \;
 chown -R bareos:bareos /var/lib/bareos
 
 # Run Dockerfile CMD
