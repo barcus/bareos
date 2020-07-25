@@ -27,15 +27,15 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   [ -n "${SENDER_MAIL}" ] && sed -i "s#<%r#<${SENDER_MAIL}#g" \
     /etc/bareos/bareos-dir.d/messages/Daemon.conf
-  sed -i "s#/usr/bin/bsmtp -h root@localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#" \
+  sed -i "s#/usr/bin/bsmtp -h localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#" \
     /etc/bareos/bareos-dir.d/messages/Daemon.conf
-  sed -i "s#mail = root@localhost#mail = ${ADMIN_MAIL}#" \
+  sed -i "s#mail = root#mail = ${ADMIN_MAIL}#" \
     /etc/bareos/bareos-dir.d/messages/Daemon.conf
   [ -n "${SENDER_MAIL}" ] && sed -i "s#<%r#<${SENDER_MAIL}#g" \
     /etc/bareos/bareos-dir.d/messages/Standard.conf
-  sed -i "s#/usr/bin/bsmtp -h root@localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#" \
+  sed -i "s#/usr/bin/bsmtp -h localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#" \
     /etc/bareos/bareos-dir.d/messages/Standard.conf
-  sed -i "s#mail = root@localhost#mail = ${ADMIN_MAIL}#" \
+  sed -i "s#mail = root#mail = ${ADMIN_MAIL}#" \
     /etc/bareos/bareos-dir.d/messages/Standard.conf
 
   # storage daemon
