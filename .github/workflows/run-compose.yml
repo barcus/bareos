@@ -1,0 +1,47 @@
+name: run-compose
+
+on:
+  push:
+    paths:
+      - 'docker-compose*'
+      - '.github/workflows/run-compose.yml'
+    branches:
+      - master
+      - work_lint
+  pull_request:
+    paths:
+      - 'docker-compose*'
+      - '.github/workflows/run-compose.yml'
+    branches:
+      - master
+
+jobs:
+  test-compose:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [alpine-v1, alpine-v2, ubuntu-mysql, ubuntu-pgsql]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Create required folder
+        run: |
+          sudo mkdir -p /data/bareos/config/director
+          sudo mkdir -p /data/bareos/data/director
+          sudo mkdir -p /data/bareos/config/storage
+          sudo mkdir -p /data/bareos/data/storage
+          sudo mkdir -p /data/bareos/config/client
+          sudo mkdir -p /data/bareos/config/webui
+          sudo mkdir -p /data/bareos/data/webui
+          sudo mkdir -p /data/mysql/data
+          sudo mkdir -p /data/pgsql/data
+          sudo chmod 777 /data/bareos /data/mysql /data/pgsql
+
+      - name: Run docker-compose
+        run: docker-compose -f docker-compose-${{ matrix.module }}.yml up -d
+
+      - name: Wait 60s then run Bareos console
+        run: |
+          sleep 60
+          docker exec bareos_bareos-dir_1 bconsole

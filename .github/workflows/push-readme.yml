@@ -1,0 +1,32 @@
+name: push-readme
+
+on:
+  push:
+    paths:
+      - 'README.md'
+      - '.github/workflows/push-readme.yml'
+    branches:
+      - master
+  pull_request:
+    paths:
+      - 'README.md'
+      - '.github/workflows/push-readme.yml'
+    branches:
+      - master
+
+jobs:
+  dockerhub:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [client, director, storage, webui]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Update Docker Hub description
+        uses: peter-evans/dockerhub-description@v2.1.0
+        env:
+          DOCKERHUB_USERNAME: barcus
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASS }}
+          DOCKERHUB_REPOSITORY: barcus/bareos-${{ matrix.module }}

@@ -1,0 +1,79 @@
+name: ci-__BAREOS_APP__
+
+on:
+  push:
+    paths:
+      - '__BAREOS_APP__*/**'
+      - '.github/workflows/ci-__BAREOS_APP__.yml'
+      - '.github/actions/prepare-bareos-build/*'
+      - '.github/actions/build-bareos-app/*'
+      - '.github/actions/push-bareos-app/*'
+  pull_request:
+    paths:
+      - '__BAREOS_APP__*/**'
+      - '.github/workflows/ci-__BAREOS_APP__.yml'
+      - '.github/actions/prepare-bareos-build/*'
+      - '.github/actions/build-bareos-app/*'
+      - '.github/actions/push-bareos-app/*'
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Prepare build file
+        uses: ./.github/actions/prepare-bareos-build
+        with:
+          bareos_app: __BAREOS_APP__
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-artifact-__BAREOS_APP__
+          path: build
+
+  build:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: build-artifact-__BAREOS_APP__
+          path: build
+
+      - name: Build images
+        uses: ./.github/actions/build-bareos-app
+        with:
+          bareos_app: __BAREOS_APP__
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-artifact-__BAREOS_APP__
+          path: build
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: build-artifact-__BAREOS_APP__
+          path: build
+
+      - name: Load and push images
+        uses: ./.github/actions/push-bareos-app
+        with:
+          docker_pass: ${{ secrets.DOCKER_PASS }}
+          bareos_app: __BAREOS_APP__

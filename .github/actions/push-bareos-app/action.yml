@@ -1,0 +1,12 @@
+name: 'push-bareos-app'
+description: 'Push Bareos docker images to Docker Hub'
+author: 'Barcus'
+inputs:
+  docker_pass:
+    description: 'Docker Hub password'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.docker_pass }}
