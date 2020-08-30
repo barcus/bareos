@@ -1,5 +1,5 @@
-# Dockerfile Bareos client/file daemon
-FROM alpine:3.12
+# Dockerfile Bareos storage daemon
+FROM alpine:edge
 
 LABEL maintainer="barcus@tou.nu"
 
@@ -17,16 +17,19 @@ LABEL org.label-schema.schema-version="1.0" \
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
-RUN apk add --no-cache bareos openssh-client tar
+RUN apk add --no-cache bareos tar
 
-RUN tar czf /bareos-fd.tgz /etc/bareos/bareos-fd.d
+RUN tar czf /bareos-sd.tgz /etc/bareos/bareos-sd.d
 RUN mkdir /run/bareos \
  && chown bareos /run/bareos
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh
 
-EXPOSE 9102
+EXPOSE 9103
+
+VOLUME /etc/bareos
+VOLUME /var/lib/bareos/storage
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/usr/sbin/bareos-fd", "-u", "bareos", "-f"]
+CMD ["/usr/sbin/bareos-sd", "-u", "bareos", "-f"]
