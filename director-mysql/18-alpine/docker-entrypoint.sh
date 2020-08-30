@@ -21,11 +21,11 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
 
   # Update bareos-director configs
   # Director / mycatalog & mail report
-  sed -i 's#dbuser =.*#dbuser = root#' \
+  sed -i "s#dbuser =.*#dbuser = $DB_USER#" \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   sed -i 's#dbpassword =.*#dbpassword = '\""${DB_PASSWORD}"\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
-  sed -i 's#dbname =.*#dbname = bareos\n  dbaddress = '\""${DB_HOST}"\"'\n  dbport = '\""${DB_PORT}"\"'#' \
+  sed -i 's#dbname =.*#dbname = '\""${DB_NAME}"\"'\n  dbaddress = '\""${DB_HOST}"\"'\n  dbport = '\""${DB_PORT}"\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   sed -i 's#dbdriver = .*#dbdriver = '\""mysql"\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
