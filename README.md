@@ -29,9 +29,10 @@ bareos-director (dir)
 
 * `19-ubuntu-mysql`, `19-ubuntu`, `19`, `ubuntu`, `latest`
 * `19-ubuntu-pqsql`
+* `19-alpine-mysql`, `19-alpine`, `alpine`
 * `18-ubuntu-mysql`, `18-ubuntu`, `18`
 * `18-ubuntu-pgsql`
-* `18-alpine-mysql`, `18-alpine`, `alpine`
+* `18-alpine-mysql`, `18-alpine`
 * `17-ubuntu-mysql`, `17-ubuntu`, `17`
 * `17-ubuntu-pgsql`
 * `17-alpine`
@@ -41,8 +42,9 @@ bareos-director (dir)
 bareos-client (fd) - bareos-storage (sd) - bareos-webui
 
 * `19-ubuntu`, `19`, `ubuntu`, `latest`
+* `19-alpine`, `alpine`
 * `18-ubuntu`, `18`
-* `18-alpine`, `alpine`
+* `18-alpine`
 * `17-ubuntu`, `17`
 * `17-alpine`
 * `16-ubuntu`, `16`

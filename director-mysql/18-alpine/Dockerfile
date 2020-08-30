@@ -1,5 +1,5 @@
 # Bareos director Dockerfile
-FROM alpine:3.10
+FROM alpine:3.12
 
 LABEL maintainer="barcus@tou.nu"
 

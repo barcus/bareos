@@ -1,5 +1,5 @@
-# Dockerfile Bareos client/file daemon
-FROM alpine:3.12
+# Bareos director Dockerfile
+FROM alpine:edge
 
 LABEL maintainer="barcus@tou.nu"
 
@@ -17,16 +17,19 @@ LABEL org.label-schema.schema-version="1.0" \
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
-RUN apk add --no-cache bareos openssh-client tar
+RUN apk add --no-cache bareos-mysql mysql-client curl tzdata tar
 
-RUN tar czf /bareos-fd.tgz /etc/bareos/bareos-fd.d
+RUN tar czf /bareos-dir.tgz /etc/bareos
 RUN mkdir /run/bareos \
  && chown bareos /run/bareos
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh
 
-EXPOSE 9102
+EXPOSE 9101
+
+VOLUME /etc/bareos
+VOLUME /var/lib/bareos
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/usr/sbin/bareos-fd", "-u", "bareos", "-f"]
+CMD ["/usr/sbin/bareos-dir", "-u", "bareos", "-f"]
