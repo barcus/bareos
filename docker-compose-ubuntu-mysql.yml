@@ -9,6 +9,8 @@ services:
     environment:
       - DB_HOST=bareos-db
       - DB_PORT=3306
+      - DB_NAME=bareos
+      - DB_USER=root
       - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
       - BAREOS_SD_HOST=bareos-sd
       - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
