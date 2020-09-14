@@ -46,6 +46,9 @@ RUN apt-get update -qq \
 
 RUN tar czf /bareos-dir.tgz /etc/bareos
 
+COPY webhook-notify /usr/local/bin/webhook-notify
+RUN chmod u+x /usr/local/bin/webhook-notify
+
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh
 

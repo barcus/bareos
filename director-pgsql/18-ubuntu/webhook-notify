@@ -1,0 +1,30 @@
+#!/bin/bash
+if [ "${WEBHOOK_NOTIFICATION}" = true ] && [ "${WEBHOOK_TYPE}" = "slack" ] ; then
+
+  if [ "$bstatus" == "OK" ] ; then
+    /usr/bin/curl -k -X POST \
+         -H 'Content-Type: application/json' \
+         -d '{"text": "✅ '$bname' '$bkind' '$bstatus' '$4' '$bhost' '$btype' \n"}' \
+         ${WEBHOOK_URL}
+  else
+    /usr/bin/curl -k -X POST \
+         -H 'Content-Type: application/json' \
+         -d '{"text": "❌ '$bname' '$bkind' '$bstatus' '$4' '$bhost' '$btype' \n"}' \
+         ${WEBHOOK_URL}
+  fi
+
+elif [ "${WEBHOOK_NOTIFICATION}" = true ] && [ "${WEBHOOK_TYPE}" = "telegram"] ; then
+
+  if [ "$bstatus" == "OK" ] ; then
+    /usr/bin/curl -k -X POST \
+         -H 'Content-Type: application/json' \
+         -d '{"chat_id": "${WEBHOOK_CHAT_ID}", "text": "✅ '$bname' '$bkind' '$bstatus' '$4' '$bhost' '$btype' \n", "disable_notification": false}' \
+         ${WEBHOOK_URL}
+  else
+    /usr/bin/curl -k -X POST \
+         -H 'Content-Type: application/json' \
+         -d '{"chat_id": "${WEBHOOK_CHAT_ID}", "text": "❌ '$bname' '$bkind' '$bstatus' '$4' '$bhost' '$btype' \n", "disable_notification": false}' \
+         ${WEBHOOK_URL}
+  fi
+  
+fi

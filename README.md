@@ -136,6 +136,11 @@ services:
       - SMTP_HOST=smtpd
       - SENDER_MAIL=your-sender@mail.address #optional
       - ADMIN_MAIL=your@mail.address # Change me!
+      # Optional you can get backup notification via Slack or Telegram
+      - WEBHOOK_NOTIFICATION=true # true or false if set to true email notification gets disabled
+      - WEBHOOK_TYPE=slack # choose slack or telegram
+      - WEBHOOK_URL= # set the slack or telegram URL
+      - WEBHOOK_CHAT_ID= # for telegram only set the <chat_id>
     depends_on:
       - bareos-db
 
@@ -196,6 +201,10 @@ services:
 * ADMIN_MAIL is your email address
 * SENDER_MAIL is the email address you want to use for send the email
  (optional, default ADMIN_MAIL value)
+* WEBHOOK_NOTIFICATION=true # true or false if set to true email notification gets disabled
+* WEBHOOK_TYPE=slack # choose slack or telegram
+* WEBHOOK_URL= # set the slack or telegram URL (ex slack: https://hooks.slack.com/services/TXXXXXXXXXX/XXXXXXXXXXX/Cbzi0lUVjKsjiM6kjZL2eQAW)
+* WEBHOOK_CHAT_ID= # for telegram only set the <chat_id>
 
 **Bareos Storage Daemon** (bareos-sd)
 
