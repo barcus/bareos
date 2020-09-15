@@ -20,25 +20,25 @@ while read app version arch app_path ; do
   re='^[0-9]+-alpine.*$'
   if [[ $version =~ $re ]] ; then
     build_tag="${version}-${arch}"
-    rm_tag="$rm_tag ${GITHUB_REPOSITORY}-${app}:${build_tag}"
+    rm_tag="$rm_tag ${GITHUB_REPOSITORY,,}-${app}:${build_tag}"
   fi
   # Push build_tag
-  docker push "${GITHUB_REPOSITORY}-${app}:${build_tag}"
+  docker push "${GITHUB_REPOSITORY,,}-${app}:${build_tag}"
 done < "${workdir}/app_build.txt"
 
 while read build_app s_tag t_tag ; do
   # Add and push tag for Ubuntu 
   if [[ $s_tag =~ ^[0-9]+-ubuntu.*$ ]]; then
-    docker tag "${GITHUB_REPOSITORY}-${build_app}:${s_tag}" \
-      "${GITHUB_REPOSITORY}-${build_app}:${t_tag}"
-    docker push "${GITHUB_REPOSITORY}-${build_app}:${t_tag}"
+    docker tag "${GITHUB_REPOSITORY,,}-${build_app}:${s_tag}" \
+      "${GITHUB_REPOSITORY,,}-${build_app}:${t_tag}"
+    docker push "${GITHUB_REPOSITORY,,}-${build_app}:${t_tag}"
   fi
   # Create and push manifest for Alpuine (arm64 + amd64)
   if [[ $s_tag =~ ^[0-9]+-alpine.*$ ]]; then
-    docker manifest create "${GITHUB_REPOSITORY}-${build_app}:${t_tag}" \
-      "${GITHUB_REPOSITORY}-${build_app}:${s_tag}-amd64" \
-      "${GITHUB_REPOSITORY}-${build_app}:${s_tag}-arm64"
-    docker manifest push "${GITHUB_REPOSITORY}-${build_app}:${t_tag}"
+    docker manifest create "${GITHUB_REPOSITORY,,}-${build_app}:${t_tag}" \
+      "${GITHUB_REPOSITORY,,}-${build_app}:${s_tag}-amd64" \
+      "${GITHUB_REPOSITORY,,}-${build_app}:${s_tag}-arm64"
+    docker manifest push "${GITHUB_REPOSITORY,,}-${build_app}:${t_tag}"
   fi
 done < "${workdir}/tag_build.txt"
 

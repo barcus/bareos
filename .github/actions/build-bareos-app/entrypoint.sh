@@ -29,15 +29,15 @@ while read app version arch app_path ; do
     --build-arg VERSION=$(echo "$version" |cut -d'-' -f1) \
     --build-arg VCS_REF=$(git rev-parse --short HEAD) \
     --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
-    --build-arg NAME="${GITHUB_REPOSITORY}-${app}" \
+    --build-arg NAME="${GITHUB_REPOSITORY,,}-${app}" \
     --output 'type=docker,push=false' \
-    --tag "${GITHUB_REPOSITORY}-${app}:${tag}" \
+    --tag "${GITHUB_REPOSITORY,,}-${app}:${tag}" \
     "${app_path}"
 
   # Save image to tar file
   docker save \
     --output "${workdir}/bareos-${app}-${tag}.tar" \
-    "${GITHUB_REPOSITORY}-${app}:${tag}"
+    "${GITHUB_REPOSITORY,,}-${app}:${tag}"
 done < "${workdir}/app_build.txt"
 
 chmod 755 "${workdir}"/bareos-*.tar
