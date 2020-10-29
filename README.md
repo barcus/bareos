@@ -203,8 +203,8 @@ services:
  (optional, default ADMIN_MAIL value)
 * WEBHOOK_NOTIFICATION=true # true or false if set to true email notification gets disabled
 * WEBHOOK_TYPE=slack # choose slack or telegram
-* WEBHOOK_URL= # set the slack or telegram URL (ex slack: https://hooks.slack.com/services/TXXXXXXXXXX/XXXXXXXXXXX/Cbzi0lUVjKsjiM6kjZL2eQAW)
-* WEBHOOK_CHAT_ID= # for telegram only set the <chat_id>
+* WEBHOOK_URL= # set the slack or telegram URL (ex slack: <https://hooks.slack.com/services/TXXXXXXXXXX/XXXXXXXXXXX/Cbzi0lUVjKsjiM6kjZL2eQAW>)
+* WEBHOOK_CHAT_ID= # for telegram only set the 'chat_id'
 
 **Bareos Storage Daemon** (bareos-sd)
 
@@ -315,4 +315,3 @@ Enjoy !
 [size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?label=latest&style=plastic
 [size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?label=latest&style=plastic
 [run-compose-png]: https://github.com/barcus/bareos/workflows/run-compose/badge.svg
-
