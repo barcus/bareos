@@ -38,6 +38,14 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   sed -i "s#mail = root#mail = ${ADMIN_MAIL}#" \
     /etc/bareos/bareos-dir.d/messages/Standard.conf
 
+  # Setup webhook
+  if [ "${WEBHOOK_NOTIFICATION}" = true ]; then
+    sed -i "s#/usr/bin/bsmtp -h localhost#/usr/local/bin/webhook-notify Bareos: %t %e of %c %l#" \
+      /etc/bareos/bareos-dir.d/messages/Daemon.conf
+    sed -i "s#/usr/bin/bsmtp -h localhost#/usr/local/bin/webhook-notify Bareos: %t %e of %c %l#" \
+      /etc/bareos/bareos-dir.d/messages/Standard.conf
+  fi
+
   # storage daemon
   sed -i 's#Address = .*#Address = '\""${BAREOS_SD_HOST}"\"'#' \
     /etc/bareos/bareos-dir.d/storage/File.conf
