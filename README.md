@@ -303,7 +303,7 @@ Enjoy !
 [docker-url-fd]: https://registry.hub.docker.com/r/barcus/bareos-client
 [docker-url-sd]: https://registry.hub.docker.com/r/barcus/bareos-storage
 [docker-url-ui]: https://registry.hub.docker.com/r/barcus/bareos-webui
-[license-img]: https://img.shields.io/badge/license-MIT-blue.svg
+[license-img]: https://img.shields.io/badge/License-MIT-yellow.svg
 [os-based-alpine]: https://img.shields.io/badge/os-alpine-9cf
 [os-based-ubuntu]: https://img.shields.io/badge/os-ubuntu-9cf
 [size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?label=alpine&style=plastic
