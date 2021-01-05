@@ -45,6 +45,7 @@ services:
       - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
     environment:
       - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+      - FORCE_ROOT=false
 
   bareos-webui:
     image: barcus/bareos-webui:19-ubuntu

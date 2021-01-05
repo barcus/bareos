@@ -8,6 +8,8 @@ ARG NAME
 ARG VCS_REF
 ARG VERSION
 
+ENV BAREOS_DAEMON_USER bareos
+
 LABEL org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name=$NAME \
@@ -29,4 +31,4 @@ RUN chmod u+x /docker-entrypoint.sh
 EXPOSE 9102
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/usr/sbin/bareos-fd", "-u", "bareos", "-f"]
+CMD ["sh", "-c", "/usr/sbin/bareos-fd -u $BAREOS_DAEMON_USER -f"]
