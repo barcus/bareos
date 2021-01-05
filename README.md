@@ -161,6 +161,7 @@ services:
       - <BAREOS_DATA_PATH>:/var/lib/bareos-director #required for MyCatalog backup
     environment:
       - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+      - FORCE_ROOT=false
 
   bareos-webui:
     image: barcus/bareos-webui:latest
@@ -220,6 +221,7 @@ services:
  host side (optional/recommended)
 * `<BAREOS_DATA_PATH>` is the path to access Director data folder (recommended)
 * BAREOS_FD_PASSWORD must be same as Bareos Director section
+* FORCE_ROOT must be true to run Bareos with root permissions
 
 **Database MySQL or PostgreSQL** (bareos-db)
 
