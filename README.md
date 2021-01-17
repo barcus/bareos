@@ -17,17 +17,23 @@ This package provides images for [Bareos][bareos-href] :
 
 Images are based on **Ubuntu** or **Alpine**, check tags below
 
-:+1: Tested with Bareos 16.2, 17.2, 18.2 and 19.2
+:+1: Tested with Bareos 16.2 to 20
+
+:warning: MySQL/MariaDB backends deprecated since Bareos 19.0.0
+:warning: SQLite backend deprecated since Bareos 20.0.0
 
 * Ubuntu images for Bareos 16 and 17 are based on **Xenial**
-* Ubuntu images for Bareos 18+ are based on **Bionic**
+* Ubuntu images for Bareos 18 and 19 are based on **Bionic**
+* Ubuntu images for Bareos 20 are based on **Focal**
 * Alpine images are available for **linux/amd64** and **linux/arm64/v8** platform
 
 ## Tags
 
 bareos-director (dir)
 
-* `19-ubuntu-mysql`, `19-ubuntu`, `19`, `ubuntu`, `latest`
+* `20-ubuntu-mysql`
+* `20-ubuntu-pqsql`, `20-ubuntu`, `20`, `ubuntu`, `latest`
+* `19-ubuntu-mysql`, `19-ubuntu`, `19`
 * `19-ubuntu-pqsql`
 * `19-alpine-mysql`, `19-alpine`, `alpine`
 * `18-ubuntu-mysql`, `18-ubuntu`, `18`
@@ -41,7 +47,8 @@ bareos-director (dir)
 
 bareos-client (fd) - bareos-storage (sd) - bareos-webui
 
-* `19-ubuntu`, `19`, `ubuntu`, `latest`
+* `20-ubuntu`, `20`, `ubuntu`, `latest`
+* `19-ubuntu`, `19`
 * `19-alpine`, `alpine`
 * `18-ubuntu`, `18`
 * `18-alpine`
@@ -62,10 +69,10 @@ the Bareos containers.
 
 Bareos Director requires :
 
-* PostgreSQL or MySQL as a catalog backend
+* PostgreSQL or MySQL as a catalog backend (MySQL deprecated since Bareos 19.0.0)
 * SMTP Daemon as mail router (for reporting)
 
-Curently, PostgreSQL is not available on Alpine images.
+At this moment, PostgreSQL is not available on Alpine images.
 
 Bareos Webui requires (Alpine images only) :
 
