@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 BUILDX_VER='v0.3.1'
-latest_ubuntu='19'
-latest_alpine='18'
+latest_ubuntu='20'
+latest_alpine='19'
 
 build_file="${GITHUB_WORKSPACE}/build/app_build.txt"
 tag_file="${GITHUB_WORKSPACE}/build/tag_build.txt"
