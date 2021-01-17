@@ -77,6 +77,8 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
 fi
 
 # MySQL check
+# Force statistics colum to 0 with mysqldump
+echo -e '[mysqldump]\ncolumn-statistics=0' > /etc/mysql/conf.d/mysqldump-bareos.cnf
 # Waiting for mysqld
 sqlup=1
 while [ "$sqlup" -ne 0 ] ; do
