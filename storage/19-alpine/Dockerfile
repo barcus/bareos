@@ -1,5 +1,5 @@
 # Dockerfile Bareos storage daemon
-FROM alpine:edge
+FROM alpine:3.13
 
 LABEL maintainer="barcus@tou.nu"
 
