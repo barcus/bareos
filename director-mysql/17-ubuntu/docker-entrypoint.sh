@@ -38,9 +38,9 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
 
   # Setup webhook
   if [ "${WEBHOOK_NOTIFICATION}" = true ]; then
-    sed -i "s#/usr/bin/bsmtp -h localhost#/usr/local/bin/webhook-notify %t %e %c %l %n"
+    sed -i "s#/usr/bin/bsmtp -h.*#/usr/local/bin/webhook-notify %t %e %c %l %n\"#" \
       /etc/bareos/bareos-dir.d/messages/Daemon.conf
-    sed -i "s#/usr/bin/bsmtp -h localhost#/usr/local/bin/webhook-notify %t %e %c %l %n"
+    sed -i "s#/usr/bin/bsmtp -h.*#/usr/local/bin/webhook-notify %t %e %c %l %n\"#" \
       /etc/bareos/bareos-dir.d/messages/Standard.conf
   fi
 
