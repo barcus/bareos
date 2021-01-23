@@ -1,30 +1,41 @@
-#!/bin/bash
-if [ "${WEBHOOK_NOTIFICATION}" = true ] && [ "${WEBHOOK_TYPE}" = "slack" ] ; then
+#!/usr/bin/env sh
 
-  if [ "$bstatus" == "OK" ] ; then
-    /usr/bin/curl -k -X POST \
-         -H 'Content-Type: application/json' \
-         -d '{"text": "✅ '$bname' '$bkind' '$bstatus' '$4' '$bhost' '$btype' \n"}' \
-         ${WEBHOOK_URL}
-  else
-    /usr/bin/curl -k -X POST \
-         -H 'Content-Type: application/json' \
-         -d '{"text": "❌ '$bname' '$bkind' '$bstatus' '$4' '$bhost' '$btype' \n"}' \
-         ${WEBHOOK_URL}
-  fi
+job_type=$1
+job_status=$2
+job_client=$3
+job_level=$4
+job_name=$5
+msg_icon="❌"
 
-elif [ "${WEBHOOK_NOTIFICATION}" = true ] && [ "${WEBHOOK_TYPE}" = "telegram"] ; then
-
-  if [ "$bstatus" == "OK" ] ; then
-    /usr/bin/curl -k -X POST \
-         -H 'Content-Type: application/json' \
-         -d '{"chat_id": "${WEBHOOK_CHAT_ID}", "text": "✅ '$bname' '$bkind' '$bstatus' '$4' '$bhost' '$btype' \n", "disable_notification": false}' \
-         ${WEBHOOK_URL}
-  else
-    /usr/bin/curl -k -X POST \
-         -H 'Content-Type: application/json' \
-         -d '{"chat_id": "${WEBHOOK_CHAT_ID}", "text": "❌ '$bname' '$bkind' '$bstatus' '$4' '$bhost' '$btype' \n", "disable_notification": false}' \
-         ${WEBHOOK_URL}
-  fi
-  
+if [ "$job_status" = "OK" ] ;then
+  msg_icon="✅"
 fi
+
+msg_txt="$msg_icon Bareos: $job_type $job_status of $job_client \
+$job_level (${job_name})"
+
+load_json()
+{
+  if [ "${WEBHOOK_TYPE}" = "slack" ] ; then
+    cat <<EOF
+{
+  "text": "$msg_txt"
+}
+EOF
+ fi
+
+ if [ "${WEBHOOK_TYPE}" = "telegram" ] ; then
+    cat <<EOF
+{
+  "chat_id": "${WEBHOOK_CHAT_ID}",
+  "text": "$msg_txt",
+  "disable_notification": false
+}
+EOF
+ fi
+}
+
+/usr/bin/curl -s -k -X POST \
+    -H 'Content-Type: application/json' \
+    -d "$(load_json)" \
+    ${WEBHOOK_URL}
