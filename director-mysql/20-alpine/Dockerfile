@@ -1,5 +1,5 @@
 # Bareos director Dockerfile
-FROM alpine:3.13
+FROM alpine:edge
 
 LABEL maintainer="barcus@tou.nu"
 
@@ -17,7 +17,7 @@ LABEL org.label-schema.schema-version="1.0" \
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
-RUN apk add --no-cache bareos-postgresql postgresql-client curl tzdata tar
+RUN apk add --no-cache bareos-mysql mysql-client curl tzdata tar
 
 RUN tar czf /bareos-dir.tgz /etc/bareos
 RUN mkdir /run/bareos \
