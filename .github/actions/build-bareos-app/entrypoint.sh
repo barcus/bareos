@@ -15,8 +15,8 @@ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 apk add --no-cache git
 
 # Create build context and build
-docker buildx create --name builder --driver docker-container --use
 while read app version arch app_path ; do
+  docker buildx create --driver docker-container --use
   tag="${version}"
   re='^[0-9]+-alpine.*$'
   if [[ $version =~ $re ]] ; then
