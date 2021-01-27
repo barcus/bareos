@@ -23,7 +23,7 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   # Director / mycatalog & mail report
   sed -i 's#dbpassword = ""#dbpassword = '\"${DB_PASSWORD}\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
-  sed -i 's#dbname = "bareos"#dbname = bareos\n  dbaddress = '\"${DB_HOST}\"'\n  dbport = '\"${DB_PORT}\"'#' \
+  sed -i 's#dbname = "bareos"#dbname = '\"${DB_NAME}\"'\n  dbaddress = '\"${DB_HOST}\"'\n  dbport = '\"${DB_PORT}\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   [ -n "${SENDER_MAIL}" ] && sed -i "s#<%r#<${SENDER_MAIL}#g" \
     /etc/bareos/bareos-dir.d/messages/Daemon.conf
@@ -74,9 +74,20 @@ fi
 
 if [ ! -f /etc/bareos/bareos-db.control ]
   then
-    # TODO waiting Postgres is up
-    sleep 15
-    # Init Postgres DB
+    # Waiting Postgresql is up
+    sqlup=1
+    while [ "$sqlup" -ne 0 ] ; do
+      echo "Waiting for postgresql..."
+      pg_isready --dbname="${DB_NAME}" --host="${DB_HOST}" --port="${DB_PORT}"
+      if [ $? -ne 0 ] ; then
+        sqlup=1
+        sleep 5
+      else
+        sqlup=0
+        echo "...postgresql is alive"
+      fi
+    done
+    # Init Postgresql DB
     export PGUSER=postgres
     export PGHOST=${DB_HOST}
     export PGPASSWORD=${DB_PASSWORD}
