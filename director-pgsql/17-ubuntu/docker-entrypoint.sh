@@ -68,7 +68,19 @@ fi
 
 if [ ! -f /etc/bareos/bareos-db.control ]
   then
-    sleep 15
+    # Waiting Postgresql is up
+    sqlup=1
+    while [ "$sqlup" -ne 0 ] ; do
+      echo "Waiting for postgresql..."
+      pg_isready --dbname="${DB_NAME}" --host="${DB_HOST}" --port="${DB_PORT}"
+      if [ $? -ne 0 ] ; then
+        sqlup=1
+        sleep 5
+      else
+        sqlup=0
+        echo "...postgresql is alive"
+      fi
+    done
     # Init Postgres DB
     export PGUSER=postgres
     export PGHOST=${DB_HOST}
