@@ -49,8 +49,6 @@ jobs:
 
       - name: Build images
         uses: ./.github/actions/build-bareos-app
-        with:
-          bareos_app: __BAREOS_APP__
 
       - name: Upload artifact
         uses: actions/upload-artifact@v1
@@ -76,4 +74,3 @@ jobs:
         uses: ./.github/actions/push-bareos-app
         with:
           docker_pass: ${{ secrets.DOCKER_PASS }}
-          bareos_app: __BAREOS_APP__
