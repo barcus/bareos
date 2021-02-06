@@ -9,7 +9,7 @@ cp "${workdir}/docker-buildx" ~/.docker/cli-plugins/
 chmod a+x ~/.docker/cli-plugins/docker-buildx
 
 # Run qemu
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+docker run --rm --privileged tonistiigi/binfmt --install all
 
 # Install git
 apk add --no-cache git
