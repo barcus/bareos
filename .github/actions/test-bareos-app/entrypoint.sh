@@ -37,7 +37,7 @@ while read app version arch app_path ; do
   fi
 
   # Run docker images and check version
-  img_version=$(docker run --rm ${DOCKER_ARGS} \
+  img_version=$(docker run -t --rm ${DOCKER_ARGS} \
     ${GITHUB_REPOSITORY}-${app}:${build_tag} \
     ${CMD} 2>/dev/null |tail -1)
 
