@@ -26,10 +26,10 @@ while read app version arch app_path ; do
   # Define args and command
   if [[ $version =~ $re_alpine ]] ; then
     build_tag="${version}-${arch}"
-    CMD="apk list --installed |egrep 'bareos-(webui-)?\d+'" 
+    CMD="apk list --installed |egrep bareos-(webui-)?\d+" 
   fi
   if [[ $version =~ $re_ubuntu ]] ; then
-    CMD="dpkg-query --showformat='\${Version}' --show bareos-${app}" 
+    CMD="dpkg-query --showformat=\${Version} --show bareos-${app}" 
   fi
 
   if [[ "$app" == "director" ]] ; then
