@@ -34,8 +34,8 @@ while read app version arch app_path ; do
   fi
 
   # Clean builder
-  docker buildx rm
 done < "${workdir}/app_build.txt"
+docker buildx rm
 
 chmod 755 "${workdir}"/bareos-*.tar
 
