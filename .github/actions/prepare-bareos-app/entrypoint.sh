@@ -17,6 +17,7 @@ mkdir -p "${GITHUB_WORKSPACE}/build"
 
 echo ::group::'Build apps & tags list'
 for file in $docker_files; do
+  echo "processing $file"
   backend=''
   default_backend='mysql'
   app=$(echo "$file"| sed -n 's#^\([a-z]*\).*#\1#p')
