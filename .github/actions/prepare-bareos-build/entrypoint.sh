@@ -7,7 +7,7 @@ latest_alpine='20'
 build_file="${GITHUB_WORKSPACE}/build/app_build.txt"
 tag_file="${GITHUB_WORKSPACE}/build/tag_build.txt"
 build_app="$INPUT_BAREOS_APP"
-docker_files=$(find ${build_app}*/ -name Dockerfile | sort | grep '19-' 2>/dev/null)
+docker_files=$(find ${build_app}*/19*/ -name Dockerfile 2>/dev/null)
 
 mkdir -p "${GITHUB_WORKSPACE}/build"
 
