@@ -30,19 +30,19 @@ while read app version arch app_path ; do
     --build-arg VCS_REF=$(git rev-parse --short HEAD) \
     --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
     --build-arg NAME="${GITHUB_REPOSITORY}-${app}" \
-    --output 'type=docker,push=false' \
+    --output "type=oci,dest=${workdir}/bareos-${app}-${tag}.tar" \
     --tag "${GITHUB_REPOSITORY}-${app}:${tag}" \
     --force-rm \
     "${app_path}"
 
   if [[ $? -ne 0 ]] ; then
-    echo "::warning:: ERROR: build failed ${GITHUB_REPOSITORY}-${app}:${tag} in ${app_path}"
+    echo "::error:: ERROR: build failed ${GITHUB_REPOSITORY}-${app}:${tag} in ${app_path}"
   fi
 
   # Save image to tar file
-  docker save \
-    --output "${workdir}/bareos-${app}-${tag}.tar" \
-    "${GITHUB_REPOSITORY}-${app}:${tag}"
+  #docker save \
+  #  --output "${workdir}/bareos-${app}-${tag}.tar" \
+  #  "${GITHUB_REPOSITORY}-${app}:${tag}"
 
   # Clean builder
   docker buildx rm
