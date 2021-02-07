@@ -33,8 +33,9 @@ while read app version arch app_path ; do
     echo "::error:: ERROR: build failed ${GITHUB_REPOSITORY}-${app}:${tag} in ${app_path}"
   fi
 
-  # Clean builder
 done < "${workdir}/app_build.txt"
+
+# Clean builder
 docker buildx rm
 
 chmod 755 "${workdir}"/bareos-*.tar

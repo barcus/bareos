@@ -7,7 +7,7 @@ latest_alpine='20'
 build_file="${GITHUB_WORKSPACE}/build/app_build.txt"
 tag_file="${GITHUB_WORKSPACE}/build/tag_build.txt"
 build_app="$INPUT_BAREOS_APP"
-docker_files=$(find ${build_app}*/ -name Dockerfile 2>/dev/null)
+docker_files=$(find ${build_app}*/ -name Dockerfile |sort 2>/dev/null)
 
 mkdir -p "${GITHUB_WORKSPACE}/build"
 
@@ -70,7 +70,7 @@ for file in $docker_files; do
 done
 
 # Debug output
-echo ::group::Error grouped
+echo ::group::Debug output
 echo "### Build list"
 cat "$build_file"
 echo "### Tag list"
