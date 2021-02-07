@@ -8,11 +8,9 @@ mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
 cp "${workdir}/docker-buildx" ~/.docker/cli-plugins/
 chmod a+x ~/.docker/cli-plugins/docker-buildx
 
-docker buildx use ${INPUT_BUILDER}
-
 # Create build context and build
+docker buildx create --driver docker-container --use
 while read app version arch app_path ; do
-  #docker buildx create --driver docker-container --use
   tag="${version}"
   re='^[0-9]+-alpine.*$'
   if [[ $version =~ $re ]] ; then
@@ -34,11 +32,6 @@ while read app version arch app_path ; do
   if [[ $? -ne 0 ]] ; then
     echo "::error:: ERROR: build failed ${GITHUB_REPOSITORY}-${app}:${tag} in ${app_path}"
   fi
-
-  # Save image to tar file
-  #docker save \
-  #  --output "${workdir}/bareos-${app}-${tag}.tar" \
-  #  "${GITHUB_REPOSITORY}-${app}:${tag}"
 
   # Clean builder
   docker buildx rm

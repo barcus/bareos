@@ -47,6 +47,13 @@ jobs:
           name: build-artifact-storage
           path: build
 
+      - name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+        with:
+          image: tonistiigi/binfmt:latest
+          platforms: all
+
       - name: Build images
         uses: ./.github/actions/build-bareos-app
 

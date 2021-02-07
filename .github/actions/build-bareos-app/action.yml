@@ -1,12 +1,6 @@
 name: 'build-bareos-app'
 description: 'Build Bareos app images'
 author: 'Barcus'
-inputs:
-  builder:
-    description: 'Docker buildx context'
-    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.builder }}
