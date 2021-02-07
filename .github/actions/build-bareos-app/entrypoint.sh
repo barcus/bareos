@@ -32,7 +32,7 @@ while read app version arch app_path ; do
     --build-arg NAME="${GITHUB_REPOSITORY}-${app}" \
     --output 'type=docker,push=false' \
     --tag "${GITHUB_REPOSITORY}-${app}:${tag}" \
-    --force-rm
+    --force-rm \
     "${app_path}"
 
   if [[ $? -ne 0 ]] ; then
