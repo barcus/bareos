@@ -4,12 +4,9 @@ workdir="${GITHUB_WORKSPACE}/build"
 export DOCKER_CLI_EXPERIMENTAL="enabled"
 
 # Load buildx binary
-#mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
-#cp "${workdir}/docker-buildx" ~/.docker/cli-plugins/
-#chmod a+x ~/.docker/cli-plugins/docker-buildx
-
-# Install git
-apk add --no-cache git
+mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
+cp "${workdir}/docker-buildx" ~/.docker/cli-plugins/
+chmod a+x ~/.docker/cli-plugins/docker-buildx
 
 docker buildx use ${INPUT_BUILDER}
 
