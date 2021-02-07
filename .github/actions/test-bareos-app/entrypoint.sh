@@ -20,36 +20,38 @@ echo ::group::Test build tags
 while read app version arch app_path ; do
   DOCKER_ARGS=''
   build_tag=${version}
-  re='^[0-9]+-alpine.*$'
-  if [[ $version =~ $re ]] ; then
+  re_alpine='^[0-9]+-alpine.*$'
+  re_ubuntu='^[0-9]+-ubuntu.*$'
+
+  # Define args and command
+  if [[ $version =~ $re_alpine ]] ; then
     build_tag="${version}-${arch}"
+    CMD="apk list --installed |egrep 'bareos-(webui-)?\d+'" 
+  fi
+  if [[ $version =~ $re_ubuntu ]] ; then
+    CMD="dpkg-query --showformat='\${Version}' --show bareos-${app}" 
   fi
 
-  # Test build tags
   if [[ "$app" == "director" ]] ; then
     DOCKER_ARGS="-v /tmp/bareos-db.control:/etc/bareos/bareos-db.control"
   fi
-  if [[ $version =~ ^[0-9]+-ubuntu.*$ ]] ; then
-    CMD="dpkg-query --showformat='${Version}' --show bareos-${app}" 
-  fi
-  if [[ $version =~ ^[0-9]+-alpine.*$ ]] ; then
-    CMD="apk list --installed |egrep 'bareos-(webui-)?\d+'" 
-  fi
 
-  check_version=$(docker run --rm ${DOCKER_ARGS} \
+  # Run docker images and check version
+  img_version=$(docker run --rm ${DOCKER_ARGS} \
     ${GITHUB_REPOSITORY}-${app}:${build_tag} \
     ${CMD} 2>/dev/null |tail -1)
 
-  if [[ $version =~ ^[0-9]+-alpine.*$ ]] ; then
-    check_version=$(echo $check_version |sed -n 's#[a-z-]*\(.*\)#\1#p')
+  if [[ $version =~ $re_alpine ]] ; then
+    img_version=$(echo $check_version |sed -n 's#[a-z-]*\(.*\)#\1#p')
   fi
 
-  short_version=$(echo $check_version |cut -d'.' -f1)
+  short_img_version=$(echo $check_version |cut -d'.' -f1)
+  short_version=$(echo $version |cut -d'-' -f1)
 
-  if [[ $short_version -ne $version ]] ; then
-    echo ::error:: ERROR: ${app}:${build_tag} is ${short_version}
+  if [[ $short_img_version -ne $short_version ]] ; then
+    echo ::error:: ERROR: ${app}:${build_tag} is ${short_img_version}
   else
-    echo "OK: ${app}:${build_tag} is ${short_version}"
+    echo "OK: ${app}:${build_tag} is ${short_img_version}"
   fi
 
 done < "${workdir}/app_build.txt"
