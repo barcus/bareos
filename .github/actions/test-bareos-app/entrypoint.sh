@@ -44,10 +44,10 @@ while read app version arch app_path ; do
     ${CMD} 2>/dev/null |tail -1)
 
   if [[ $version =~ $re_alpine ]] ; then
-    img_version=$(echo $check_version |sed -n 's#[a-z-]*\(.*\)#\1#p')
+    img_version=$(echo $img_version |sed -n 's#[a-z-]*\(.*\)#\1#p')
   fi
 
-  short_img_version=$(echo $check_version |cut -d'.' -f1)
+  short_img_version=$(echo $img_version |cut -d'.' -f1)
   short_version=$(echo $version |cut -d'-' -f1)
 
   if [[ $short_img_version -ne $short_version ]] ; then
