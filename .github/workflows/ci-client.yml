@@ -8,6 +8,7 @@ on:
       - '.github/actions/prepare-bareos-app/*'
       - '.github/actions/build-bareos-app/*'
       - '.github/actions/push-bareos-app/*'
+      - '.github/actions/test-bareos-app/*'
   pull_request:
     paths:
       - 'client*/**'
@@ -15,6 +16,7 @@ on:
       - '.github/actions/prepare-bareos-app/*'
       - '.github/actions/build-bareos-app/*'
       - '.github/actions/push-bareos-app/*'
+      - '.github/actions/test-bareos-app/*'
 
 jobs:
   install:

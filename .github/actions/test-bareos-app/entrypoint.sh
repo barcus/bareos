@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 workdir="${GITHUB_WORKSPACE}/build"
 docker_files=$(find "${workdir}/" -name "bareos-*.tar" 2>/dev/null)
@@ -11,9 +12,13 @@ for file in $docker_files; do
 done
 echo ::endgroup::
 
-# Push tags and manfiests
+# Avoid DB check for director
+touch /tmp/bareos-db.control
+
+# Test images
 echo ::group::Test build tags
 while read app version arch app_path ; do
+  DOCKER_ARGS=''
   build_tag=${version}
   re='^[0-9]+-alpine.*$'
   if [[ $version =~ $re ]] ; then
@@ -22,16 +27,23 @@ while read app version arch app_path ; do
 
   # Test build tags
   if [[ "$app" == "director" ]] ; then
-    touch /tmp/bareos-db.control
-    check_version=$(docker run --rm \
-      -v /tmp/bareos-db.control:/etc/bareos/bareos-db.control \
-      ${GITHUB_REPOSITORY}-${app}:${build_tag} \
-      dpkg-query --showformat='${Version}' --show bareos-${app} 2>/dev/null |tail -1)
-  else
-    check_version=$(docker run --rm \
-      ${GITHUB_REPOSITORY}-${app}:${build_tag} \
-      dpkg-query --showformat='${Version}' --show bareos-${app} 2>/dev/null |tail -1)
+    DOCKER_ARGS="-v /tmp/bareos-db.control:/etc/bareos/bareos-db.control"
   fi
+  if [[ $version =~ ^[0-9]+-ubuntu.*$ ]] ; then
+    CMD="dpkg-query --showformat='${Version}' --show bareos-${app}" 
+  fi
+  if [[ $version =~ ^[0-9]+-alpine.*$ ]] ; then
+    CMD="apk list --installed |egrep 'bareos-(webui-)?\d+'" 
+  fi
+
+  check_version=$(docker run --rm ${DOCKER_ARGS} \
+    ${GITHUB_REPOSITORY}-${app}:${build_tag} \
+    ${CMD} 2>/dev/null |tail -1)
+
+  if [[ $version =~ ^[0-9]+-alpine.*$ ]] ; then
+    check_version=$(echo $check_version |sed -n 's#[a-z-]*\(.*\)#\1#p')
+  fi
+
   short_version=$(echo $check_version |cut -d'.' -f1)
 
   if [[ $short_version -ne $version ]] ; then
