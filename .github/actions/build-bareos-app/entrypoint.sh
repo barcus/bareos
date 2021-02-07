@@ -4,12 +4,19 @@ workdir="${GITHUB_WORKSPACE}/build"
 export DOCKER_CLI_EXPERIMENTAL="enabled"
 
 # Load buildx binary
+echo ::group::Load Buildx
 mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
 cp "${workdir}/docker-buildx" ~/.docker/cli-plugins/
 chmod a+x ~/.docker/cli-plugins/docker-buildx
+echo ::endgroup::
 
 # Create build context and build
+echo ::group::Create build context
 docker buildx create --use
+echo ::endgroup::
+
+# Build from app_build.txt
+echo ::group::Build Bareos
 while read app version arch app_path ; do
   tag="${version}"
   re='^[0-9]+-alpine.*$'
@@ -34,10 +41,12 @@ while read app version arch app_path ; do
   fi
 
 done < "${workdir}/app_build.txt"
+echo ::endgroup::
 
-# Clean builder
+# Clean& fix perm
+echo ::group::Clean
 docker buildx rm
-
 chmod 755 "${workdir}"/bareos-*.tar
+echo ::endgroup::
 
 #EOF
