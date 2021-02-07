@@ -75,7 +75,7 @@ echo "### Build list"
 cat "$build_file"
 echo "### Tag list"
 cat "$tag_file"
-echo ::endgroup""
+echo ::endgroup::
 
 # Download Docker Buildx plugin
 buildx_url="https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64"
