@@ -9,7 +9,7 @@ cp "${workdir}/docker-buildx" ~/.docker/cli-plugins/
 chmod a+x ~/.docker/cli-plugins/docker-buildx
 
 # Create build context and build
-docker buildx create --driver docker-container --use
+docker buildx create --use
 while read app version arch app_path ; do
   tag="${version}"
   re='^[0-9]+-alpine.*$'
