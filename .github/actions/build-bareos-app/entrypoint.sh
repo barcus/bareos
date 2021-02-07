@@ -4,19 +4,18 @@ workdir="${GITHUB_WORKSPACE}/build"
 export DOCKER_CLI_EXPERIMENTAL="enabled"
 
 # Load buildx binary
-mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
-cp "${workdir}/docker-buildx" ~/.docker/cli-plugins/
-chmod a+x ~/.docker/cli-plugins/docker-buildx
-
-# Run Qemu
-#docker run --rm --privileged tonistiigi/binfmt --install all
+#mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
+#cp "${workdir}/docker-buildx" ~/.docker/cli-plugins/
+#chmod a+x ~/.docker/cli-plugins/docker-buildx
 
 # Install git
 apk add --no-cache git
 
+docker buildx use ${INPUT_BUILDER}
+
 # Create build context and build
 while read app version arch app_path ; do
-  docker buildx create --driver docker-container --use
+  #docker buildx create --driver docker-container --use
   tag="${version}"
   re='^[0-9]+-alpine.*$'
   if [[ $version =~ $re ]] ; then
