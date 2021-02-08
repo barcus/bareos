@@ -54,7 +54,7 @@ while read app version arch app_path ; do
     echo ::error:: ERROR: ${app}:${build_tag} is ${short_img_version}
     exit 1
   else
-    echo "OK: ${app}:${build_tag} is ${short_img_version}"
+    echo "OK: ${app}:${build_tag} is Bareos v${short_img_version}"
   fi
 
 done < "${workdir}/app_build.txt"

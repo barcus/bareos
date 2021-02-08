@@ -37,12 +37,13 @@ while read app version arch app_path ; do
 
   if [[ $? -ne 0 ]] ; then
     echo "::error:: ERROR: build failed ${GITHUB_REPOSITORY}-${app}:${tag} in ${app_path}"
+    rm -f "${workdir}/bareos-${app}-${tag}.tar"
   fi
 
 done < "${workdir}/app_build.txt"
 echo ::endgroup::
 
-# Clean& fix perm
+# Clean & fix perm
 echo ::group::Clean
 docker buildx rm
 chmod 755 "${workdir}"/bareos-*.tar
