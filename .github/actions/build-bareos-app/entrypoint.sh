@@ -35,6 +35,7 @@ while read app version arch app_path ; do
     --tag "${GITHUB_REPOSITORY}-${app}:${tag}" \
     "${app_path}"
 
+  docker images
   if [[ $? -ne 0 ]] ; then
     echo "::error:: ERROR: build failed ${GITHUB_REPOSITORY}-${app}:${tag} in ${app_path}"
   fi
