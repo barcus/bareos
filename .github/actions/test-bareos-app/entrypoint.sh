@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 workdir="${GITHUB_WORKSPACE}/build"
 docker_files=$(find "${workdir}/" -name "bareos-*.tar" 2>/dev/null)
@@ -17,7 +18,7 @@ touch /tmp/bareos-db.control
 # Test images
 echo ::group::Test build tags
 while read app version arch app_path ; do
-  DOCKER_ARGS=''
+  ARGS=''
   build_tag=${version}
   re_alpine='^[0-9]+-alpine.*$'
   re_ubuntu='^[0-9]+-ubuntu.*$'
@@ -34,11 +35,11 @@ while read app version arch app_path ; do
   fi
 
   if [[ "$app" == "director" ]] ; then
-    DOCKER_ARGS="-v /tmp/bareos-db.control:/etc/bareos/bareos-db.control"
+    ARGS="-v /tmp/bareos-db.control:/etc/bareos/bareos-db.control"
   fi
 
   # Run docker images and check version
-  img_version=$(docker run -t --rm ${DOCKER_ARGS} \
+  img_version=$(docker run -t --rm ${ARGS} \
     ${GITHUB_REPOSITORY}-${app}:${build_tag} \
     ${CMD} 2>/dev/null |tail -1)
 
