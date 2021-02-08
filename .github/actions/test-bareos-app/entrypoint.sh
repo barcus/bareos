@@ -46,8 +46,8 @@ while read app version arch ; do
   fi
 
   # Run docker images and check version
-  img_version=$(docker run -t --rm "${ARGS}" \
-    "${GITHUB_REPOSITORY}-${app}:${build_tag}" \
+  img_version=$(docker run -t --rm ${ARGS} \
+    ${GITHUB_REPOSITORY}-${app}:${build_tag} \
     ${CMD} 2>/dev/null |tail -1)
 
   if [[ $version =~ $re_alpine ]] ; then
