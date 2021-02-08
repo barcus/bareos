@@ -18,10 +18,6 @@ touch /tmp/bareos-db.control
 # Test images
 echo ::group::Test build tags
 while read app version arch app_path ; do
-  if [[ ! -f ${workdir}/bareos-${app}-${version}-${arch}.tar ]] ; then
-    echo ::error:: ERROR: $workdir/bareos-${app}-${version}-${arch}.tar not found
-    continue
-  fi
   ARGS=''
   build_tag=${version}
   re_alpine='^[0-9]+-alpine.*$'
@@ -40,6 +36,12 @@ while read app version arch app_path ; do
 
   if [[ "$app" == "director" ]] ; then
     ARGS="-v /tmp/bareos-db.control:/etc/bareos/bareos-db.control"
+  fi
+
+  # Check if Dockerfile exist
+  if [[ ! -f ${workdir}/bareos-${app}-${build_tag}.tar ]] ; then
+    echo ::error:: ERROR: $workdir/bareos-${app}-${build_tag}.tar not found
+    continue
   fi
 
   # Run docker images and check version
