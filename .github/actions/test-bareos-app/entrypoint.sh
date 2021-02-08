@@ -10,6 +10,7 @@ echo ${docker_files}
 for file in $docker_files; do
   docker load --input "$file"
 done
+docker images
 echo ::endgroup::
 
 # Avoid DB check for director

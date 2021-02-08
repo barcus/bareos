@@ -33,7 +33,6 @@ while read app version arch app_path ; do
     --build-arg NAME="${GITHUB_REPOSITORY}-${app}" \
     --output "type=oci,dest=${workdir}/bareos-${app}-${tag}.tar" \
     --tag "${GITHUB_REPOSITORY}-${app}:${tag}" \
-    --force-rm \
     "${app_path}"
 
   if [[ $? -ne 0 ]] ; then
