@@ -26,6 +26,7 @@ while read app version arch app_path ; do
 
   # Build with buildx
   docker buildx build \
+    --no-cache \
     --platform "linux/${arch}" \
     --build-arg VERSION=$(echo "$version" |cut -d'-' -f1) \
     --build-arg VCS_REF=$(git rev-parse --short HEAD) \
@@ -34,7 +35,6 @@ while read app version arch app_path ; do
     --output "type=docker,dest=${workdir}/bareos-${app}-${tag}.tar,name=${GITHUB_REPOSITORY}-${app}:${tag}" \
     "${app_path}"
 
-  docker images
   if [[ $? -ne 0 ]] ; then
     echo "::error:: ERROR: build failed ${GITHUB_REPOSITORY}-${app}:${tag} in ${app_path}"
   fi
