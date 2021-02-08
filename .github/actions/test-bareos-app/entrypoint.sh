@@ -18,7 +18,7 @@ touch /tmp/bareos-db-wait.control
 
 # Test images
 echo ::group::Test build tags
-while read app version arch ; do
+while read app version arch path ; do
   ARGS=''
   build_tag=${version}
   re_alpine='^[0-9]+-alpine.*$'
