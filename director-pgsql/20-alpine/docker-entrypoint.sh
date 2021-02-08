@@ -74,10 +74,10 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
     /etc/bareos/bareos-dir.d/job/BackupCatalog.conf
 
   # Add pgpass file to ${DB_USER} home
-  homedir=$(getent passwd $DB_USER | cut -d: -f6)
-  echo "${DB_HOST}:${DB_PORT}:${DB_NAME}:${DB_USER}:${DB_PASSWORD}" > ${homedir}/.pgpass 
-  chmod 600 ${homedir}/.pgpass
-  chown ${DB_USER} ${homedir}/.pgpass
+  homedir=$(getent passwd "$DB_USER" | cut -d: -f6)
+  echo "${DB_HOST}:${DB_PORT}:${DB_NAME}:${DB_USER}:${DB_PASSWORD}" > "${homedir}/.pgpass"
+  chmod 600 "${homedir}/.pgpass"
+  chown "${DB_USER}" "${homedir}/.pgpass"
 
   # Control file
   touch /etc/bareos/bareos-config.control

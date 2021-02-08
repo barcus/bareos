@@ -8,7 +8,7 @@ export DOCKER_CLI_EXPERIMENTAL="enabled"
 
 # Load Dockerfiles
 echo ::group::Load Dockerfile
-echo ${docker_files}
+echo "${docker_files}"
 for file in $docker_files; do
   docker load --input "$file"
 done
@@ -19,7 +19,7 @@ docker login -u 'barcus' -p "${INPUT_DOCKER_PASS}"
 
 # Push tags and manfiests
 echo ::group::Push build tags
-while read app version arch app_path ; do
+while read app version arch ; do
   build_tag=${version}
   re='^[0-9]+-alpine.*$'
   if [[ $version =~ $re ]] ; then
@@ -52,7 +52,7 @@ echo ::endgroup::
 # Clean Alpine build_tag (amd/arm)
 echo ::group::Clean
 docker run --rm lumir/remove-dockerhub-tag \
-  --user "${GITHUB_ACTOR}" --password "${INPUT_DOCKER_PASS}" $rm_tag
+  --user "${GITHUB_ACTOR}" --password "${INPUT_DOCKER_PASS}" "$rm_tag"
 echo ::endgroup::
 
 #EOF

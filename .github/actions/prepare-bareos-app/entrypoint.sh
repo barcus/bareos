@@ -9,8 +9,8 @@ tag_file="${GITHUB_WORKSPACE}/build/tag_build.txt"
 build_app="$INPUT_BAREOS_APP"
 
 echo ::group::Get Dockerfile list
-docker_files=$(find ${build_app}*/ -name Dockerfile |sort 2>/dev/null)
-echo ${docker_files}
+docker_files=$(find "${build_app}*/" -name Dockerfile |sort 2>/dev/null)
+echo "${docker_files}"
 echo ::endgroup::
 
 mkdir -p "${GITHUB_WORKSPACE}/build"

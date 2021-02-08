@@ -5,19 +5,19 @@ docker_files=$(find "${workdir}/" -name "bareos-*.tar" 2>/dev/null)
 
 # Load Dockerfiles
 echo ::group::Load Dockerfile
-echo ${docker_files}
-for file in $docker_files; do
+echo "${docker_files}"
+for file in $docker_files ; do
   docker load --input "$file"
 done
 docker images
 echo ::endgroup::
 
 # Avoid DB check for director
-touch /tmp/bareos-db.control
+touch /tmp/bareos-db-wait.control
 
 # Test images
 echo ::group::Test build tags
-while read app version arch app_path ; do
+while read app version arch ; do
   ARGS=''
   build_tag=${version}
   re_alpine='^[0-9]+-alpine.*$'
@@ -40,24 +40,24 @@ while read app version arch app_path ; do
 
   # Check if Dockerfile exist
   if [[ ! -f ${workdir}/bareos-${app}-${build_tag}.tar ]] ; then
-    echo ::error:: ERROR: $workdir/bareos-${app}-${build_tag}.tar not found
+    echo ::error::"ERROR: $workdir/bareos-${app}-${build_tag}.tar not found"
     continue
   fi
 
   # Run docker images and check version
-  img_version=$(docker run -t --rm ${ARGS} \
-    ${GITHUB_REPOSITORY}-${app}:${build_tag} \
-    ${CMD} 2>/dev/null |tail -1)
+  img_version=$(docker run -t --rm "${ARGS}" \
+    "${GITHUB_REPOSITORY}-${app}:${build_tag}" \
+    "${CMD}" 2>/dev/null |tail -1)
 
   if [[ $version =~ $re_alpine ]] ; then
-    img_version=$(echo $img_version |sed -n 's#[a-z-]*\(.*\)#\1#p')
+    img_version=$(echo "$img_version" |sed -n 's#[a-z-]*\(.*\)#\1#p')
   fi
 
-  short_img_version=$(echo $img_version |cut -d'.' -f1)
-  short_version=$(echo $version |cut -d'-' -f1)
+  short_img_version=$(echo "$img_version" |cut -d'.' -f1)
+  short_version=$(echo "$version" |cut -d'-' -f1)
 
   if [[ $short_img_version -ne $short_version ]] ; then
-    echo ::error:: ERROR: ${app}:${build_tag} is ${short_img_version}
+    echo ::error::"ERROR: ${app}:${build_tag} is ${short_img_version}"
     exit 1
   else
     echo "OK: ${app}:${build_tag} is Bareos v${short_img_version}"
