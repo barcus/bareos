@@ -46,9 +46,10 @@ while read app version arch path ; do
   fi
 
   # Run docker and check version
-  img_version=$(docker run -t --rm ${ARGS} \
-    ${GITHUB_REPOSITORY}-${app}:${build_tag} \
-    ${CMD} | tail -1)
+  docker run -t --rm ${ARGS} ${GITHUB_REPOSITORY}-${app}:${build_tag} ${CMD} |tail -1
+  #img_version=$(docker run -t --rm ${ARGS} \
+  #  ${GITHUB_REPOSITORY}-${app}:${build_tag} \
+  #  ${CMD} | tail -1)
 
   if [[ $version =~ $re_alpine ]] ; then
     img_version=$(echo "$img_version" |sed -n 's#[a-z-]*\(.*\)#\1#p')
