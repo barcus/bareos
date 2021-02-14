@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 workdir="${GITHUB_WORKSPACE}/build"
 docker_files=$(find "${workdir}/" -name "bareos-*.tar" 2>/dev/null)
@@ -60,7 +61,8 @@ while read app version arch path ; do
     echo ::error::"ERROR-test: ${app}:${build_tag} is ${short_img_version}"
     exit 1
   else
-    echo "OK: ${app}:${build_tag} is Bareos v${short_img_version}"
+    echo ::error:: "OK: ${app}:${build_tag} is Bareos v${short_img_version}"
+    exit 0
   fi
 
 done < "${workdir}/app_build.txt"

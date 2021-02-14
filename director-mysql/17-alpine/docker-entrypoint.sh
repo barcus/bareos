@@ -73,38 +73,38 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   touch /etc/bareos/bareos-config.control
 fi
 
-if [ ! -f /etc/bareos/bareos-db-wait.control ] ; then
-  # MySQL check
-  # Waiting for mysqld
-  sqlup=1
-  while [ "$sqlup" -ne 0 ] ; do
-    echo "Waiting for mysqld..."
-    mysqladmin --silent -u root -p"${DB_PASSWORD}" -h "${DB_HOST}" ping
-    if [ $? -ne 0 ] ; then
-      sqlup=1
-      sleep 5
-    else
-      sqlup=0
-      echo "...mysqld is alive"
-    fi
-  done
-fi
-
-# Set mysqld access for root
-echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
-
-# MySQL init for Bareos if required
-if [ ! -f /etc/bareos/bareos-db.control ] ; then
-  # Init MySQL DB
-  /etc/bareos/scripts/create_bareos_database
-  /etc/bareos/scripts/make_bareos_tables
-
-  # Control file
-  touch /etc/bareos/bareos-db.control
-else
-  # Try MySQL DB upgrade
-  /etc/bareos/scripts/update_bareos_tables
-fi
+#if [ ! -f /etc/bareos/bareos-db-wait.control ] ; then
+#  # MySQL check
+#  # Waiting for mysqld
+#  sqlup=1
+#  while [ "$sqlup" -ne 0 ] ; do
+#    echo "Waiting for mysqld..."
+#    mysqladmin --silent -u root -p"${DB_PASSWORD}" -h "${DB_HOST}" ping
+#    if [ $? -ne 0 ] ; then
+#      sqlup=1
+#      sleep 5
+#    else
+#      sqlup=0
+#      echo "...mysqld is alive"
+#    fi
+#  done
+#fi
+#
+## Set mysqld access for root
+#echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
+#
+## MySQL init for Bareos if required
+#if [ ! -f /etc/bareos/bareos-db.control ] ; then
+#  # Init MySQL DB
+#  /etc/bareos/scripts/create_bareos_database
+#  /etc/bareos/scripts/make_bareos_tables
+#
+#  # Control file
+#  touch /etc/bareos/bareos-db.control
+#else
+#  # Try MySQL DB upgrade
+#  /etc/bareos/scripts/update_bareos_tables
+#fi
 
 # Fix permissions
 find /etc/bareos/bareos-dir.d ! -user bareos -exec chown bareos {} \;
