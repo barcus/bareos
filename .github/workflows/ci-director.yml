@@ -85,6 +85,9 @@ jobs:
           image: tonistiigi/binfmt:latest
           platforms: all
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Load and test images
         uses: ./.github/actions/test-bareos-app
 
