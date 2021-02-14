@@ -1,5 +1,4 @@
 #!/usr/bin/env ash
-set -x
 
 github_bareos='raw.githubusercontent.com/bareos/bareos'
 webui_admin_conf='master/webui/install/bareos/bareos-dir.d/profile/webui-admin.conf'

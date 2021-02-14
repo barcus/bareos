@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -x
 
 workdir="${GITHUB_WORKSPACE}/build"
 docker_files=$(find "${workdir}/" -name "bareos-*.tar" 2>/dev/null)
@@ -14,7 +13,7 @@ docker images
 echo ::endgroup::
 
 # Avoid DB check for director
-touch /tmp/bareos-db-wait.control
+touch /tmp/bareos-db-wait.control /tmp/bareos-config.control
 
 # Test images
 echo ::group::Test build tags
@@ -36,7 +35,8 @@ while read app version arch path ; do
   fi
 
   if [[ "$app" == "director" ]] ; then
-    ARGS="-v /tmp/bareos-db-wait.control:/etc/bareos/bareos-db-wait.control"
+    ARGS="-v /tmp/bareos-db-wait.control:/etc/bareos/bareos-db-wait.control \
+          -v /tmp/bareos-config.control:/etc/bareos/bareos-config.control"
   fi
 
   # Check if Dockerfile exist
@@ -46,9 +46,9 @@ while read app version arch path ; do
   fi
 
   # Run docker and check version
-  docker run -t --rm ${ARGS} \
+  img_version=$(docker run -t --rm ${ARGS} \
     ${GITHUB_REPOSITORY}-${app}:${build_tag} \
-    ${CMD}
+    ${CMD} | tail -1)
 
   if [[ $version =~ $re_alpine ]] ; then
     img_version=$(echo "$img_version" |sed -n 's#[a-z-]*\(.*\)#\1#p')
@@ -61,8 +61,7 @@ while read app version arch path ; do
     echo ::error::"ERROR-test: ${app}:${build_tag} is ${short_img_version}"
     exit 1
   else
-    echo ::error:: "OK: ${app}:${build_tag} is Bareos v${short_img_version}"
-    exit 0
+    echo "OK: ${app}:${build_tag} is Bareos v${short_img_version}"
   fi
 
 done < "${workdir}/app_build.txt"
