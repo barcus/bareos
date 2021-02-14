@@ -1,4 +1,5 @@
 #!/usr/bin/env ash
+set -x
 
 github_bareos='raw.githubusercontent.com/bareos/bareos'
 webui_admin_conf='master/webui/install/bareos/bareos-dir.d/profile/webui-admin.conf'
@@ -90,22 +91,22 @@ fi
 #    fi
 #  done
 #fi
-#
-## Set mysqld access for root
-#echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
-#
-## MySQL init for Bareos if required
-#if [ ! -f /etc/bareos/bareos-db.control ] ; then
-#  # Init MySQL DB
-#  /etc/bareos/scripts/create_bareos_database
-#  /etc/bareos/scripts/make_bareos_tables
-#
-#  # Control file
-#  touch /etc/bareos/bareos-db.control
-#else
-#  # Try MySQL DB upgrade
-#  /etc/bareos/scripts/update_bareos_tables
-#fi
+
+# Set mysqld access for root
+echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
+
+# MySQL init for Bareos if required
+if [ ! -f /etc/bareos/bareos-db.control ] ; then
+  # Init MySQL DB
+  /etc/bareos/scripts/create_bareos_database
+  /etc/bareos/scripts/make_bareos_tables
+
+  # Control file
+  touch /etc/bareos/bareos-db.control
+else
+  # Try MySQL DB upgrade
+  /etc/bareos/scripts/update_bareos_tables
+fi
 
 # Fix permissions
 find /etc/bareos/bareos-dir.d ! -user bareos -exec chown bareos {} \;
