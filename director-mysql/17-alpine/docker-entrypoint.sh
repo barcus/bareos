@@ -72,7 +72,7 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   touch /etc/bareos/bareos-config.control
 fi
 
-if [ ! -f /etc/bareos/bareos-db-wait.control ]
+if [ ! -f /etc/bareos/bareos-db-wait.control ] ; then
   # MySQL check
   # Waiting for mysqld
   sqlup=1
