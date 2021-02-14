@@ -36,7 +36,7 @@ while read app version arch app_path ; do
     "${app_path}"
 
   if [[ $? -ne 0 ]] ; then
-    echo "::error:: ERROR: build failed ${GITHUB_REPOSITORY}-${app}:${tag} in ${app_path}"
+    echo "::error:: ERROR-build: failed ${GITHUB_REPOSITORY}-${app}:${tag} in ${app_path}"
     rm -f "${workdir}/bareos-${app}-${tag}.tar"
   fi
 

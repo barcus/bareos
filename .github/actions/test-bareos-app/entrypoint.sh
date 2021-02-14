@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 workdir="${GITHUB_WORKSPACE}/build"
 docker_files=$(find "${workdir}/" -name "bareos-*.tar" 2>/dev/null)
@@ -40,7 +41,7 @@ while read app version arch path ; do
 
   # Check if Dockerfile exist
   if [[ ! -f ${workdir}/bareos-${app}-${build_tag}.tar ]] ; then
-    echo ::error::"ERROR: $workdir/bareos-${app}-${build_tag}.tar not found"
+    echo ::error::"ERROR-test: $workdir/bareos-${app}-${build_tag}.tar not found"
     continue
   fi
 
@@ -57,7 +58,7 @@ while read app version arch path ; do
   short_version=$(echo "$version" |cut -d'-' -f1)
 
   if [[ $short_img_version -ne $short_version ]] ; then
-    echo ::error::"ERROR: ${app}:${build_tag} is ${short_img_version}"
+    echo ::error::"ERROR-test: ${app}:${build_tag} is ${short_img_version}"
     exit 1
   else
     echo "OK: ${app}:${build_tag} is Bareos v${short_img_version}"
