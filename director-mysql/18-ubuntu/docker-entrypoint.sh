@@ -76,7 +76,7 @@ fi
 
 ls -l /etc/bareos
 
-if [ ! -f /etc/bareos/bareos-db-wait.control ] ; then
+if [ ! -f /tmp/bareos/bareos-db-wait.control ] ; then
   # MySQL check
   # Waiting for mysqld
   sqlup=1

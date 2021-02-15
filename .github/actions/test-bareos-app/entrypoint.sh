@@ -36,7 +36,7 @@ while read app version arch path ; do
   fi
 
   if [[ "$app" == "director" ]] ; then
-    ARGS="-v /tmp/bareos-db-wait.control:/etc/bareos/bareos-db-wait.control"
+    ARGS="-v /tmp/bareos-db-wait.control:/tmp/bareos"
   fi
 
   # Check if Dockerfile exist
