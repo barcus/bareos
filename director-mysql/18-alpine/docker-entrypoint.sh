@@ -75,7 +75,7 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   touch /etc/bareos/bareos-config.control
 fi
 
-ls -l /etc/bareos/
+ls -l /tmp/bareos
 
 if [ ! -f /tmp/bareos/bareos-db-wait.control ] ; then
   # MySQL check
