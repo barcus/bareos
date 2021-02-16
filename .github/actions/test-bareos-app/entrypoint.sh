@@ -14,7 +14,8 @@ docker images
 echo ::endgroup::
 
 # Avoid DB check for director
-touch '/tmp/bareos-db-wait.control'
+mkdir -p '/tmp/bareos'
+touch '/tmp/bareos/bareos-db-wait.control'
 
 # Test images
 echo ::group::Test build tags
@@ -36,7 +37,7 @@ while read app version arch path ; do
   fi
 
   if [[ "$app" == "director" ]] ; then
-    ARGS="-v /tmp/bareos-db-wait.control:/tmp/bareos"
+    ARGS="-v /tmp/bareos:/tmp/bareos"
   fi
 
   # Check if Dockerfile exist
