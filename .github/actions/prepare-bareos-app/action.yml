@@ -1,4 +1,4 @@
-name: 'prepare-bareos-build'
+name: 'prepare-bareos-app'
 description: 'Prepare Bareos app build file'
 author: 'Barcus'
 inputs:
