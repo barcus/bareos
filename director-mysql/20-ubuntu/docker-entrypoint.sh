@@ -94,6 +94,9 @@ fi
 # Set mysqld access for root
 echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
 
+# Force statistics colum to 0 with mysqldump
+echo -e '[mysqldump]\ncolumn-statistics=0' > /etc/mysql/conf.d/mysqldump-bareos.cnf
+
 # MySQL init for Bareos if required
 if [ ! -f /etc/bareos/bareos-db.control ] ; then
   # Init MySQL DB
