@@ -72,7 +72,7 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   touch /etc/bareos/bareos-config.control
 fi
 
-if [ ! -f /tmp/bareos/bareos-db-wait.control ] ; then
+if [[ -z ${CI_TEST} ]] ; then
   # Waiting Postgresql is up
   sqlup=1
   while [ "$sqlup" -ne 0 ] ; do

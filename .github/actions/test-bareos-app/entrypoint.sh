@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -x
 
 workdir="${GITHUB_WORKSPACE}/build"
 docker_files=$(find "${workdir}/" -name "bareos-*.tar" 2>/dev/null)
@@ -12,10 +11,6 @@ for file in $docker_files ; do
 done
 docker images
 echo ::endgroup::
-
-# Avoid DB check for director
-mkdir -p '/tmp/bareos'
-touch '/tmp/bareos/bareos-db-wait.control'
 
 # Test images
 echo ::group::Test build tags
@@ -47,7 +42,6 @@ while read app version arch path ; do
   fi
 
   # Run docker and check version
-  #docker run -t --rm ${ARGS} ${GITHUB_REPOSITORY}-${app}:${build_tag} ${CMD}
   img_version=$(docker run -t --rm ${ARGS} \
     ${GITHUB_REPOSITORY}-${app}:${build_tag} \
     ${CMD} | tail -1)

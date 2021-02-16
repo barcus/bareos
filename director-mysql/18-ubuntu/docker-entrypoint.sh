@@ -76,7 +76,7 @@ fi
 
 ls -l /tmp/bareos
 
-if [ ! -f /tmp/bareos/bareos-db-wait.control ] ; then
+if [[ -z ${CI_TEST} ]] ; then
   # MySQL check
   # Waiting for mysqld
   sqlup=1
