@@ -20,7 +20,10 @@ docker login -u 'barcus' -p "${INPUT_DOCKER_PASS}"
 
 # Push tags and manfiests
 echo ::group::Push build tags
-while read app version arch ; do
+while read line ; do
+  app=$(echo $line|awk '{print $1}')
+  version=$(echo $line|awk '{print $2}')
+  arch=$(echo $line|awk '{print $3}')
   build_tag=${version}
   re='^[0-9]+-alpine.*$'
   if [[ $version =~ $re ]] ; then
