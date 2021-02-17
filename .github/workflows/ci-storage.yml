@@ -90,7 +90,7 @@ jobs:
 
   deploy:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    #if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -102,8 +102,8 @@ jobs:
           name: build-artifact-storage
           path: build
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      #- name: Setup tmate session
+      #  uses: mxschmitt/action-tmate@v3
 
       - name: Load and push images
         uses: ./.github/actions/push-bareos-app

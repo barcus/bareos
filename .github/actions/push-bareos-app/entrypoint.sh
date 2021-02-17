@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 workdir="${GITHUB_WORKSPACE}/build"
 docker_files=$(find "${workdir}/" -name "bareos-*.tar" 2>/dev/null)
