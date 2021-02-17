@@ -102,6 +102,9 @@ jobs:
           name: build-artifact-storage
           path: build
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Load and push images
         uses: ./.github/actions/push-bareos-app
         with:
