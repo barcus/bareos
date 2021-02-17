@@ -56,7 +56,7 @@ echo ::endgroup::
 # Clean Alpine build_tag (amd/arm)
 echo ::group::Clean
 docker run --rm lumir/remove-dockerhub-tag \
-  --user "${GITHUB_ACTOR}" --password "${INPUT_DOCKER_PASS}" "$rm_tag"
+  --user "${GITHUB_ACTOR}" --password \'${INPUT_DOCKER_PASS}\' ${rm_tag}
 echo ::endgroup::
 
 #EOF
