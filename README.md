@@ -89,6 +89,8 @@ through docker-compose, see exemple below
 
 ## Usage
 
+Declare environment variables or copy the `.env.dist` to `.env` and `.env.mysql.dist` to `.env.mysql` and adjust its values.
+
 ```bash
 docker-compose -f /path/to/your/docker-compose.yml up -d
 ```
