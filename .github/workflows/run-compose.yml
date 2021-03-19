@@ -36,7 +36,10 @@ jobs:
           sudo chmod 777 /data/bareos /data/mysql /data/pgsql
 
       - name: Run docker-compose
-        run: docker-compose -f docker-compose-${{ matrix.module }}.yml up -d
+        run: |
+          cp .env.dist .env
+          cp .env.mysql.dist .env.mysql
+          docker-compose -f docker-compose-${{ matrix.module }}.yml up -d
 
       - name: Wait 60s then run Bareos console
         run: |
