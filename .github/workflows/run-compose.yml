@@ -38,7 +38,6 @@ jobs:
       - name: Run docker-compose
         run: |
           cp .env.dist .env
-          cp .env.mysql.dist .env.mysql
           docker-compose -f docker-compose-${{ matrix.module }}.yml up -d
 
       - name: Wait 60s then run Bareos console

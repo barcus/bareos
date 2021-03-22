@@ -10,8 +10,8 @@ services:
       - DB_HOST=bareos-db
       - DB_PORT=3306
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USERNAME}
+      - DB_NAME=bareos
+      - DB_USER=root
       - BAREOS_SD_HOST=bareos-sd
       - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
       - BAREOS_FD_HOST=bareos-fd
@@ -71,11 +71,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     environment:
-      - MYSQL_USER=${DB_NAME}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-      - MYSQL_DATABASE=${DB_NAME}
-    env_file:
-      - .env.mysql
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
 
   smtpd:
     image: namshi/smtp
