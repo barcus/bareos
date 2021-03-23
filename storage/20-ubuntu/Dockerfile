@@ -29,7 +29,8 @@ RUN apt-get update -qq \
  && echo "deb $BAREOS_REPO /" > /etc/apt/sources.list.d/bareos.list \
  && apt-get update -qq \
  && apt-get install -qq -y --no-install-recommends \
-    bareos-storage bareos-tools bareos-storage-tape mtx scsitools sg3-utils mt-st \
+    bareos-storage bareos-tools bareos-storage-tape mtx scsitools \
+    sg3-utils mt-st bareos-storage-droplet \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
