@@ -1,0 +1,6 @@
+name: 'test-bareos-app'
+description: 'Test Bareos docker images'
+author: 'Barcus'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

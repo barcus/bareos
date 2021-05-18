@@ -16,4 +16,7 @@ fi
 find /etc/bareos/bareos-fd.d ! -user bareos -exec chown bareos {} \;
 
 # Run Dockerfile CMD
+if [[ $FORCE_ROOT = true ]] ;then
+  export BAREOS_DAEMON_USER='root'
+fi
 exec "$@"

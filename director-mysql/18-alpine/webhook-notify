@@ -1,0 +1,41 @@
+#!/usr/bin/env sh
+
+job_type=$1
+job_status=$2
+job_client=$3
+job_level=$4
+job_name=$5
+msg_icon="❌"
+
+if [ "$job_status" = "OK" ] ;then
+  msg_icon="✅"
+fi
+
+msg_txt="$msg_icon Bareos: $job_type $job_status of $job_client \
+$job_level (${job_name})"
+
+load_json()
+{
+  if [ "${WEBHOOK_TYPE}" = "slack" ] ; then
+    cat <<EOF
+{
+  "text": "$msg_txt"
+}
+EOF
+ fi
+
+ if [ "${WEBHOOK_TYPE}" = "telegram" ] ; then
+    cat <<EOF
+{
+  "chat_id": "${WEBHOOK_CHAT_ID}",
+  "text": "$msg_txt",
+  "disable_notification": false
+}
+EOF
+ fi
+}
+
+/usr/bin/curl -s -k -X POST \
+    -H 'Content-Type: application/json' \
+    -d "$(load_json)" \
+    ${WEBHOOK_URL}

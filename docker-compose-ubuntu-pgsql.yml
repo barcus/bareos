@@ -2,45 +2,53 @@
 version: '3'
 services:
   bareos-dir:
-    image: barcus/bareos-director:19-ubuntu-pgsql
+    image: barcus/bareos-director:20-ubuntu-pgsql
     volumes:
       - /data/bareos/config/director:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
       - DB_HOST=bareos-db
       - DB_PORT=5432
-      - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - DB_NAME=bareos
+      - DB_USER=root
+      - DB_PASSWORD=${DB_PASSWORD}
       - BAREOS_SD_HOST=bareos-sd
-      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
       - BAREOS_FD_HOST=bareos-fd
-      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
-      - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
+      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
+      - BAREOS_WEBUI_PASSWORD=${BAREOS_WEBUI_PASSWORD}
       - SMTP_HOST=smtpd
       #- SENDER_MAIL=your-sender@mail.address #optional
-      - ADMIN_MAIL=your@mail.address # Change me!
+      - ADMIN_MAIL=${ADMIN_MAIL}
+      # Optional you can gets backup notification via Slack or Telegram
+      - WEBHOOK_NOTIFICATION=false # true or false if set to true email notification gets disabled
+      - WEBHOOK_TYPE=slack # choose slack or telegram
+      - WEBHOOK_URL= # set the slack or telegram URL
+      - WEBHOOK_CHAT_ID= # for telegram only set the <chat_id>
     depends_on:
       - bareos-db
 
   bareos-sd:
-    image: barcus/bareos-storage:19-ubuntu
+    image: barcus/bareos-storage:20-ubuntu
     ports:
       - 9103:9103
     volumes:
       - /data/bareos/config/storage:/etc/bareos
       - /data/bareos/data/storage:/var/lib/bareos/storage
     environment:
-      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
 
   bareos-fd:
-    image: barcus/bareos-client:19-ubuntu
+    image: barcus/bareos-client:20-ubuntu
     volumes:
       - /data/bareos/config/client:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
     environment:
-      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
+      - FORCE_ROOT=false
 
   bareos-webui:
-    image: barcus/bareos-webui:19-ubuntu
+    image: barcus/bareos-webui:20-ubuntu
     ports:
       - 8080:80
     environment:
@@ -54,7 +62,7 @@ services:
     volumes:
       - /data/pgsql/data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
 
   smtpd:
     image: namshi/smtp

@@ -40,6 +40,14 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   sed -i "s#mail = root@localhost#mail = ${ADMIN_MAIL}#" \
     /etc/bareos/bareos-dir.d/messages/Standard.conf
 
+  # Setup webhook
+  if [ "${WEBHOOK_NOTIFICATION}" = true ]; then
+    sed -i "s#/usr/bin/bsmtp -h.*#/usr/local/bin/webhook-notify %t %e %c %l %n\"#" \
+      /etc/bareos/bareos-dir.d/messages/Daemon.conf
+    sed -i "s#/usr/bin/bsmtp -h.*#/usr/local/bin/webhook-notify %t %e %c %l %n\"#" \
+      /etc/bareos/bareos-dir.d/messages/Standard.conf
+  fi
+
   # storage daemon
   sed -i 's#Address = .*#Address = '\""${BAREOS_SD_HOST}"\"'#' \
     /etc/bareos/bareos-dir.d/storage/File.conf
@@ -66,36 +74,39 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   touch /etc/bareos/bareos-config.control
 fi
 
-# MySQL check
-# Waiting for mysqld
-sqlup=1
-while [ "$sqlup" -ne 0 ] ; do
-  echo "Waiting for mysqld..."
-  mysqladmin --silent -u root -p"${DB_PASSWORD}" -h "${DB_HOST}" ping
-  if [ $? -ne 0 ] ; then
-    sqlup=1
-    sleep 5
-  else
-    sqlup=0
-    echo "...mysqld is alive"
-  fi
-done
+ls -l /tmp/bareos
+
+if [[ -z ${CI_TEST} ]] ; then
+  # MySQL check
+  # Waiting for mysqld
+  sqlup=1
+  while [ "$sqlup" -ne 0 ] ; do
+    echo "Waiting for mysqld..."
+    mysqladmin --silent -u root -p"${DB_PASSWORD}" -h "${DB_HOST}" ping
+    if [ $? -ne 0 ] ; then
+      sqlup=1
+      sleep 5
+    else
+      sqlup=0
+      echo "...mysqld is alive"
+    fi
+  done
+fi
 
 # Set mysqld access for root
 echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/.my.cnf
 
 # MySQL init for Bareos if required
-if [ ! -f /etc/bareos/bareos-db.control ]
-  then
-    # Init MySQL DB
-    /usr/lib/bareos/scripts/create_bareos_database
-    /usr/lib/bareos/scripts/make_bareos_tables
+if [ ! -f /etc/bareos/bareos-db.control ] ; then
+  # Init MySQL DB
+  /usr/lib/bareos/scripts/create_bareos_database
+  /usr/lib/bareos/scripts/make_bareos_tables
 
-    # Control file
-    touch /etc/bareos/bareos-db.control
-  else
-    # Try MySQL DB upgrade
-    /usr/lib/bareos/scripts/update_bareos_tables
+  # Control file
+  touch /etc/bareos/bareos-db.control
+else
+  # Try MySQL DB upgrade
+  /usr/lib/bareos/scripts/update_bareos_tables
 fi
 
 # Fix permissions

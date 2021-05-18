@@ -17,19 +17,27 @@ This package provides images for [Bareos][bareos-href] :
 
 Images are based on **Ubuntu** or **Alpine**, check tags below
 
-:+1: Tested with Bareos 16.2, 17.2, 18.2 and 19.2
+:+1: Tested with Bareos 16.x.x to 20.0.0
+
+:warning: MySQL/MariaDB backends deprecated since Bareos 19.0.0
+
+:warning: SQLite backend deprecated since Bareos 20.0.0
 
 * Ubuntu images for Bareos 16 and 17 are based on **Xenial**
-* Ubuntu images for Bareos 18+ are based on **Bionic**
+* Ubuntu images for Bareos 18 and 19 are based on **Bionic**
+* Ubuntu images for Bareos 20 are based on **Focal**
 * Alpine images are available for **linux/amd64** and **linux/arm64/v8** platform
 
 ## Tags
 
 bareos-director (dir)
 
-* `19-ubuntu-mysql`, `19-ubuntu`, `19`, `ubuntu`, `latest`
+* `20-ubuntu-mysql`
+* `20-ubuntu-pqsql`, `20-ubuntu`, `20`, `ubuntu`, `latest`
+* `19-ubuntu-mysql`, `19-ubuntu`, `19`
 * `19-ubuntu-pqsql`
 * `19-alpine-mysql`, `19-alpine`, `alpine`
+* `19-alpine-pgsql`
 * `18-ubuntu-mysql`, `18-ubuntu`, `18`
 * `18-ubuntu-pgsql`
 * `18-alpine-mysql`, `18-alpine`
@@ -41,7 +49,8 @@ bareos-director (dir)
 
 bareos-client (fd) - bareos-storage (sd) - bareos-webui
 
-* `19-ubuntu`, `19`, `ubuntu`, `latest`
+* `20-ubuntu`, `20`, `ubuntu`, `latest`
+* `19-ubuntu`, `19`
 * `19-alpine`, `alpine`
 * `18-ubuntu`, `18`
 * `18-alpine`
@@ -62,10 +71,8 @@ the Bareos containers.
 
 Bareos Director requires :
 
-* PostgreSQL or MySQL as a catalog backend
+* PostgreSQL or MySQL as a catalog backend (MySQL deprecated since Bareos 19.0.0)
 * SMTP Daemon as mail router (for reporting)
-
-Curently, PostgreSQL is not available on Alpine images.
 
 Bareos Webui requires (Alpine images only) :
 
@@ -81,6 +88,8 @@ through docker-compose, see exemple below
 * [Docker][docker-href] & [docker-compose][docker-compose-href]
 
 ## Usage
+
+Declare environment variables or copy the `.env.dist` to `.env` and adjust its values.
 
 ```bash
 docker-compose -f /path/to/your/docker-compose.yml up -d
@@ -136,6 +145,11 @@ services:
       - SMTP_HOST=smtpd
       - SENDER_MAIL=your-sender@mail.address #optional
       - ADMIN_MAIL=your@mail.address # Change me!
+      # Optional you can get backup notification via Slack or Telegram
+      - WEBHOOK_NOTIFICATION=true # true or false if set to true email notification gets disabled
+      - WEBHOOK_TYPE=slack # choose slack or telegram
+      - WEBHOOK_URL= # set the slack or telegram URL
+      - WEBHOOK_CHAT_ID= # for telegram only set the <chat_id>
     depends_on:
       - bareos-db
 
@@ -156,6 +170,7 @@ services:
       - <BAREOS_DATA_PATH>:/var/lib/bareos-director #required for MyCatalog backup
     environment:
       - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+      - FORCE_ROOT=false
 
   bareos-webui:
     image: barcus/bareos-webui:latest
@@ -196,6 +211,10 @@ services:
 * ADMIN_MAIL is your email address
 * SENDER_MAIL is the email address you want to use for send the email
  (optional, default ADMIN_MAIL value)
+* WEBHOOK_NOTIFICATION=true # true or false if set to true email notification gets disabled
+* WEBHOOK_TYPE=slack # choose slack or telegram
+* WEBHOOK_URL= # set the slack or telegram URL (ex slack: <https://hooks.slack.com/services/TXXXXXXXXXX/XXXXXXXXXXX/Cbzi0lUVjKsjiM6kjZL2eQAW>)
+* WEBHOOK_CHAT_ID= # for telegram only set the 'chat_id'
 
 **Bareos Storage Daemon** (bareos-sd)
 
@@ -211,6 +230,7 @@ services:
  host side (optional/recommended)
 * `<BAREOS_DATA_PATH>` is the path to access Director data folder (recommended)
 * BAREOS_FD_PASSWORD must be same as Bareos Director section
+* FORCE_ROOT must be true to run Bareos with root permissions
 
 **Database MySQL or PostgreSQL** (bareos-db)
 
@@ -294,7 +314,7 @@ Enjoy !
 [docker-url-fd]: https://registry.hub.docker.com/r/barcus/bareos-client
 [docker-url-sd]: https://registry.hub.docker.com/r/barcus/bareos-storage
 [docker-url-ui]: https://registry.hub.docker.com/r/barcus/bareos-webui
-[license-img]: https://img.shields.io/badge/license-ISC-blue.svg
+[license-img]: https://img.shields.io/badge/License-MIT-yellow.svg
 [os-based-alpine]: https://img.shields.io/badge/os-alpine-9cf
 [os-based-ubuntu]: https://img.shields.io/badge/os-ubuntu-9cf
 [size-alpine-client-png]: https://img.shields.io/docker/image-size/barcus/bareos-client/alpine?label=alpine&style=plastic
@@ -306,4 +326,3 @@ Enjoy !
 [size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?label=latest&style=plastic
 [size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?label=latest&style=plastic
 [run-compose-png]: https://github.com/barcus/bareos/workflows/run-compose/badge.svg
-

@@ -15,6 +15,7 @@ LABEL org.label-schema.schema-version="1.0" \
       org.label-schema.vcs-url="https://github.com/barcus/bareos" \
       org.label-schema.version=$VERSION
 
+ENV BAREOS_DAEMON_USER bareos
 ENV DEBIAN_FRONTEND noninteractive
 ENV BAREOS_KEY http://download.bareos.org/bareos/release/18.2/xUbuntu_18.04/Release.key
 ENV BAREOS_REPO http://download.bareos.org/bareos/release/18.2/xUbuntu_18.04/
@@ -41,4 +42,4 @@ RUN tar czf /bareos-fd.tgz /etc/bareos/bareos-fd.d
 EXPOSE 9102
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/usr/sbin/bareos-fd", "-u", "bareos", "-f"]
+CMD ["sh", "-c", "/usr/sbin/bareos-fd -u $BAREOS_DAEMON_USER -f"]

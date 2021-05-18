@@ -1,5 +1,5 @@
 # Bareos director Dockerfile
-FROM alpine:edge
+FROM alpine:3.13
 
 LABEL maintainer="barcus@tou.nu"
 
@@ -22,6 +22,9 @@ RUN apk add --no-cache bareos-mysql mysql-client curl tzdata tar
 RUN tar czf /bareos-dir.tgz /etc/bareos
 RUN mkdir /run/bareos \
  && chown bareos /run/bareos
+
+COPY webhook-notify /usr/local/bin/webhook-notify
+RUN chmod u+x /usr/local/bin/webhook-notify
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod u+x /docker-entrypoint.sh

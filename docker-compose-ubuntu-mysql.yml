@@ -9,17 +9,22 @@ services:
     environment:
       - DB_HOST=bareos-db
       - DB_PORT=3306
+      - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=bareos
       - DB_USER=root
-      - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
       - BAREOS_SD_HOST=bareos-sd
-      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
       - BAREOS_FD_HOST=bareos-fd
-      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
-      - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
+      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
+      - BAREOS_WEBUI_PASSWORD=${BAREOS_WEBUI_PASSWORD}
       - SMTP_HOST=smtpd
       #- SENDER_MAIL=your-sender@mail.address #optional
-      - ADMIN_MAIL=your@mail.address # Change me!
+      - ADMIN_MAIL=${ADMIN_MAIL}
+      # Optional you can gets backup notification via Slack or Telegram
+      - WEBHOOK_NOTIFICATION=false # true or false if set to true email notification gets disabled
+      - WEBHOOK_TYPE=slack # choose slack or telegram
+      - WEBHOOK_URL= # set the slack or telegram URL
+      - WEBHOOK_CHAT_ID= # for telegram only set the <chat_id>
     depends_on:
       - bareos-db
 
@@ -31,7 +36,7 @@ services:
       - /data/bareos/config/storage:/etc/bareos
       - /data/bareos/data/storage:/var/lib/bareos/storage
     environment:
-      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
 
   bareos-fd:
     image: barcus/bareos-client:19-ubuntu
@@ -39,7 +44,8 @@ services:
       - /data/bareos/config/client:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
     environment:
-      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
+      - FORCE_ROOT=false
 
   bareos-webui:
     image: barcus/bareos-webui:19-ubuntu
@@ -56,7 +62,7 @@ services:
     volumes:
       - /data/mysql/data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
 
   smtpd:
     image: namshi/smtp

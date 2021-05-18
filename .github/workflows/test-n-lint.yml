@@ -1,12 +1,6 @@
 name: test-n-lint
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
   lint-docker:
@@ -31,7 +25,7 @@ jobs:
           done
 
   lint-markdown:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2

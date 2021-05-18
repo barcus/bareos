@@ -23,7 +23,7 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   # Director / mycatalog & mail report
   sed -i 's#dbpassword = ""#dbpassword = '\"${DB_PASSWORD}\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
-  sed -i 's#dbname = "bareos"#dbname = bareos\n  dbaddress = '\"${DB_HOST}\"'\n  dbport = '\"${DB_PORT}\"'#' \
+  sed -i 's#dbname = "bareos"#dbname = '\"${DB_NAME}\"'\n  dbaddress = '\"${DB_HOST}\"'\n  dbport = '\"${DB_PORT}\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   [ -n "${SENDER_MAIL}" ] && sed -i "s#<%r#<${SENDER_MAIL}#g" \
     /etc/bareos/bareos-dir.d/messages/Daemon.conf
@@ -37,6 +37,14 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
     /etc/bareos/bareos-dir.d/messages/Standard.conf
   sed -i "s#mail = root#mail = ${ADMIN_MAIL}#" \
     /etc/bareos/bareos-dir.d/messages/Standard.conf
+
+  # Setup webhook
+  if [ "${WEBHOOK_NOTIFICATION}" = true ]; then
+    sed -i "s#/usr/bin/bsmtp -h.*#/usr/local/bin/webhook-notify %t %e %c %l %n\"#" \
+      /etc/bareos/bareos-dir.d/messages/Daemon.conf
+    sed -i "s#/usr/bin/bsmtp -h.*#/usr/local/bin/webhook-notify %t %e %c %l %n\"#" \
+      /etc/bareos/bareos-dir.d/messages/Standard.conf
+  fi
 
   # storage daemon
   sed -i 's#Address = .*#Address = '\""${BAREOS_SD_HOST}"\"'#' \
@@ -64,29 +72,42 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   touch /etc/bareos/bareos-config.control
 fi
 
-if [ ! -f /etc/bareos/bareos-db.control ]
-  then
-    # TODO waiting Postgres is up
-    sleep 15
-    # Init Postgres DB
-    export PGUSER=postgres
-    export PGHOST=${DB_HOST}
-    export PGPASSWORD=${DB_PASSWORD}
-    psql -c 'create user bareos with createdb createrole createuser login;'
-    psql -c "alter user bareos password '${DB_PASSWORD}';"
-    /usr/lib/bareos/scripts/create_bareos_database
-    /usr/lib/bareos/scripts/make_bareos_tables
-    /usr/lib/bareos/scripts/grant_bareos_privileges
+if [[ -z ${CI_TEST} ]] ; then
+  # Waiting Postgresql is up
+  sqlup=1
+  while [ "$sqlup" -ne 0 ] ; do
+    echo "Waiting for postgresql..."
+    pg_isready --dbname="${DB_NAME}" --host="${DB_HOST}" --port="${DB_PORT}"
+    if [ $? -ne 0 ] ; then
+      sqlup=1
+      sleep 5
+    else
+      sqlup=0
+      echo "...postgresql is alive"
+    fi
+  done
+fi
 
-    # Control file
-    touch /etc/bareos/bareos-db.control
-  else
-    # Try Postgres upgrade
-    export PGUSER=postgres
-    export PGHOST=${DB_HOST}
-    export PGPASSWORD=${DB_PASSWORD}
-    /usr/lib/bareos/scripts/update_bareos_tables
-    /usr/lib/bareos/scripts/grant_bareos_privileges
+if [ ! -f /etc/bareos/bareos-db.control ] ; then
+  # Init Postgresql DB
+  export PGUSER=postgres
+  export PGHOST=${DB_HOST}
+  export PGPASSWORD=${DB_PASSWORD}
+  psql -c 'create user bareos with createdb createrole createuser login;'
+  psql -c "alter user bareos password '${DB_PASSWORD}';"
+  /usr/lib/bareos/scripts/create_bareos_database 2>/dev/null
+  /usr/lib/bareos/scripts/make_bareos_tables 2>/dev/null
+  /usr/lib/bareos/scripts/grant_bareos_privileges 2>/dev/null
+
+  # Control file
+  touch /etc/bareos/bareos-db.control
+else
+  # Try Postgres upgrade
+  export PGUSER=postgres
+  export PGHOST=${DB_HOST}
+  export PGPASSWORD=${DB_PASSWORD}
+  /usr/lib/bareos/scripts/update_bareos_tables 2>/dev/null
+  /usr/lib/bareos/scripts/grant_bareos_privileges 2>/dev/null
 fi
 
 # Fix permissions
