@@ -21,6 +21,8 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
 
   # Update bareos-director configs
   # Director / mycatalog & mail report
+  sed -i 's#dbuser = "bareos"#dbuser = '\"${DB_USER}\"'#' \
+    /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   sed -i 's#dbpassword = ""#dbpassword = '\"${DB_PASSWORD}\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   sed -i 's#dbname = "bareos"#dbname = '\"${DB_NAME}\"'\n  dbaddress = '\"${DB_HOST}\"'\n  dbport = '\"${DB_PORT}\"'#' \
@@ -88,11 +90,11 @@ if [[ -z ${CI_TEST} ]] ; then
   done
 fi
 
+export PGUSER=${DB_USER}
+export PGHOST=${DB_HOST}
+export PGPASSWORD=${DB_PASSWORD}
 if [ ! -f /etc/bareos/bareos-db.control ] ; then
   # Init Postgresql DB
-  export PGUSER=postgres
-  export PGHOST=${DB_HOST}
-  export PGPASSWORD=${DB_PASSWORD}
   psql -c 'create user bareos with createdb createrole createuser login;'
   psql -c "alter user bareos password '${DB_PASSWORD}';"
   /usr/lib/bareos/scripts/create_bareos_database 2>/dev/null
@@ -103,9 +105,6 @@ if [ ! -f /etc/bareos/bareos-db.control ] ; then
   touch /etc/bareos/bareos-db.control
 else
   # Try Postgres upgrade
-  export PGUSER=postgres
-  export PGHOST=${DB_HOST}
-  export PGPASSWORD=${DB_PASSWORD}
   /usr/lib/bareos/scripts/update_bareos_tables 2>/dev/null
   /usr/lib/bareos/scripts/grant_bareos_privileges 2>/dev/null
 fi
