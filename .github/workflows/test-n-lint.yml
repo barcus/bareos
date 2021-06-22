@@ -21,7 +21,7 @@ jobs:
       - name: Check Docker files
         run: |
           for file in $(find . -name Dockerfile); do
-            ./hadolint --ignore DL3008 --ignore DL3018 $file
+            ./hadolint --ignore DL3008 --ignore DL3018 --ignore DL3059 $file
           done
 
   lint-markdown:
