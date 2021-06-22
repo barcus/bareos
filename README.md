@@ -194,6 +194,7 @@ services:
   #  volumes:
   #    - <DB_DATA_PATH>:/var/lib/postgresql/data
   #  environment:
+  #    - POSTGRES_USER=${DB_USER}
   #    - POSTGRES_PASSWORD=ThisIsMySecretDBp4ssw0rd
 
   smtpd:
