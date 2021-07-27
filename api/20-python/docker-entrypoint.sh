@@ -7,7 +7,6 @@ dst='/opt'
 secret=`tr -cd "[:alnum:]" < /dev/urandom | fold -w30 | head -n1`
 
 # pull all files from https://github.com/bareos/bareos/tree/master/rest-api
-
 for file in ${filelist}
 do
   if [ ! -f "${dst}/${file}" ]
@@ -19,8 +18,6 @@ do
     elif [ -f /usr/bin/wget ]
     then
       wget -q --output-document="${dst}/${file}" "https://${github_bareos}/${rest_api_dir}/${file}"
-    #curl --silent --insecure "https://${github_bareos}/${rest_api_dir}/${file}" \
-    #  --output "${dst}/${file}"
     fi
   fi
 done

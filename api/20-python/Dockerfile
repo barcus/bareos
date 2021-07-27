@@ -3,7 +3,7 @@ FROM python:alpine AS bareos-api
 LABEL maintainer="Maksim Kramarenko <mc.sim@k-max.name>"
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN  chmod u+x /docker-entrypoint.sh
+RUN chmod u+x /docker-entrypoint.sh
 
 WORKDIR /opt
 
