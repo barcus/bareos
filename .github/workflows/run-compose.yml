@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        module: [alpine-v1, alpine-v2, ubuntu-mysql, ubuntu-pgsql]
+        module: [alpine-v1, alpine-v2, ubuntu-mysql, ubuntu-pgsql, alpine-pgsql-v1]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
