@@ -41,6 +41,9 @@ bareos-director (dir)
 * `18-ubuntu-mysql`, `18-ubuntu`, `18`
 * `18-ubuntu-pgsql`
 * `18-alpine-mysql`, `18-alpine`
+
+:warning: Deprecated images
+
 * `17-ubuntu-mysql`, `17-ubuntu`, `17`
 * `17-ubuntu-pgsql`
 * `17-alpine`
@@ -54,6 +57,9 @@ bareos-client (fd) - bareos-storage (sd) - bareos-webui
 * `19-alpine`, `alpine`
 * `18-ubuntu`, `18`
 * `18-alpine`
+
+:warning: Deprecated images
+
 * `17-ubuntu`, `17`
 * `17-alpine`
 * `16-ubuntu`, `16`
