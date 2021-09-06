@@ -1,17 +1,16 @@
 ## docker-compose Bareos Director/Storage/Client/webUI, PHP-FPM and MySQL Database based on Alpine
-version: '3.7'
+version: '3'
 services:
   bareos-dir:
     image: barcus/bareos-director:19-alpine
     volumes:
-      - director_config:/etc/bareos
-      - director_data:/var/lib/bareos # required for MyCatalog backup
+      - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
       - DB_HOST=bareos-db
       - DB_PORT=3306
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=bareos
-      - DB_USER=root
+      - DB_USER=${DB_USER}
       - BAREOS_SD_HOST=bareos-sd
       - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
       - BAREOS_FD_HOST=bareos-fd
@@ -32,16 +31,14 @@ services:
     ports:
       - 9103:9103
     volumes:
-      - storage_config:/etc/bareos
-      - storage_data:/var/lib/bareos/archive
+      - /data/bareos/data/storage:/var/lib/bareos/archive
     environment:
       - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
 
   bareos-fd:
     image: barcus/bareos-client:19-alpine
     volumes:
-      - client_config:/etc/bareos
-      - director_data:/var/lib/bareos-director # required for MyCatalog backup
+      - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
     environment:
       - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
       - FORCE_ROOT=false
@@ -55,74 +52,24 @@ services:
       - PHP_FPM_HOST=php-fpm
       - PHP_FPM_PORT=9000
     volumes:
-      - webui_config:/etc/bareos-webui
-      - webui_data:/usr/share/bareos-webui
+      - /data/bareos/config/webui:/etc/bareos-webui
+      - /data/bareos/data/webui:/usr/share/bareos-webui
     depends_on:
       - php-fpm
 
   php-fpm:
     image: barcus/php-fpm-alpine
     volumes:
-      - webui_config:/etc/bareos-webui
-      - webui_data:/usr/share/bareos-webui
+      - /data/bareos/config/webui:/etc/bareos-webui
+      - /data/bareos/data/webui:/usr/share/bareos-webui
 
   bareos-db:
     image: mysql:5.6
     volumes:
-      - mysql_data:/var/lib/mysql
+      - /data/mysql/data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
 
   smtpd:
     image: namshi/smtp
-
-volumes:
-  director_config:
-    driver: local
-    driver_opts:
-      type: none
-      o: 'bind'
-      device: '/data/bareos/config/director'
-  director_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: 'bind'
-      device: '/data/bareos/data/director'
-  storage_config:
-    driver: local
-    driver_opts:
-      type: none
-      o: 'bind'
-      device: '/data/bareos/config/storage'
-  storage_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: 'bind'
-      device: '/data/bareos/data/storage'
-  client_config:
-    driver: local
-    driver_opts:
-      type: none
-      o: 'bind'
-      device: '/data/bareos/config/client'
-  webui_config:
-    driver: local
-    driver_opts:
-      type: none
-      o: 'bind'
-      device: '/data/bareos/config/webui'
-  webui_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: 'bind'
-      device: '/data/bareos/data/webui'
-  mysql_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: 'bind'
-      device: '/data/mysql/data'
 #EOF

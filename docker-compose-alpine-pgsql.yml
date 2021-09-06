@@ -2,15 +2,15 @@
 version: '3'
 services:
   bareos-dir:
-    image: barcus/bareos-director:19-alpine
+    image: barcus/bareos-director:19-alpine-pgsql
     volumes:
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
       - DB_HOST=bareos-db
-      - DB_PORT=3306
+      - DB_PORT=5432
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=bareos
-      - DB_USER=root
+      - DB_USER=${DB_USER}
       - BAREOS_SD_HOST=bareos-sd
       - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
       - BAREOS_FD_HOST=bareos-fd
@@ -64,11 +64,13 @@ services:
       - /data/bareos/data/webui:/usr/share/bareos-webui
 
   bareos-db:
-    image: mysql:5.6
+    image: postgres:9.3
     volumes:
-      - /data/mysql/data:/var/lib/mysql
+      - /data/pgsql/data:/var/lib/postgresql/data
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
 
   smtpd:
     image: namshi/smtp

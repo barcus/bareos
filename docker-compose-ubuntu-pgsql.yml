@@ -64,6 +64,7 @@ services:
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
 
   smtpd:
     image: namshi/smtp
