@@ -100,6 +100,9 @@ echo -e '[mysqldump]\ncolumn-statistics=0' > /etc/mysql/conf.d/mysqldump-bareos.
 # MySQL init for Bareos if required
 if [ ! -f /etc/bareos/bareos-db.control ] ; then
   # Init MySQL DB
+  mysql -e "CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}'"
+  mysql -e "GRANT ALL PRIVILEGES ON TABLE ${DB_NAME}.* TO ${DB_USER}@'%'"
+  mysql -e "FLUSH PRIVILEGES"
   /usr/lib/bareos/scripts/create_bareos_database
   /usr/lib/bareos/scripts/make_bareos_tables
 

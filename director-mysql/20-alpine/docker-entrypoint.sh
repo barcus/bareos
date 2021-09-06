@@ -97,6 +97,9 @@ echo -e "[client]\nhost=${DB_HOST}\nuser=root\npassword=${DB_PASSWORD}" > /root/
 # MySQL init for Bareos if required
 if [ ! -f /etc/bareos/bareos-db.control ] ; then
   # Init MySQL DB
+  mysql -e "CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}'"
+  mysql -e "GRANT ALL PRIVILEGES ON TABLE ${DB_NAME}.* TO ${DB_USER}@'%'"
+  mysql -e "FLUSH PRIVILEGES"
   /etc/bareos/scripts/create_bareos_database
   /etc/bareos/scripts/make_bareos_tables
 

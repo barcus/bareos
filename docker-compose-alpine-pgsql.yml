@@ -2,7 +2,7 @@
 version: '3'
 services:
   bareos-dir:
-    image: barcus/bareos-director:20-alpine-pgsql
+    image: barcus/bareos-director:19-alpine-pgsql
     volumes:
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
@@ -27,7 +27,7 @@ services:
       - bareos-db
 
   bareos-sd:
-    image: barcus/bareos-storage:20-alpine
+    image: barcus/bareos-storage:19-alpine
     ports:
       - 9103:9103
     volumes:
@@ -36,7 +36,7 @@ services:
       - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
 
   bareos-fd:
-    image: barcus/bareos-client:20-alpine
+    image: barcus/bareos-client:19-alpine
     volumes:
       - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
     environment:
@@ -44,7 +44,7 @@ services:
       - FORCE_ROOT=false
 
   bareos-webui:
-    image: barcus/bareos-webui:20-alpine
+    image: barcus/bareos-webui:19-alpine
     ports:
       - 8080:9100
     environment:
