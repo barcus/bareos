@@ -10,7 +10,7 @@ services:
       - DB_PORT=3306
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=bareos
-      - DB_USER=root
+      - DB_USER=${DB_USER}
       - BAREOS_SD_HOST=bareos-sd
       - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
       - BAREOS_FD_HOST=bareos-fd

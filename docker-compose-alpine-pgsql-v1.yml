@@ -1,24 +1,22 @@
-## docker-compose Bareos Director/Storage/Client/webUI and PostgreSQL Database based on Ubuntu
+## docker-compose Bareos Director/Storage/Client/webUI, PHP-FPM and MySQL Database based on Alpine
 version: '3'
 services:
   bareos-dir:
-    image: barcus/bareos-director:20-ubuntu-pgsql
+    image: barcus/bareos-director:20-alpine-pgsql
     volumes:
-      - /data/bareos/config/director:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
       - DB_HOST=bareos-db
       - DB_PORT=5432
+      - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=bareos
       - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
       - BAREOS_SD_HOST=bareos-sd
       - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
       - BAREOS_FD_HOST=bareos-fd
       - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
       - BAREOS_WEBUI_PASSWORD=${BAREOS_WEBUI_PASSWORD}
       - SMTP_HOST=smtpd
-      #- SENDER_MAIL=your-sender@mail.address #optional
       - ADMIN_MAIL=${ADMIN_MAIL}
       # Optional you can gets backup notification via Slack or Telegram
       - WEBHOOK_NOTIFICATION=false # true or false if set to true email notification gets disabled
@@ -29,33 +27,41 @@ services:
       - bareos-db
 
   bareos-sd:
-    image: barcus/bareos-storage:20-ubuntu
+    image: barcus/bareos-storage:20-alpine
     ports:
       - 9103:9103
     volumes:
-      - /data/bareos/config/storage:/etc/bareos
-      - /data/bareos/data/storage:/var/lib/bareos/storage
+      - /data/bareos/data/storage:/var/lib/bareos/archive
     environment:
       - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
 
   bareos-fd:
-    image: barcus/bareos-client:20-ubuntu
+    image: barcus/bareos-client:20-alpine
     volumes:
-      - /data/bareos/config/client:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
     environment:
       - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
       - FORCE_ROOT=false
 
   bareos-webui:
-    image: barcus/bareos-webui:20-ubuntu
+    image: barcus/bareos-webui:20-alpine
     ports:
-      - 8080:80
+      - 8080:9100
     environment:
       - BAREOS_DIR_HOST=bareos-dir
-      - SERVER_STATS=yes
+      - PHP_FPM_HOST=php-fpm
+      - PHP_FPM_PORT=9000
     volumes:
       - /data/bareos/config/webui:/etc/bareos-webui
+      - /data/bareos/data/webui:/usr/share/bareos-webui
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    image: barcus/php-fpm-alpine
+    volumes:
+      - /data/bareos/config/webui:/etc/bareos-webui
+      - /data/bareos/data/webui:/usr/share/bareos-webui
 
   bareos-db:
     image: postgres:9.3
