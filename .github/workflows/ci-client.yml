@@ -17,6 +17,8 @@ on:
       - '.github/actions/build-bareos-app/*'
       - '.github/actions/push-bareos-app/*'
       - '.github/actions/test-bareos-app/*'
+  workflow_dispatch:
+
 
 jobs:
   install:
