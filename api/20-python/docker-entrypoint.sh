@@ -41,4 +41,3 @@ pip3 -qq --no-cache-dir install --upgrade -r ${dst}/requirements.txt
 
 # Run Dockerfile CMD
 exec "$@"
-
