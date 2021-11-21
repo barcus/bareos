@@ -21,6 +21,6 @@ fi
 sed -i "s#client_max_body_size 1m#client_max_body_size 20m#" /etc/nginx/nginx.conf
 
 # set php-fpm host andd port
-sed -i "s/fastcgi_pass 127.0.0.1:9000;/fastcgi_pass ${PHP_FPM_HOST}:${PHP_FPM_PORT};/" /etc/nginx/conf.d/bareos-webui.conf
+sed -i "s/fastcgi_pass 127.0.0.1:9000;/fastcgi_pass ${PHP_FPM_HOST}:${PHP_FPM_PORT};/" /etc/nginx/http.d/bareos-webui.conf
 
 exec "$@"
