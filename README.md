@@ -17,7 +17,7 @@ This package provides images for [Bareos][bareos-href] :
 
 Images are based on **Ubuntu** or **Alpine**, check tags below
 
-:+1: Tested with Bareos 16.x.x to 20.0.0
+:+1: Tested with Bareos 16.x.x to 21.0.0
 
 :warning: MySQL/MariaDB backends deprecated since Bareos 19.0.0
 
@@ -101,7 +101,7 @@ through docker-compose, see exemple below
 
 Declare environment variables or copy the `.env.dist` to `.env` and adjust its values.
 
-Remember that all password be defined inside this `.env` file.
+Remember that all passwords should be defined inside this `.env` file.
 
 ```bash
 docker-compose -f /path/to/your/docker-compose.yml up -d
