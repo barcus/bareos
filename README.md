@@ -101,6 +101,8 @@ through docker-compose, see exemple below
 
 Declare environment variables or copy the `.env.dist` to `.env` and adjust its values.
 
+Remember that all password be defined inside this `.env` file.
+
 ```bash
 docker-compose -f /path/to/your/docker-compose.yml up -d
 ```
@@ -198,21 +200,21 @@ services:
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos-webui
 
-  bareos-db:
-    image: mysql:5.6
-    volumes:
-      - <DB_DATA_PATH>:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
-
   #bareos-db:
-  #  image: postgres:9.3
+  #  image: mysql:5.6
   #  volumes:
-  #    - <DB_DATA_PATH>:/var/lib/postgresql/data
+  #    - <DB_DATA_PATH>:/var/lib/mysql
   #  environment:
-  #    - POSTGRES_USER=${DB_ADMIN_USER} # defined in .env file
-  #    - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
-  #    - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
+  #    - MYSQL_ROOT_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
+
+  bareos-db:
+    image: postgres:9.3
+    volumes:
+      - <DB_DATA_PATH>:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_ADMIN_USER} # defined in .env file
+      - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
+      - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
 
   smtpd:
     image: namshi/smtp

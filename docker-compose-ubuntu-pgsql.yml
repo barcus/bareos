@@ -2,7 +2,7 @@
 version: '3'
 services:
   bareos-dir:
-    image: barcus/bareos-director:20-ubuntu-pgsql
+    image: barcus/bareos-director:21-ubuntu-pgsql
     volumes:
       - /data/bareos/config/director:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
@@ -33,7 +33,7 @@ services:
       - bareos-db
 
   bareos-sd:
-    image: barcus/bareos-storage:20-ubuntu
+    image: barcus/bareos-storage:21-ubuntu
     ports:
       - 9103:9103
     volumes:
@@ -43,7 +43,7 @@ services:
       - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD} # defined in .env file
 
   bareos-fd:
-    image: barcus/bareos-client:20-ubuntu
+    image: barcus/bareos-client:21-ubuntu
     volumes:
       - /data/bareos/config/client:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
@@ -52,7 +52,7 @@ services:
       - FORCE_ROOT=false
 
   bareos-webui:
-    image: barcus/bareos-webui:20-ubuntu
+    image: barcus/bareos-webui:21-ubuntu
     ports:
       - 8080:80
     environment:
