@@ -76,7 +76,6 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   # Add pgpass file to ${DB_USER} home
   homedir=$(getent passwd "$DB_USER" | cut -d: -f6)
   echo "${DB_HOST}:${DB_PORT}:${DB_NAME}:${DB_USER}:${DB_PASSWORD}" > "${homedir}/.pgpass"
-  echo "${DB_HOST}:${DB_PORT}:${DB_NAME}:${DB_USER}:${DB_PASSWORD}"
   chmod 600 "${homedir}/.pgpass"
   chown "${DB_USER}" "${homedir}/.pgpass"
 
