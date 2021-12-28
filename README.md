@@ -32,7 +32,8 @@ Images are based on **Ubuntu** or **Alpine**, check tags below
 
 bareos-director (dir)
 
-* `20-ubuntu-pqsql`, `20-ubuntu`, `20`, `ubuntu`, `latest`
+* `21-ubuntu-pqsql`, `21-ubuntu`, `21`, `ubuntu`, `latest`
+* `20-ubuntu-pqsql`, `20-ubuntu`, `20`
 * `20-ubuntu-mysql`
 * `20-alpine-pgsql`, `20-alpine`, `alpine`
 * `19-ubuntu-mysql`, `19-ubuntu`, `19`
@@ -53,7 +54,8 @@ bareos-director (dir)
 
 bareos-client (fd) - bareos-storage (sd) - bareos-webui
 
-* `20-ubuntu`, `20`, `ubuntu`, `latest`
+* `21-ubuntu`, `21`, `ubuntu`, `latest`
+* `20-ubuntu`, `20`
 * `20-alpine`, `alpine`
 * `19-ubuntu`, `19`
 * `19-alpine`
@@ -256,10 +258,10 @@ services:
 
 Required as catalog backend, simply use the official MySQL/PostgreSQL image
 
-* `MYSQL_ROOT_PASSWORD` is the password for MySQL root user
-* `POSTGRES_PASSWORD` is the password for PostgreSQL root user
 * `<DB_DATA_PATH>` is the path to share your MySQL/PostgreSQL data from the host
  side
+* MYSQL_ROOT_PASSWORD is the password for MySQL root user (required for DB init only)
+* POSTGRES_PASSWORD is the password for PostgreSQL root user (required for DB init only)
 
 **Bareos webUI** (bareos-webui)
 
