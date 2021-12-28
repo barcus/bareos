@@ -32,11 +32,12 @@ Images are based on **Ubuntu** or **Alpine**, check tags below
 
 bareos-director (dir)
 
-* `20-ubuntu-mysql`
 * `20-ubuntu-pqsql`, `20-ubuntu`, `20`, `ubuntu`, `latest`
+* `20-ubuntu-mysql`
+* `20-alpine-pgsql`, `20-alpine`, `alpine`
 * `19-ubuntu-mysql`, `19-ubuntu`, `19`
 * `19-ubuntu-pqsql`
-* `19-alpine-mysql`, `19-alpine`, `alpine`
+* `19-alpine-mysql`, `19-alpine`
 * `19-alpine-pgsql`
 * `18-ubuntu-mysql`, `18-ubuntu`, `18`
 * `18-ubuntu-pgsql`
@@ -53,8 +54,9 @@ bareos-director (dir)
 bareos-client (fd) - bareos-storage (sd) - bareos-webui
 
 * `20-ubuntu`, `20`, `ubuntu`, `latest`
+* `20-alpine`, `alpine`
 * `19-ubuntu`, `19`
-* `19-alpine`, `alpine`
+* `19-alpine`
 * `18-ubuntu`, `18`
 * `18-alpine`
 
@@ -140,13 +142,19 @@ services:
       - <BAREOS_CONF_PATH>:/etc/bareos
       - <BAREOS_DATA_PATH>:/var/lib/bareos #required for MyCatalog backup
     environment:
-      - DB_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - DB_INIT=true
+      - DB_UPDATE=true
       - DB_HOST=bareos-db
       - DB_PORT=3306
+      - DB_NAME=bareos
+      - DB_USER=bareos
+      - DB_PASSWORD=${DB_PASSWORD} # defined in .env file
+      - DB_ADMIN_USER=${DB_ADMIN_USER} # defined in .env file
+      - DB_ADMIN_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
       - BAREOS_FD_HOST=bareos-fd
+      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD} # defined in .env file
       - BAREOS_SD_HOST=bareos-sd
-      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
-      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD} # defined in .env file
       - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
       - SMTP_HOST=smtpd
       - SENDER_MAIL=your-sender@mail.address #optional
@@ -167,7 +175,7 @@ services:
       - <BAREOS_CONF_PATH>:/etc/bareos
       - <BAREOS_BKP_VOLUME_PATH>:/var/lib/bareos/storage
     environment:
-      - BAREOS_SD_PASSWORD=ThisIsMySecretSDp4ssw0rd
+      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD} # defined in .env file
 
   bareos-fd:
     image: barcus/bareos-client:latest
@@ -175,7 +183,7 @@ services:
       - <BAREOS_CONF_PATH>:/etc/bareos
       - <BAREOS_DATA_PATH>:/var/lib/bareos-director #required for MyCatalog backup
     environment:
-      - BAREOS_FD_PASSWORD=ThisIsMySecretFDp4ssw0rd
+      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD} # defined in .env file
       - FORCE_ROOT=false
 
   bareos-webui:
@@ -193,15 +201,16 @@ services:
     volumes:
       - <DB_DATA_PATH>:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=ThisIsMySecretDBp4ssw0rd
+      - MYSQL_ROOT_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
 
   #bareos-db:
   #  image: postgres:9.3
   #  volumes:
   #    - <DB_DATA_PATH>:/var/lib/postgresql/data
   #  environment:
-  #    - POSTGRES_USER=${DB_USER}
-  #    - POSTGRES_PASSWORD=ThisIsMySecretDBp4ssw0rd
+  #    - POSTGRES_USER=${DB_ADMIN_USER} # defined in .env file
+  #    - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
+  #    - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
 
   smtpd:
     image: namshi/smtp
@@ -213,7 +222,11 @@ services:
  the host side (optional/recommended)
 * `<BAREOS_DATA_PATH>` is the path to share your Director data folder from
  the host side (recommended)
-* DB_PASSWORD must be same as Bareos Database section
+* DB_NAME is the bareos database name
+* DB_USER is the bareos database user
+* DB_PASSWORD is the password use to access to the bareos database
+* DB_ADMIN_USER is the password use to initialize bareos user and database
+* DB_ADMIN_PASSWORD is the password use to access to database system
 * SMTP_HOST is the name of smtp container
 * ADMIN_MAIL is your email address
 * SENDER_MAIL is the email address you want to use for send the email
@@ -243,6 +256,8 @@ services:
 
 Required as catalog backend, simply use the official MySQL/PostgreSQL image
 
+* `MYSQL_ROOT_PASSWORD` is the password for MySQL root user
+* `POSTGRES_PASSWORD` is the password for PostgreSQL root user
 * `<DB_DATA_PATH>` is the path to share your MySQL/PostgreSQL data from the host
  side
 
@@ -261,10 +276,10 @@ Build your own Bareos images :
 ```bash
 git clone https://github.com/barcus/bareos
 cd bareos
-docker build -t director-mysql:18-alpine director-mysql/18-alpine
-docker build -t storage:18-alpine storage/18-alpine
-docker build -t client:18-alpine client/18-alpine
-docker build -t webui:18-alpine webui/18-alpine
+docker build -t director-pqsl:20-alpine director-pgsql/20-alpine
+docker build -t storage:20-alpine storage/20-alpine
+docker build -t client:20-alpine client/20-alpine
+docker build -t webui:20-alpine webui/20-alpine
 ```
 
 Build your own Xenial base system image :
