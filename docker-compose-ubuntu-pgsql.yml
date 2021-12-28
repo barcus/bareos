@@ -7,16 +7,20 @@ services:
       - /data/bareos/config/director:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
+      - DB_INIT=true
+      - DB_UPDATE=true
       - DB_HOST=bareos-db
       - DB_PORT=5432
       - DB_NAME=bareos
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=bareos
+      - DB_PASSWORD=${DB_PASSWORD} # defined in .env file
+      - DB_ADMIN_USER=${DB_ADMIN_USER} # defined in .env file
+      - DB_ADMIN_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
       - BAREOS_SD_HOST=bareos-sd
-      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
+      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD} # defined in .env file
       - BAREOS_FD_HOST=bareos-fd
-      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
-      - BAREOS_WEBUI_PASSWORD=${BAREOS_WEBUI_PASSWORD}
+      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD} # defined in .env file
+      - BAREOS_WEBUI_PASSWORD=${BAREOS_WEBUI_PASSWORD} # defined in .env file
       - SMTP_HOST=smtpd
       #- SENDER_MAIL=your-sender@mail.address #optional
       - ADMIN_MAIL=${ADMIN_MAIL}
@@ -36,7 +40,7 @@ services:
       - /data/bareos/config/storage:/etc/bareos
       - /data/bareos/data/storage:/var/lib/bareos/storage
     environment:
-      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
+      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD} # defined in .env file
 
   bareos-fd:
     image: barcus/bareos-client:20-ubuntu
@@ -44,7 +48,7 @@ services:
       - /data/bareos/config/client:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
     environment:
-      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
+      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD} # defined in .env file
       - FORCE_ROOT=false
 
   bareos-webui:
@@ -62,8 +66,8 @@ services:
     volumes:
       - /data/pgsql/data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_ADMIN_USER} # defined in .env file
+      - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
       - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
 
   smtpd:
