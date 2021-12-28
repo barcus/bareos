@@ -2,22 +2,26 @@
 version: '3'
 services:
   bareos-dir:
-    image: barcus/bareos-director:19-alpine-pgsql
+    image: barcus/bareos-director:20-alpine-pgsql
     volumes:
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
+      - DB_INIT=true
+      - DB_UPDATE=true
       - DB_HOST=bareos-db
       - DB_PORT=5432
-      - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=bareos
-      - DB_USER=${DB_USER}
+      - DB_USER=bareos
+      - DB_PASSWORD=${DB_PASSWORD} # defined in .env file
+      - DB_ADMIN_USER=${DB_ADMIN_USER} # defined in .env file
+      - DB_ADMIN_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
       - BAREOS_SD_HOST=bareos-sd
-      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
+      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD} # defined in .env file
       - BAREOS_FD_HOST=bareos-fd
-      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
-      - BAREOS_WEBUI_PASSWORD=${BAREOS_WEBUI_PASSWORD}
+      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD} # defined in .env file
+      - BAREOS_WEBUI_PASSWORD=${BAREOS_WEBUI_PASSWORD} # defined in .env file
       - SMTP_HOST=smtpd
-      - ADMIN_MAIL=${ADMIN_MAIL}
+      - ADMIN_MAIL=${ADMIN_MAIL} # defined in .env file
       # Optional you can gets backup notification via Slack or Telegram
       - WEBHOOK_NOTIFICATION=false # true or false if set to true email notification gets disabled
       - WEBHOOK_TYPE=slack # choose slack or telegram
@@ -27,24 +31,24 @@ services:
       - bareos-db
 
   bareos-sd:
-    image: barcus/bareos-storage:19-alpine
+    image: barcus/bareos-storage:20-alpine
     ports:
       - 9103:9103
     volumes:
       - /data/bareos/data/storage:/var/lib/bareos/archive
     environment:
-      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD}
+      - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD} # defined in .env file
 
   bareos-fd:
-    image: barcus/bareos-client:19-alpine
+    image: barcus/bareos-client:20-alpine
     volumes:
       - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
     environment:
-      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
+      - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD} # defined in .env file
       - FORCE_ROOT=false
 
   bareos-webui:
-    image: barcus/bareos-webui:19-alpine
+    image: barcus/bareos-webui:20-alpine
     ports:
       - 8080:9100
     environment:
@@ -68,8 +72,8 @@ services:
     volumes:
       - /data/pgsql/data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_ADMIN_USER} # defined in .env file
+      - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
       - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
 
   smtpd:
