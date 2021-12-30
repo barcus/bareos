@@ -18,7 +18,7 @@ on:
       - '.github/actions/push-bareos-app/*'
       - '.github/actions/test-bareos-app/*'
   schedule:
-    - cron: '30 17 * * *'
+    - cron: '35 16 * * *'
 
 
 jobs:
