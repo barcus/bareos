@@ -17,9 +17,8 @@ on:
       - '.github/actions/build-bareos-app/*'
       - '.github/actions/push-bareos-app/*'
       - '.github/actions/test-bareos-app/*'
-  workflow_dispatch:
   schedule:
-    - cron: '45 0 * * *'
+    - cron: '0 17 * * *'
     
 
 jobs:
