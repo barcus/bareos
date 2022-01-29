@@ -23,21 +23,22 @@ Images are based on **Ubuntu** or **Alpine**, check tags below
 
 :warning: SQLite backend deprecated since Bareos 20.0.0
 
-* Ubuntu images for Bareos 16 and 17 are based on **Xenial**
+* Ubuntu images for Bareos 16 and 17 are based on **Xenial** (deprecated)
 * Ubuntu images for Bareos 18 and 19 are based on **Bionic**
-* Ubuntu images for Bareos 20 are based on **Focal**
+* Ubuntu images for Bareos 20 and 21 are based on **Focal**
 * Alpine images are available for **linux/amd64** and **linux/arm64/v8** platform
+* Images are built and deployed to [Docker hub][docker-hub] on Sunday at 4am
 
 ## Tags
 
 bareos-director (dir)
 
-* `21-ubuntu-pqsql`, `21-ubuntu`, `21`, `ubuntu`, `latest`
-* `20-ubuntu-pqsql`, `20-ubuntu`, `20`
+* `21-ubuntu-pgsql`, `21-ubuntu`, `21`, `ubuntu`, `latest`
+* `20-ubuntu-pgsql`, `20-ubuntu`, `20`
 * `20-ubuntu-mysql`
 * `20-alpine-pgsql`, `20-alpine`, `alpine`
 * `19-ubuntu-mysql`, `19-ubuntu`, `19`
-* `19-ubuntu-pqsql`
+* `19-ubuntu-pgsql`
 * `19-alpine-mysql`, `19-alpine`
 * `19-alpine-pgsql`
 * `18-ubuntu-mysql`, `18-ubuntu`, `18`
@@ -88,10 +89,10 @@ Bareos Webui requires (Alpine images only) :
 
 * PHP-FPM
 
-Bareos Client (fd) and Storage (sd) have no depencies.
+Bareos Client (fd) and Storage (sd) have no dependencies.
 
 Each component have to run in an single container and must linked together
-through docker-compose, see exemple below
+through docker-compose, see example below
 
 ## Requirements
 
@@ -121,7 +122,7 @@ Remember to change your mail address in `ADMIN_MAIL` and maybe some passwords :g
 :file_folder: Those docker-compose file are configured to store data inside
 `/data/(bareos|mysql|pgsql)`
 
-Finaly, when your containers are up and runing access Bareos through
+Finally, when your containers are up and running access Bareos through
 
 * WebUI :
 
@@ -141,7 +142,7 @@ Build your own docker-compose file with this template :
 version: '3'
 services:
   bareos-dir:
-    image: barcus/bareos-director:latest #latest dicector+mysql based on ubuntu
+    image: barcus/bareos-director:latest #latest director-pgsql based on ubuntu
     volumes:
       - <BAREOS_CONF_PATH>:/etc/bareos
       - <BAREOS_DATA_PATH>:/var/lib/bareos #required for MyCatalog backup
@@ -159,7 +160,7 @@ services:
       - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD} # defined in .env file
       - BAREOS_SD_HOST=bareos-sd
       - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD} # defined in .env file
-      - BAREOS_WEBUI_PASSWORD=ThisIsMySecretUIp4ssw0rd
+      - BAREOS_WEBUI_PASSWORD=${BAREOS_WEBUI_PASSWORD} # defined in .env file
       - SMTP_HOST=smtpd
       - SENDER_MAIL=your-sender@mail.address #optional
       - ADMIN_MAIL=your@mail.address # Change me!
@@ -336,6 +337,7 @@ Enjoy !
 [docker-img-fd]: https://img.shields.io/docker/pulls/barcus/bareos-client?label=bareos-client&logo=docker
 [docker-img-sd]: https://img.shields.io/docker/pulls/barcus/bareos-storage?label=bareos-storage&logo=docker
 [docker-img-ui]: https://img.shields.io/docker/pulls/barcus/bareos-webui?label=bareos-webui&logo=docker
+[docker-url]: https://registry.hub.docker.com/r/barcus
 [docker-url-dir]: https://registry.hub.docker.com/r/barcus/bareos-director
 [docker-url-fd]: https://registry.hub.docker.com/r/barcus/bareos-client
 [docker-url-sd]: https://registry.hub.docker.com/r/barcus/bareos-storage
