@@ -2,7 +2,7 @@
 version: '3'
 services:
   bareos-dir:
-    build: ./bareos-db-migration
+    image: barcus/bareos-db-migration
     volumes:
       - /data/mysql/backup:/backup
     environment:
