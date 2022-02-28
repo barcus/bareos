@@ -1,0 +1,44 @@
+## docker-compose Bareos database migration from MySQL to PostgreSQL
+version: '3'
+services:
+  bareos-dir:
+    build: ./bareos-db-migration
+    volumes:
+      - /data/mysql/backup:/backup
+    environment:
+      - MYSQL_DB_HOST=bareos-db-mysql
+      - MYSQL_DB_PORT=3306
+      - MYSQL_DB_NAME=bareos
+      - MYSQL_DB_USER=bareos
+      - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD} # defined in .env file
+      - PGSQL_DB_HOST=bareos-db-pgsql
+      - PGSQL_DB_PORT=5432
+      - PGSQL_DB_NAME=bareos
+      - PGSQL_DB_USER=bareos
+      - PGSQL_DB_PASSWORD=${PGSQL_DB_PASSWORD} # defined in .env file
+      # Required only to init new PGSQL instance + DB
+      - PGSQL_ADMIN_USER=root
+      - PGSQL_ADMIN_PASSWORD=${PGSQL_ADMIN_PASSWORD} # defined in .env file
+      # Not required
+      - MYSQL_ADMIN_USER=root # not required here
+      - MYSQL_ADMIN_PASSWORD=${MYSQL_ADMIN_PASSWORD} # not required here
+    depends_on:
+      - bareos-db-mysql
+      - bareos-db-pgsql
+
+  bareos-db-mysql:
+    image: mysql:5.6
+    volumes:
+      - /data/mysql/data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ADMIN_PASSWORD} # defined in .env file
+
+  bareos-db-pgsql:
+    image: postgres:9.3
+    volumes:
+      - /data/pgsql/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=${PGSQL_ADMIN_PASSWORD} # defined in .env file
+      - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
+#EOF
