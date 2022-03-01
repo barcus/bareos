@@ -54,4 +54,4 @@ RUN chmod u+x /docker-entrypoint.sh
 VOLUME /etc/bareos
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["echo", "[!] Migartion successful"]
+CMD ["echo", "[!] Migration successful"]

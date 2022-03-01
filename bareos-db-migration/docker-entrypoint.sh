@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-#set -x
 
 if [[ -z ${CI_TEST} ]] ; then
-  # Waiting for Postgresql is up
+  # Waiting for Postgresql
   sqlup=1
   while [ "$sqlup" -ne 0 ] ; do
     echo "Waiting for postgresql..."
@@ -12,29 +11,40 @@ if [[ -z ${CI_TEST} ]] ; then
       sleep 5
     else
       sqlup=0
-      echo "[!]...postgresql is alive"
+      echo "[!] PostreSQL is alive"
     fi
   done
 fi
 
+cat << EOF > /etc/mysql.cnf
+[client]
+user = "${MYSQL_DB_USER}"
+password = "${MYSQL_DB_PASSWORD}"
+EOF
+
 if [[ -z ${CI_TEST} ]] ; then
-  # Waiting for Mysql is up
+  # Waiting for Mysql
   sqlup=1
   while [ "$sqlup" -ne 0 ] ; do
     echo "Waiting for mysqld..."
-    mysqladmin --silent -u ${MYSQL_DB_USER} -p"${MYSQL_DB_PASSWORD}" -h "${MYSQL_DB_HOST}" ping
+    mysqladmin --silent -h "${MYSQL_DB_HOST}" ping
     if [ $? -ne 0 ] ; then
       sqlup=1
       sleep 5
     else
+      echo "[!] MySQL is alive"
       sqlup=0
-      echo "[!]...mysqld is alive"
     fi
   done
 fi
 
-# Prepare Catalog configs to init new DB if required
-cat << \EOF > /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
+export PGUSER=${PGSQL_ADMIN_USER}
+export PGHOST=${PGSQL_DB_HOST}
+export PGPASSWORD=${PGSQL_ADMIN_PASSWORD}
+
+if [ "${DB_INIT}" == 'true' ] ; then
+  # Prepare Catalog configs to init new DB
+  cat << EOF > /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
 Catalog {
   Name = MyCatalog-new
   dbdriver = "postgresql"
@@ -46,23 +56,14 @@ Catalog {
 }
 EOF
 
-export PGUSER=${PGSQL_ADMIN_USER}
-export PGHOST=${PGSQL_DB_HOST}
-export PGPASSWORD=${PGSQL_ADMIN_PASSWORD}
-
-# Init Postgresql DB
-echo "Bareos PG DB init"
-echo "Bareos PG DB init: Create user"
-psql -c "create user ${PGSQL_DB_USER} with createdb createrole createuser login;"
-echo "Bareos PG DB init: Set user password"
-psql -c "alter user ${PGSQL_DB_USER} password '${PGSQL_DB_PASSWORD}';"
-
-echo "Bareos PG DB init: Create Bareos database"
-/usr/lib/bareos/scripts/create_bareos_database 2>/dev/null
-echo "Bareos PG DB init: Create Bareos tables"
-/usr/lib/bareos/scripts/make_bareos_tables 2>/dev/null
-echo "Bareos PG DB init: Grant Bareos privileges"
-/usr/lib/bareos/scripts/grant_bareos_privileges 2>/dev/null
+  # Init Postgresql DB
+  echo "Bareos PG DB init: Create Bareos database"
+  /usr/lib/bareos/scripts/create_bareos_database 1>/dev/null
+  echo "Bareos PG DB init: Create Bareos tables"
+  /usr/lib/bareos/scripts/make_bareos_tables 1>/dev/null
+  echo "Bareos PG DB init: Grant Bareos privileges"
+  /usr/lib/bareos/scripts/grant_bareos_privileges 1>/dev/null
+fi
 
 # Prepare Catalog configs for migration
 cat << EOF > /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
@@ -75,7 +76,6 @@ Catalog {
   DB User = "$MYSQL_DB_USER"
   DB PASSWORD = "$MYSQL_DB_PASSWORD"
 }
-
 Catalog {
   Name = MyCatalog-new
   DB Driver = "postgresql"
@@ -87,29 +87,26 @@ Catalog {
 }
 EOF
 
-cat << EOF > /etc/mysql.cnf
-[client]
-user = "${MYSQL_DB_USER}"
-password = "${MYSQL_DB_PASSWORD}"
-EOF
-
 # MySQL backup
+echo "[!] Start MySQL backup"
 date=$(date +%s)
 mysqldump --defaults-extra-file=/etc/mysql.cnf --column-statistics=0  \
-	-h ${MYSQL_DB_HOST} ${MYSQL_DB_NAME} > /backup/bareos-${date}.sql
+          --no-tablespaces --host ${MYSQL_DB_HOST} --port ${MYSQL_DB_PORT} \
+	  ${MYSQL_DB_NAME} > /backup/bareos-${date}.sql
 
 if [ $? -eq 0 ] ; then
-  echo "[!] MySQL dump ok"
+  echo "[!] MySQL Backup success - /backup/bareos-${date}.sql"
 else
-  echo "[!] MySQL dump failed"
+  echo "[x] MySQL Backup failed"
 fi
 
 # Start Bareos DB copy
+echo "[!] Start Bareos DB copy"
 su -s /bin/bash - bareos -c "bareos-dbcopy MyCatalog MyCatalog-new"
 
 #while [ true ] ; do 
 #  echo "$(date) End" ; sleep 2
 #done
 
-#Run Dockerfile CMD
+# Run Dockerfile CMD
 exec "$@"
