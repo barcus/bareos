@@ -4,10 +4,6 @@
 ![Based OS][os-based-ubuntu] ![Based OS][os-based-alpine]
 ![Badge amd64][arch-amd64-img] ![Badge arm64][arch-arm64/v8-img]
 
-## Table of Contents
-
-[[_TOC_]]
-
 ## About
 
 This package provides images for [Bareos][bareos-href] :
@@ -135,6 +131,17 @@ Open `http://your-docker-host:8080` (user: admin / pass: `<BAREOS_WEBUI_PASSWORD
 * bconsole :
 
 Run `docker exec -it bareos-dir bconsole`
+
+## Database migration
+
+Since Bareos Version >= 21.0.0 the MySQL database backend is not shipped
+anymore. Therefore you need to use Bareos 20 to migrate an existing MySQL
+Bareos Catalog to PostgreSQL. To do so, upgrade to Bareos 20 first and then
+use [this docker-compose file][compose-db-migration-href] to backup
+(optional) the whole Bareos MySQL catalog and copy it into a new PostgreSQL
+catalog database.
+
+If PostgreSQL database is empty or does not exist, it will be create.
 
 ## Build
 
