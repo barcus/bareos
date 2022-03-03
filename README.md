@@ -132,6 +132,19 @@ Open `http://your-docker-host:8080` (user: admin / pass: `<BAREOS_WEBUI_PASSWORD
 
 Run `docker exec -it bareos-dir bconsole`
 
+## Database migration
+
+Since Bareos Version >= 21.0.0 the MySQL database backend is not shipped
+anymore. Therefore you need to use Bareos 20 to migrate an existing MySQL
+Bareos Catalog to PostgreSQL. To do so, upgrade to Bareos 20 first and then
+use [this docker-compose file][compose-db-migration-href] to backup
+(optional) the whole Bareos MySQL catalog and copy it into a new PostgreSQL
+catalog database.
+
+If PostgreSQL database is empty or does not exist, it will be create.
+
+:warning: Don't forget `.env` file with passwords required!
+
 ## Build
 
 ### Docker-compose file
@@ -331,6 +344,7 @@ Enjoy !
 [compose-alpinev2-href]: https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v2.yml
 [compose-ubuntu-mysql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-mysql.yml
 [compose-ubuntu-pgsql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-pgsql.yml
+[compose-db-migration-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-pgsql-migration.yml
 [docker-compose-href]: https://docs.docker.com/compose
 [docker-href]: https://docs.docker.com/install
 [docker-img-dir]: https://img.shields.io/docker/pulls/barcus/bareos-director?label=bareos-director&logo=docker

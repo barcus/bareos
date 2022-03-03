@@ -6,7 +6,8 @@ services:
     volumes:
       - /data/mysql/backup:/backup
     environment:
-      - DB_INIT=true #init new PostgreSQL database
+      - DB_INIT=true # init new PostgreSQL database
+      - DB_BACKUP=false # backup MySQL database
       - MYSQL_DB_HOST=bareos-db-mysql
       - MYSQL_DB_PORT=3306
       - MYSQL_DB_NAME=bareos
@@ -30,14 +31,14 @@ services:
   bareos-db-mysql:
     image: mysql:5.6
     volumes:
-      - /data/mysql/data:/var/lib/mysql
+      - /data/mysql/data:/var/lib/mysql # /data/mysql/data should contain MySQL DBs (source)
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ADMIN_PASSWORD} # defined in .env file
 
   bareos-db-pgsql:
     image: postgres:9.3
     volumes:
-      - /data/pgsql/data:/var/lib/postgresql/data
+      - /data/pgsql/data:/var/lib/postgresql/data # /data/pgsql/data will contains PgSQL DBs (target)
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=${PGSQL_ADMIN_PASSWORD} # defined in .env file

@@ -87,26 +87,23 @@ Catalog {
 }
 EOF
 
-# MySQL backup
-echo "[!] Start MySQL backup"
-date=$(date +%s)
-mysqldump --defaults-extra-file=/etc/mysql.cnf --column-statistics=0  \
-          --no-tablespaces --host ${MYSQL_DB_HOST} --port ${MYSQL_DB_PORT} \
-	  ${MYSQL_DB_NAME} > /backup/bareos-${date}.sql
-
-if [ $? -eq 0 ] ; then
-  echo "[!] MySQL Backup success - /backup/bareos-${date}.sql"
-else
-  echo "[x] MySQL Backup failed"
+if [ "${DB_BACKUP}" == 'true' ] ; then
+  # MySQL backup
+  echo "[!] Start MySQL backup"
+  date=$(date +%s)
+  mysqldump --defaults-extra-file=/etc/mysql.cnf --column-statistics=0  \
+            --no-tablespaces --host ${MYSQL_DB_HOST} --port ${MYSQL_DB_PORT} \
+            ${MYSQL_DB_NAME} > /backup/bareos-${date}.sql
+  if [ $? -eq 0 ] ; then
+    echo "[!] MySQL Backup success - /backup/bareos-${date}.sql"
+  else
+    echo "[x] MySQL Backup failed"
+  fi
 fi
 
 # Start Bareos DB copy
 echo "[!] Start Bareos DB copy"
 su -s /bin/bash - bareos -c "bareos-dbcopy MyCatalog MyCatalog-new"
-
-#while [ true ] ; do 
-#  echo "$(date) End" ; sleep 2
-#done
 
 # Run Dockerfile CMD
 exec "$@"
