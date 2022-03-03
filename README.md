@@ -143,6 +143,8 @@ catalog database.
 
 If PostgreSQL database is empty or does not exist, it will be create.
 
+:warning: Don't forget `.env` file with passwords required!
+
 ## Build
 
 ### Docker-compose file
