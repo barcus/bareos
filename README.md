@@ -4,6 +4,10 @@
 ![Based OS][os-based-ubuntu] ![Based OS][os-based-alpine]
 ![Badge amd64][arch-amd64-img] ![Badge arm64][arch-arm64/v8-img]
 
+## Table of Contents
+
+[[_TOC_]]
+
 ## About
 
 This package provides images for [Bareos][bareos-href] :
