@@ -18,7 +18,7 @@ services:
       - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
       - BAREOS_WEBUI_PASSWORD=${BAREOS_WEBUI_PASSWORD}
       - SMTP_HOST=smtpd
-      - ADMIN_MAIL=${ADMIN_MAIL}
+      - ADMIN_MAIL=your@mail.address # Change me!
       # Optional you can gets backup notification via Slack or Telegram
       - WEBHOOK_NOTIFICATION=false # true or false if set to true email notification gets disabled
       - WEBHOOK_TYPE=slack # choose slack or telegram
