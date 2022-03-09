@@ -6,7 +6,7 @@ services:
     volumes:
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
-      - DB_INIT=true
+      - DB_INIT=false
       - DB_UPDATE=true
       - DB_HOST=bareos-db
       - DB_PORT=5432
@@ -68,9 +68,9 @@ services:
       - /data/bareos/data/webui:/usr/share/bareos-webui
 
   bareos-db:
-    image: postgres:9.3
+    image: postgres:14
     volumes:
-      - /data/pgsql/data:/var/lib/postgresql/data
+      - /data/pgsql-new/data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${DB_ADMIN_USER} # defined in .env file
       - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file

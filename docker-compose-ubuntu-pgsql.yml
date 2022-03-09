@@ -7,8 +7,8 @@ services:
       - /data/bareos/config/director:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
-      - DB_INIT=true
-      - DB_UPDATE=true
+      - DB_INIT=false
+      - DB_UPDATE=false
       - DB_HOST=bareos-db
       - DB_PORT=5432
       - DB_NAME=bareos
@@ -62,7 +62,7 @@ services:
       - /data/bareos/config/webui:/etc/bareos-webui
 
   bareos-db:
-    image: postgres:9.3
+    image: postgres:12
     volumes:
       - /data/pgsql/data:/var/lib/postgresql/data
     environment:

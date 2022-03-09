@@ -132,7 +132,7 @@ Open `http://your-docker-host:8080` (user: admin / pass: `<BAREOS_WEBUI_PASSWORD
 
 Run `docker exec -it bareos-dir bconsole`
 
-## Database migration
+### Database migration
 
 Since Bareos Version >= 21.0.0 the MySQL database backend is not shipped
 anymore. Therefore you need to use Bareos 20 to migrate an existing MySQL
@@ -144,6 +144,35 @@ catalog database.
 If PostgreSQL database is empty or does not exist, it will be create.
 
 :warning: Don't forget `.env` file with passwords required!
+
+### PostgreSQL database upgrade
+
+At this moment, latest Ubuntu based images are compliant with PostgreSQL 12 or
+less and Alpine ones with PostgreSQL 14.
+
+The main idea here is to create a new PostgreSQL instance and then use
+`pg_upgrade` tool to move all databases from the old instance.
+
+To proceed, locate your PostgreSQL data folder, according our own docker
+compose files it could be /data/pgsql/data ! Then identify user used to init
+the instance.
+
+Let's try an exemple with data source `/data/pgsql/data` and postgres
+as an admin user.
+
+Finaly run:
+
+```bash
+docker run -t -i \
+  -e PG_NEW=12 \
+  -e PGUSER=postgres \
+  -v /data/pgsql/data:/pg_old/data \
+  -v /data/pgsql-new/data:/pg_new/data \
+  barcus/postgresql-upgrade
+```
+
+After sucessful migration, use the new folder `/data/pgsql-new/data` and the
+PostgreSQL version in your docker-compose file.
 
 ## Build
 
