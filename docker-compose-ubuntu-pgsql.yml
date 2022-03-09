@@ -8,7 +8,7 @@ services:
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
       - DB_INIT=true
-      - DB_UPDATE=true
+      - DB_UPDATE=false
       - DB_HOST=bareos-db
       - DB_PORT=5432
       - DB_NAME=bareos
@@ -23,7 +23,7 @@ services:
       - BAREOS_WEBUI_PASSWORD=${BAREOS_WEBUI_PASSWORD} # defined in .env file
       - SMTP_HOST=smtpd
       #- SENDER_MAIL=your-sender@mail.address #optional
-      - ADMIN_MAIL=${ADMIN_MAIL}
+      - ADMIN_MAIL=your@mail.address # Change me!
       # Optional you can gets backup notification via Slack or Telegram
       - WEBHOOK_NOTIFICATION=false # true or false if set to true email notification gets disabled
       - WEBHOOK_TYPE=slack # choose slack or telegram
@@ -62,7 +62,7 @@ services:
       - /data/bareos/config/webui:/etc/bareos-webui
 
   bareos-db:
-    image: postgres:9.3
+    image: postgres:12
     volumes:
       - /data/pgsql/data:/var/lib/postgresql/data
     environment:
