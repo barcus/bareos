@@ -20,7 +20,7 @@ if [ $(id -u) = '0' ]; then
   find /etc/bareos ! -user ${BAREOS_DAEMON_USER} -exec chown ${BAREOS_DAEMON_USER}:${BAREOS_DAEMON_GROUP} {} \;
   chown ${BAREOS_DAEMON_USER}:${BAREOS_DAEMON_GROUP} /run/bareos
 
-  # Gosu
+  # Su-exec 
   [ "${BAREOS_DAEMON_USER}" != 'root' ] && su-exec "${BAREOS_DAEMON_USER}" "$BASH_SOURCE" "$@"
 fi
 
