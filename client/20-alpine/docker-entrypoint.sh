@@ -3,6 +3,11 @@
 
 bareos_fd_config="/etc/bareos/bareos-fd.d/director/bareos-dir.conf"
 
+if [ "${FORCE_ROOT}" = true ]; then
+  BAREOS_DAEMON_USER='root'
+  BAREOS_DAEMON_GROUP='root'
+fi
+
 if [ $(id -u) = '0' ]; then
   [ -n "${PUID}" ] && usermod -u ${PUID} ${BAREOS_DAEMON_USER}
   [ -n "${PGID}" ] && groupmod -g ${PGID} ${BAREOS_DAEMON_GROUP}
@@ -18,7 +23,7 @@ if [ $(id -u) = '0' ]; then
 
   # Fix permissions
   find /etc/bareos ! -user ${BAREOS_DAEMON_USER} -exec chown ${BAREOS_DAEMON_USER}:${BAREOS_DAEMON_GROUP} {} \;
-  chown ${BAREOS_DAEMON_USER}:${BAREOS_DAEMON_GROUP} /run/bareos
+  chown ${BAREOS_DAEMON_USER}:${BAREOS_DAEMON_GROUP} /run/bareos /var/log/bareos /var/lib/bareos
 
   # Su-exec 
   [ "${BAREOS_DAEMON_USER}" != 'root' ] && su-exec "${BAREOS_DAEMON_USER}" "$BASH_SOURCE" "$@"
