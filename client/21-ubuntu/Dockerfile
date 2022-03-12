@@ -21,7 +21,6 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV BAREOS_KEY http://download.bareos.org/bareos/release/21/xUbuntu_20.04/Release.key
 ENV BAREOS_REPO http://download.bareos.org/bareos/release/21/xUbuntu_20.04/
 
-USER root
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update -qq \
