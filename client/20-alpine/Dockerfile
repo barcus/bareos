@@ -9,6 +9,7 @@ ARG VCS_REF
 ARG VERSION
 
 ENV BAREOS_DAEMON_USER bareos
+ENV BAREOS_DAEMON_GROUP bareos
 
 LABEL org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=$BUILD_DATE \
@@ -19,16 +20,16 @@ LABEL org.label-schema.schema-version="1.0" \
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
-RUN apk add --no-cache bareos openssh-client tar
+RUN apk add --no-cache bareos openssh-client tar shadow bash su-exec
 
 RUN tar czf /bareos-fd.tgz /etc/bareos/bareos-fd.d
 RUN mkdir /run/bareos \
  && chown bareos /run/bareos
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod u+x /docker-entrypoint.sh
+RUN chmod a+x /docker-entrypoint.sh
 
 EXPOSE 9102
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["sh", "-c", "/usr/sbin/bareos-fd -u $BAREOS_DAEMON_USER -f"]
+CMD ["/usr/sbin/bareos-fd", "-f"]

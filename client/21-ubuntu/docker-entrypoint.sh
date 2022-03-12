@@ -3,10 +3,10 @@
 
 bareos_fd_config="/etc/bareos/bareos-fd.d/director/bareos-dir.conf"
 
-[ -n "${PUID}" ] && usermod -u ${PUID} ${BAREOS_DAEMON_USER}
-[ -n "${PGID}" ] && groupmod -g ${PGID} ${BAREOS_DAEMON_GROUP}
-
 if [ $(id -u) = '0' ]; then
+  [ -n "${PUID}" ] && usermod -u ${PUID} ${BAREOS_DAEMON_USER}
+  [ -n "${PGID}" ] && groupmod -g ${PGID} ${BAREOS_DAEMON_GROUP}
+
   if [ ! -f /etc/bareos/bareos-config.control ]; then
     tar xzf /bareos-fd.tgz --backup=simple --suffix=.before-control
 
@@ -19,9 +19,10 @@ if [ $(id -u) = '0' ]; then
 
   # Fix permissions
   find /etc/bareos ! -user ${BAREOS_DAEMON_USER} -exec chown ${BAREOS_DAEMON_USER}:${BAREOS_DAEMON_GROUP} {} \;
+  chown -R ${BAREOS_DAEMON_USER}:${BAREOS_DAEMON_GROUP} /var/lib/bareos /var/log/bareos
 
   # Gosu
-  exec gosu "${BAREOS_DAEMON_USER}" "$BASH_SOURCE" "$@"
+  [ "${BAREOS_DAEMON_USER}" != 'root' ] && exec gosu "${BAREOS_DAEMON_USER}" "$BASH_SOURCE" "$@"
 fi
 
 exec "$@"
