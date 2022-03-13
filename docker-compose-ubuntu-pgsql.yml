@@ -51,7 +51,7 @@ services:
       - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD} # defined in .env file
       - FORCE_ROOT=false
       #- PUID=1500 # force bareos user ID
-      #- GUID=1500 # force bareos group ID
+      #- PGID=1500 # force bareos group ID
 
   bareos-webui:
     image: barcus/bareos-webui:21-ubuntu
