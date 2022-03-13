@@ -88,7 +88,7 @@ if [[ -z ${CI_TEST} ]] ; then
   sqlup=1
   while [ "$sqlup" -ne 0 ] ; do
     echo "Waiting for postgresql..."
-    pg_isready --host="${DB_HOST}" --port="${DB_PORT}"
+    pg_isready --host="${DB_HOST}" --port="${DB_PORT}" --user="${DB_ADMIN_USER}"
     if [ $? -ne 0 ] ; then
       sqlup=1
       sleep 5
@@ -108,8 +108,8 @@ export PGPASSWORD=${DB_ADMIN_PASSWORD}
 if [ ! -f /etc/bareos/bareos-db.control ] && [ "${DB_INIT}" == 'true' ] ; then
   # Init Postgres DB
   echo "Bareos DB init"
-  echo "Bareos DB init: Create user"
-  psql -c "create user ${DB_USER} with createdb createrole createuser login;"
+  echo "Bareos DB init: Create user ${DB_USER}"
+  psql -c "create user ${DB_USER} with createdb createrole login;"
   echo "Bareos DB init: Set user password"
   psql -c "alter user ${DB_USER} password '${DB_PASSWORD}';"
   /etc/bareos/scripts/create_bareos_database 2>/dev/null

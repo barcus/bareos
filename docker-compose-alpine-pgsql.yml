@@ -72,7 +72,7 @@ services:
   bareos-db:
     image: postgres:14
     volumes:
-      - /data/pgsql-new/data:/var/lib/postgresql/data
+      - /data/pgsql/data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${DB_ADMIN_USER} # defined in .env file
       - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
