@@ -126,7 +126,6 @@ docker-compose files are available for Alpine and Ubuntu based stack:
 | [ubuntu/mysql][compose-ubuntu-mysql-href] | v3+ | v1.13.0+ | ![run-compose][run-compose-png] |
 | [ubuntu/pgsql][compose-ubuntu-pgsql-href] | v3+ | v1.13.0+ | ![run-compose][run-compose-png] |
 
-
 :file_folder: Those docker-compose file are configured to store data inside
 `/data/(bareos|mysql|pgsql)`
 
