@@ -1,7 +1,7 @@
 #!/usr/bin/env ash
+#set -x
 
 secret=`tr -cd "[:alnum:]" < /dev/urandom | fold -w30 | head -n1`
-echo "token: ${secret}"
 
 # Generate api.ini config
 cat <<EOF > /opt/api.ini
