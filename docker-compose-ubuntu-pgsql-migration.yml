@@ -36,7 +36,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ADMIN_PASSWORD} # defined in .env file
 
   bareos-db-pgsql:
-    image: postgres:9.3
+    image: postgres:12
     volumes:
       - /data/pgsql/data:/var/lib/postgresql/data # /data/pgsql/data will contains PgSQL DBs (target)
     environment:
