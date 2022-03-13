@@ -78,6 +78,13 @@ services:
       - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
       - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
 
+  bareos-api:
+    image: barcus/bareos-api:21
+    ports:
+    - 8000:8000
+    environment:
+    - BAREOS_DIR_HOST=bareos-dir
+
   smtpd:
     image: namshi/smtp
 #EOF
