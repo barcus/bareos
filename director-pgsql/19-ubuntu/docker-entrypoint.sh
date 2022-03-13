@@ -79,7 +79,7 @@ if [[ -z ${CI_TEST} ]] ; then
   sqlup=1
   while [ "$sqlup" -ne 0 ] ; do
     echo "Waiting for postgresql..."
-    pg_isready --dbname="${DB_NAME}" --host="${DB_HOST}" --port="${DB_PORT}"
+    pg_isready --host="${DB_HOST}" --port="${DB_PORT}" --user="${DB_ADMIN_USER}"
     if [ $? -ne 0 ] ; then
       sqlup=1
       sleep 5
@@ -90,22 +90,33 @@ if [[ -z ${CI_TEST} ]] ; then
   done
 fi
 
-export PGUSER=${DB_USER}
+export PGUSER=${DB_ADMIN_USER}
 export PGHOST=${DB_HOST}
-export PGPASSWORD=${DB_PASSWORD}
-if [ ! -f /etc/bareos/bareos-db.control ] ; then
+export PGPASSWORD=${DB_ADMIN_PASSWORD}
+[[ -z "${DB_INIT}" ]] && DB_INIT='false'
+[[ -z "${DB_UPDATE}" ]] && DB_UPDATE='false'
+
+if [ ! -f /etc/bareos/bareos-db.control ] && [ "${DB_INIT}" == 'true' ] ; then
   # Init Postgresql DB
-  psql -c 'create user bareos with createdb createrole createuser login;'
-  psql -c "alter user bareos password '${DB_PASSWORD}';"
+  echo "Bareos DB init"
+  echo "Bareos DB init: Create user ${DB_USER}"
+  psql -c "create user ${DB_USER} with createdb createrole login;"
+  echo "Bareos DB init: Set user password"
+  psql -c "alter user ${DB_USER} password '${DB_PASSWORD}';"
   /usr/lib/bareos/scripts/create_bareos_database 2>/dev/null
   /usr/lib/bareos/scripts/make_bareos_tables 2>/dev/null
   /usr/lib/bareos/scripts/grant_bareos_privileges 2>/dev/null
 
   # Control file
   touch /etc/bareos/bareos-db.control
-else
+fi
+
+if [ "${DB_UPDATE}" == 'true' ] ; then
   # Try Postgres upgrade
+  echo "Bareoos DB update"
+  echo "Bareoos DB update: Update tables"
   /usr/lib/bareos/scripts/update_bareos_tables 2>/dev/null
+  echo "Bareoos DB update: Grant privileges"
   /usr/lib/bareos/scripts/grant_bareos_privileges 2>/dev/null
 fi
 

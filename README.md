@@ -19,9 +19,11 @@ Images are based on **Ubuntu** or **Alpine**, check tags below
 
 :+1: Tested with Bareos 16.x.x to 21.0.0
 
-:warning: MySQL/MariaDB backends deprecated since Bareos 19.0.0
+:warning:
 
-:warning: SQLite backend deprecated since Bareos 20.0.0
+* MySQL/MariaDB backend deprecated since Bareos 20.0.0 (available for old DB only)
+* MySQL/MariaDB backend not available since Bareos 21.0.0
+* SQLite backend deprecated since Bareos 20.0.0
 
 * Ubuntu images for Bareos 16 and 17 are based on **Xenial** (deprecated)
 * Ubuntu images for Bareos 18 and 19 are based on **Bionic**
@@ -132,7 +134,7 @@ Open `http://your-docker-host:8080` (user: admin / pass: `<BAREOS_WEBUI_PASSWORD
 
 Run `docker exec -it bareos-dir bconsole`
 
-### Database migration
+### Database migration (MySQL to PostgreSQL)
 
 Since Bareos Version >= 21.0.0 the MySQL database backend is not shipped
 anymore. Therefore you need to use Bareos 20 to migrate an existing MySQL
@@ -141,17 +143,30 @@ use [this docker-compose file][compose-db-migration-href] to backup
 (optional) the whole Bareos MySQL catalog and copy it into a new PostgreSQL
 catalog database.
 
-If PostgreSQL database is empty or does not exist, it will be create.
+If PostgreSQL database is empty or does not exist, it will be created.
 
 :warning: Don't forget `.env` file with passwords required!
 
 ### PostgreSQL database upgrade
 
+#### Compatibility
+
 At this moment, latest Ubuntu based images are compliant with PostgreSQL 12 or
-less and Alpine ones with PostgreSQL 14.
+less and Alpine ones with PostgreSQL 14. This is due to the version of `pg_dump`
+which is required to dump Bareos database.
+
+Ubuntu images:
+
+* Bareos v19 -> PostgreSQL v10 or less
+* Bareos v20+ -> PostgreSQL v12 or less
+
+Alpine images:
+
+* Bareos v19 -> PostgreSQL v13 or less
+* Bareos v20+ -> PostgreSQL v14 or less
 
 The main idea here is to create a new PostgreSQL instance and then use
-`pg_upgrade` tool to move all databases from the old instance.
+`pg_upgrade` tool to move all databases from the old instance to the new one.
 
 To proceed, locate your PostgreSQL data folder, according our own docker
 compose files it could be /data/pgsql/data ! Then identify user used to init
