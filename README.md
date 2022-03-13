@@ -106,9 +106,12 @@ through docker-compose, see example below
 
 ## Usage
 
-Declare environment variables or copy the `.env.dist` to `.env` and adjust its values.
+Declare environment variables or copy the `.env.dist` to `.env` and adjust its
+values.
 
 Remember that all passwords should be defined inside this `.env` file.
+Feel free to change some passwords after your test also don't forget to update
+`ADMIN_MAIL` varialble in docker-compose file.
 
 ```bash
 docker-compose -f /path/to/your/docker-compose.yml up -d
@@ -123,7 +126,6 @@ docker-compose files are available for Alpine and Ubuntu based stack:
 | [ubuntu/mysql][compose-ubuntu-mysql-href] | v3+ | v1.13.0+ | ![run-compose][run-compose-png] |
 | [ubuntu/pgsql][compose-ubuntu-pgsql-href] | v3+ | v1.13.0+ | ![run-compose][run-compose-png] |
 
-Remember to change your mail address in `ADMIN_MAIL` and maybe some passwords :grin:
 
 :file_folder: Those docker-compose file are configured to store data inside
 `/data/(bareos|mysql|pgsql)`
@@ -141,7 +143,7 @@ Run `docker exec -it bareos-dir bconsole`
 => API : (Required Bareos 20 / Same user/pass than Bareos WEBUI)
 
 Open `http://your-docker-host:8000/docs` then click 'Authorize' to sign-in or
-use curl as below
+use curl as example below
 
 Get token: (should return json object with token inside)
 
@@ -170,6 +172,8 @@ curl -X 'GET' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY0NzIxMDM3NX0.alKiLsgMrovKVX6fdcUqkhG_9lsJNiOBQ6X7ixyziGw'
 ```
+
+More information about Bareos configuration and usage in the [official documantion][bareos-doc]
 
 ### Database migration (MySQL to PostgreSQL)
 
@@ -418,6 +422,7 @@ Enjoy !
 [arch-amd64-img]: https://img.shields.io/badge/arch-amd64-inactive
 [arch-arm64/v8-img]: https://img.shields.io/badge/arch-arm64/v8-inactive
 [bareos-href]: https://www.bareos.org
+[bareos-doc]: https://www.bareos.com/learn/documentation
 [build-client-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-client
 [build-client-img]: https://github.com/barcus/bareos/workflows/ci-client/badge.svg
 [build-director-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-director
