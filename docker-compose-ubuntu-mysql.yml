@@ -46,6 +46,8 @@ services:
     environment:
       - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
       - FORCE_ROOT=false
+      #- PUID=1500
+      #- PGID=1500
 
   bareos-webui:
     image: barcus/bareos-webui:19-ubuntu
