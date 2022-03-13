@@ -162,13 +162,13 @@ Result:
 }
 ```
 
-Then, use it to read all clients
+Then, use it for example to read all clients (like in bconsole)
 
 ```bash
 curl -X 'GET' \
   'http://your-docker-host:8000/configuration/clients?verbose=yes' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY0NzIxMDMwMH0.SC4hkJ5P9goqFpEo0tTuJ9KuDvrcyEea86U0Oce7-aQ'
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY0NzIxMDM3NX0.alKiLsgMrovKVX6fdcUqkhG_9lsJNiOBQ6X7ixyziGw'
 ```
 
 ### Database migration (MySQL to PostgreSQL)
