@@ -29,7 +29,7 @@ Images are based on **Ubuntu** or **Alpine**, check tags below
 * Ubuntu images for Bareos 18 and 19 are based on **Bionic**
 * Ubuntu images for Bareos 20 and 21 are based on **Focal**
 * Alpine images are available for **linux/amd64** and **linux/arm64/v8** platform
-* Images are built and deployed to [Docker hub][docker-hub] on Sunday at 4am
+* Images are built and deployed to [Docker hub][docker-url] on Sunday at 4am
 
 ## Tags
 
@@ -64,6 +64,10 @@ bareos-client (fd) - bareos-storage (sd) - bareos-webui
 * `19-alpine`
 * `18-ubuntu`, `18`
 * `18-alpine`
+
+bareos-api
+
+* `21`, `latest`
 
 :warning: Deprecated images
 
@@ -102,9 +106,12 @@ through docker-compose, see example below
 
 ## Usage
 
-Declare environment variables or copy the `.env.dist` to `.env` and adjust its values.
+Declare environment variables or copy the `.env.dist` to `.env` and adjust its
+values.
 
 Remember that all passwords should be defined inside this `.env` file.
+Feel free to change some passwords after your test also don't forget to update
+`ADMIN_MAIL` varialble in docker-compose file.
 
 ```bash
 docker-compose -f /path/to/your/docker-compose.yml up -d
@@ -119,20 +126,53 @@ docker-compose files are available for Alpine and Ubuntu based stack:
 | [ubuntu/mysql][compose-ubuntu-mysql-href] | v3+ | v1.13.0+ | ![run-compose][run-compose-png] |
 | [ubuntu/pgsql][compose-ubuntu-pgsql-href] | v3+ | v1.13.0+ | ![run-compose][run-compose-png] |
 
-Remember to change your mail address in `ADMIN_MAIL` and maybe some passwords :grin:
-
 :file_folder: Those docker-compose file are configured to store data inside
 `/data/(bareos|mysql|pgsql)`
 
 Finally, when your containers are up and running access Bareos through
 
-* WebUI :
+=> WebUI : (user: admin / pass: `<BAREOS_WEBUI_PASSWORD>`)
 
-Open `http://your-docker-host:8080` (user: admin / pass: `<BAREOS_WEBUI_PASSWORD>`)
+Open `http://your-docker-host:8080` then sign-in
 
-* bconsole :
+=> bconsole :
 
 Run `docker exec -it bareos-dir bconsole`
+
+=> API : (Required Bareos 20 / Same user/pass than Bareos WEBUI)
+
+Open `http://your-docker-host:8000/docs` then click 'Authorize' to sign-in or
+use curl as example below
+
+Get token: (should return json object with token inside)
+
+```bash
+curl -X 'POST' \
+  'http://your-docker-host:8000/token' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'grant_type=&username=admin&password=ThisIsMySecretUIp4ssw0rd&scope=&client_id=&client_secret='
+```
+
+Result:
+
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY0NzIxMDM3NX0.alKiLsgMrovKVX6fdcUqkhG_9lsJNiOBQ6X7ixyziGw",
+  "token_type": "bearer"
+}
+```
+
+Then, use it for example to read all clients (like in bconsole)
+
+```bash
+curl -X 'GET' \
+  'http://your-docker-host:8000/configuration/clients?verbose=yes' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY0NzIxMDM3NX0.alKiLsgMrovKVX6fdcUqkhG_9lsJNiOBQ6X7ixyziGw'
+```
+
+More information about Bareos configuration and usage in the [official documantion][bareos-doc]
 
 ### Database migration (MySQL to PostgreSQL)
 
@@ -274,6 +314,13 @@ services:
       - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
       - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
 
+  bareos-api:
+    image: barcus/bareos-api:21
+    ports:
+    - 8000:8000
+    environment:
+    - BAREOS_DIR_HOST=bareos-dir
+
   smtpd:
     image: namshi/smtp
 ```
@@ -374,6 +421,7 @@ Enjoy !
 [arch-amd64-img]: https://img.shields.io/badge/arch-amd64-inactive
 [arch-arm64/v8-img]: https://img.shields.io/badge/arch-arm64/v8-inactive
 [bareos-href]: https://www.bareos.org
+[bareos-doc]: https://www.bareos.com/learn/documentation
 [build-client-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-client
 [build-client-img]: https://github.com/barcus/bareos/workflows/ci-client/badge.svg
 [build-director-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-director
