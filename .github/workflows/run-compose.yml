@@ -41,7 +41,7 @@ jobs:
       - name: Run docker-compose
         run: |
           cp .env.dist .env
-          sed -i 's#INIT_DB=false#INIT_DB=true#' docker-compose-${{ matrix.module }}.yml
+          sed -i 's#DB_INIT=false#DB_INIT=true#' docker-compose-${{ matrix.module }}.yml
           docker-compose -f docker-compose-${{ matrix.module }}.yml up -d
 
       - name: Wait 60s then run Bareos console
