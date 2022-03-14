@@ -4,6 +4,7 @@ services:
   bareos-dir:
     image: barcus/bareos-director:20-alpine-pgsql
     volumes:
+      - /data/bareos/config/director:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
       - DB_INIT=true
@@ -35,6 +36,7 @@ services:
     ports:
       - 9103:9103
     volumes:
+      - /data/bareos/config/storage:/etc/bareos
       - /data/bareos/data/storage:/var/lib/bareos/archive
     environment:
       - BAREOS_SD_PASSWORD=${BAREOS_SD_PASSWORD} # defined in .env file
@@ -42,6 +44,7 @@ services:
   bareos-fd:
     image: barcus/bareos-client:20-alpine
     volumes:
+      - /data/bareos/config/client:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos-director # required for MyCatalog backup
     environment:
       - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD} # defined in .env file
