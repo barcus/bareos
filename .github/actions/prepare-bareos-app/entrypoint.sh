@@ -3,6 +3,7 @@
 BUILDX_VER='v0.5.1'
 latest_ubuntu='21'
 latest_alpine='20'
+latest_api='21'
 
 build_file="${GITHUB_WORKSPACE}/build/app_build.txt"
 tag_file="${GITHUB_WORKSPACE}/build/tag_build.txt"
@@ -72,7 +73,7 @@ for file in $docker_files; do
     if [ "${app}" != 'director' ] && [ "${version}" == "$latest_alpine" ]; then
       echo "${app} ${tag_build} alpine" >> "$tag_file"
     fi
-    if [ "${app}" == 'api' ]; then
+    if [ "${app}" == 'api' ] && [ "${version}" == "$latest_api" ]; then
       echo "${app} ${tag_build} alpine" >> "$tag_file"
       echo "${app} ${tag_build} latest" >> "$tag_file"
     fi
