@@ -15,6 +15,7 @@ echo ::endgroup::
 # Test images
 echo ::group::Test build tags
 while read app version arch path ; do
+  [ "${version}" == "nightly-ubuntu" ] && continue
   ARGS=''
   build_tag=${version}
   re_alpine='^[0-9]+-alpine.*$'
