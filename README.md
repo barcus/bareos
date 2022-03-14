@@ -65,15 +65,15 @@ bareos-client (fd) - bareos-storage (sd) - bareos-webui
 * `18-ubuntu`, `18`
 * `18-alpine`
 
-bareos-api
-
-* `21-alpine`, `21`, `alpine`, `latest`
-
 :warning: Deprecated images
 
 * `17-ubuntu`, `17`
 * `17-alpine`
 * `16-ubuntu`, `16`
+
+bareos-api
+
+* `21-alpine`, `21`, `alpine`, `latest`
 
 ## Security advice
 
@@ -205,12 +205,15 @@ Alpine images:
 * Bareos v19 -> PostgreSQL v13 or less
 * Bareos v20+ -> PostgreSQL v14 or less
 
-The main idea here is to create a new PostgreSQL instance and then use
-`pg_upgrade` tool to move all databases from the old instance to the new one.
+### Tool
+
+The main idea here is to use [postgresql-upgrade][psql-upgrade-href] Docker
+image. It will create a new PostgreSQL instance and then use `pg_upgrade`
+tool to move all databases from the old instance to the new one.
 
 To proceed, locate your PostgreSQL data folder, according our own docker
 compose files it could be /data/pgsql/data ! Then identify user used to init
-the instance.
+the instance. postgres ? pgsql ? root ?
 
 Let's try an exemple with data source `/data/pgsql/data` and postgres
 as an admin user.
@@ -227,7 +230,7 @@ docker run -t -i \
 ```
 
 After sucessful migration, use the new folder `/data/pgsql-new/data` and the
-PostgreSQL version in your docker-compose file.
+PostgreSQL version related in your docker-compose file.
 
 ## Build
 
@@ -244,8 +247,8 @@ services:
       - <BAREOS_CONF_PATH>:/etc/bareos
       - <BAREOS_DATA_PATH>:/var/lib/bareos #required for MyCatalog backup
     environment:
-      - DB_INIT=true
-      - DB_UPDATE=true
+      - DB_INIT=false
+      - DB_UPDATE=false
       - DB_HOST=bareos-db
       - DB_PORT=3306
       - DB_NAME=bareos
@@ -460,3 +463,4 @@ Enjoy !
 [size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?label=latest&style=plastic
 [size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?label=latest&style=plastic
 [run-compose-png]: https://github.com/barcus/bareos/workflows/run-compose/badge.svg
+[psql-upgrade-href]: https://github.com/barcus/postgresql-upgrade
