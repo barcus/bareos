@@ -72,6 +72,10 @@ for file in $docker_files; do
     if [ "${app}" != 'director' ] && [ "${version}" == "$latest_alpine" ]; then
       echo "${app} ${tag_build} alpine" >> "$tag_file"
     fi
+    if [ "${app}" == 'api' ]; then
+      echo "${app} ${tag_build} alpine" >> "$tag_file"
+      echo "${app} ${tag_build} latest" >> "$tag_file"
+    fi
   fi
 done
 echo ::endgroup::
