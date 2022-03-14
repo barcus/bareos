@@ -15,8 +15,12 @@ echo ::endgroup::
 # Test images
 echo ::group::Test build tags
 while read app version arch path ; do
-  [ "${version}" == "nightly-ubuntu" ] && continue
+  # If nightly image, don't test
+  re_nightly='^nightly-.*$'
+  [[ ${version} =~ $re_nightly ]] && continue
+
   ARGS=''
+  CMD=''
   build_tag=${version}
   re_alpine='^[0-9]+-alpine.*$'
   re_ubuntu='^[0-9]+-ubuntu.*$'
