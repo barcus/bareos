@@ -35,6 +35,11 @@ for file in $docker_files; do
     tag_build="${tag_build}-${backend}"
   fi
 
+  # nightly build only on scheduled job, excepted sunday
+  if [ ${GITHUB_EVENT_NAME} == 'schedule' ] && [ $(date +%u) -ne 7 ]; then
+      [ "${version}" != 'nightly' ] && continue
+  fi
+
   # Declare each Dockerfile and tags related
   if [ "${base_img}" == 'ubuntu' ]; then
     # Builds
