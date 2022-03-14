@@ -67,7 +67,7 @@ bareos-client (fd) - bareos-storage (sd) - bareos-webui
 
 bareos-api
 
-* `21`, `latest`
+* `21-alpine`, `21`, `alpine`, `latest`
 
 :warning: Deprecated images
 

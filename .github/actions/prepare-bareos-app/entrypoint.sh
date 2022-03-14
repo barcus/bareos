@@ -74,6 +74,7 @@ for file in $docker_files; do
       echo "${app} ${tag_build} alpine" >> "$tag_file"
     fi
     if [ "${app}" == 'api' ] && [ "${version}" == "$latest_api" ]; then
+      echo "${app} ${tag_build} ${version}" >> "$tag_file"
       echo "${app} ${tag_build} alpine" >> "$tag_file"
       echo "${app} ${tag_build} latest" >> "$tag_file"
     fi
