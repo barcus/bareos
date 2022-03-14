@@ -29,12 +29,13 @@ Images are based on **Ubuntu** or **Alpine**, check tags below
 * Ubuntu images for Bareos 18 and 19 are based on **Bionic**
 * Ubuntu images for Bareos 20 and 21 are based on **Focal**
 * Alpine images are available for **linux/amd64** and **linux/arm64/v8** platform
-* Images are built and deployed to [Docker hub][docker-url] on Sunday at 4am
+* Weekly build are deployed to [Docker hub][docker-url] on Sunday 4am (GMT+1)
 
 ## Tags
 
 bareos-director (dir)
 
+* `nightly`
 * `21-ubuntu-pgsql`, `21-ubuntu`, `21`, `ubuntu`, `latest`
 * `20-ubuntu-pgsql`, `20-ubuntu`, `20`
 * `20-ubuntu-mysql`
@@ -57,6 +58,7 @@ bareos-director (dir)
 
 bareos-client (fd) - bareos-storage (sd) - bareos-webui
 
+* `nightly`
 * `21-ubuntu`, `21`, `ubuntu`, `latest`
 * `20-ubuntu`, `20`
 * `20-alpine`, `alpine`
@@ -139,7 +141,7 @@ Open `http://your-docker-host:8080` then sign-in
 
 Run `docker exec -it bareos-dir bconsole`
 
-=> API : (Required Bareos 20 / Same user/pass than Bareos WEBUI)
+=> API : (Required Bareos 20+ and Bareos named console)
 
 Open `http://your-docker-host:8000/docs` then click 'Authorize' to sign-in or
 use curl as example below
@@ -154,6 +156,9 @@ curl -X 'POST' \
   -d 'grant_type=&username=admin&password=ThisIsMySecretUIp4ssw0rd&scope=&client_id=&client_secret='
 ```
 
+As you can see it uses credentials of Bareos-webui admin user which is
+configure as a named console in Bareos-director.
+
 Result:
 
 ```json
@@ -163,7 +168,7 @@ Result:
 }
 ```
 
-Then, use it for example to read all clients (like in bconsole)
+Then, use this token for example to read all clients configuration (like in bconsole)
 
 ```bash
 curl -X 'GET' \
