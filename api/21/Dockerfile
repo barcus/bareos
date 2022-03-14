@@ -14,12 +14,17 @@ LABEL org.label-schema.schema-version="1.0" \
       org.label-schema.vcs-url="https://github.com/barcus/bareos" \
       org.label-schema.version=$VERSION
 
-RUN pip install --no-cache-dir bareos-restapi==21.0.0.dev851
+RUN pip install --no-cache-dir --upgrade pip==22.0.4
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN adduser -D bareos
+USER bareos
+WORKDIR /home/bareos
+
+ENV PATH="/home/bareos/.local/bin:${PATH}"
+RUN pip install --no-cache-dir "bareos-restapi>=21*,<22*"
+
+COPY --chown=bareos docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod a+x /docker-entrypoint.sh
-
-WORKDIR /opt
 
 EXPOSE 8000
 

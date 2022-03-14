@@ -4,7 +4,7 @@
 secret=`tr -cd "[:alnum:]" < /dev/urandom | fold -w30 | head -n1`
 
 # Generate api.ini config
-cat <<EOF > /opt/api.ini
+cat <<EOF > /home/bareos/api.ini
 [Director]
 Name=${BAREOS_DIR_HOST}
 Address=${BAREOS_DIR_HOST}
