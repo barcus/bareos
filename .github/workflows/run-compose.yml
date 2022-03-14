@@ -41,7 +41,7 @@ jobs:
       - name: Run docker-compose
         run: |
           cp .env.dist .env
-          docker-compose -f docker-compose-${{ matrix.module }}.yml up -d
+          docker-compose -e INIT_DB=true -f docker-compose-${{ matrix.module }}.yml up -d
 
       - name: Wait 60s then run Bareos console
         run: |
