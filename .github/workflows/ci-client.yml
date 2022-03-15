@@ -19,7 +19,7 @@ on:
       - '.github/actions/test-bareos-app/*'
   workflow_dispatch:
   schedule:
-    - cron: '35 13 * * *'
+    - cron: '55 13 * * *'
 
 jobs:
   prepare:
