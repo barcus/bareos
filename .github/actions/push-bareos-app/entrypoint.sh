@@ -37,13 +37,13 @@ echo ::endgroup::
 echo ::group::Push additional tags
 while read build_app s_tag t_tag ; do
   # Push additional tags for Ubuntu 
-  if [[ $s_tag =~ ^[0-9]+-ubuntu.*$ ]]; then
+  if [[ $s_tag =~ ^[a-z0-9]+-ubuntu.*$ ]]; then
     docker tag "${GITHUB_REPOSITORY}-${build_app}:${s_tag}" \
       "${GITHUB_REPOSITORY}-${build_app}:${t_tag}"
     docker push "${GITHUB_REPOSITORY}-${build_app}:${t_tag}"
   fi
   # Create and push manifest for Alpine (arm64 + amd64)
-  if [[ $s_tag =~ ^[0-9]+-alpine.*$ ]]; then
+  if [[ $s_tag =~ ^[a-z0-9]+-alpine.*$ ]]; then
     docker manifest create "${GITHUB_REPOSITORY}-${build_app}:${t_tag}" \
       "${GITHUB_REPOSITORY}-${build_app}:${s_tag}-amd64" \
       "${GITHUB_REPOSITORY}-${build_app}:${s_tag}-arm64"
