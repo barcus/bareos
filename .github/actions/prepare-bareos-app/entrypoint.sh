@@ -53,6 +53,9 @@ for file in $docker_files; do
         echo "${app} ${tag_build} latest" >> "$tag_file"
       fi
     fi
+    if [ "${tag_build}" == 'nightly-ubuntu-pgsql' ]; then
+      echo "${app} ${tag_build} nightly" >> "$tag_file"
+    fi
     if [ "${app}" != 'director' ]; then
       echo "${app} ${tag_build} ${version}" >> "$tag_file"
       if [ "${version}" == "$latest_ubuntu" ]; then
