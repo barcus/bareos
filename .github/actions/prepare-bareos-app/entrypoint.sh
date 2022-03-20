@@ -2,7 +2,7 @@
 
 BUILDX_VER='v0.5.1'
 latest_ubuntu='21'
-latest_alpine='20'
+latest_alpine='21'
 latest_api='21'
 
 build_file="${GITHUB_WORKSPACE}/build/app_build.txt"
