@@ -6,8 +6,8 @@ services:
     volumes:
       - /data/mysql/backup:/backup
     environment:
-      - DB_INIT=true # init new PostgreSQL database
-      - DB_BACKUP=false # backup MySQL database
+      - DB_INIT=true # init new PostgreSQL database (required if it does not already exist)
+      - DB_BACKUP=false # backup MySQL database before migration (optional)
       - MYSQL_DB_HOST=bareos-db-mysql
       - MYSQL_DB_PORT=3306
       - MYSQL_DB_NAME=bareos
@@ -21,9 +21,8 @@ services:
       # Required to init new PGSQL instance + DB
       - PGSQL_ADMIN_USER=root
       - PGSQL_ADMIN_PASSWORD=${PGSQL_ADMIN_PASSWORD} # defined in .env file
-      # should not be required here
       - MYSQL_ADMIN_USER=root
-      - MYSQL_ADMIN_PASSWORD=${MYSQL_ADMIN_PASSWORD}
+      - MYSQL_ADMIN_PASSWORD=${MYSQL_ADMIN_PASSWORD} # defined in .env file
     depends_on:
       - bareos-db-mysql
       - bareos-db-pgsql
@@ -40,7 +39,7 @@ services:
     volumes:
       - /data/pgsql/data:/var/lib/postgresql/data # /data/pgsql/data will contains PgSQL DBs (target)
     environment:
-      - POSTGRES_USER=root
+      - POSTGRES_USER=postgres # postgres user with superuser role
       - POSTGRES_PASSWORD=${PGSQL_ADMIN_PASSWORD} # defined in .env file
       - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
 #EOF
