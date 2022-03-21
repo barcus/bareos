@@ -7,7 +7,7 @@ PostgreSQL.
 
 ## Tags
 
-bareos-director (dir)
+barcus/bareos-db-migration
 
 * `latest`
 
