@@ -444,7 +444,7 @@ Enjoy !
 [compose-alpinev2-href]: https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v2.yml
 [compose-ubuntu-mysql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-mysql.yml
 [compose-ubuntu-pgsql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-pgsql.yml
-[compose-db-migration-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-pgsql-migration.yml
+[compose-db-migration-href]: https://github.com/barcus/bareos/blob/master/bareos-db-migration/docker-compose.yml
 [docker-compose-href]: https://docs.docker.com/compose
 [docker-href]: https://docs.docker.com/install
 [docker-img-dir]: https://img.shields.io/docker/pulls/barcus/bareos-director?label=bareos-director&logo=docker
