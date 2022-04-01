@@ -454,6 +454,7 @@ Enjoy !
 [docker-img-fd]: https://img.shields.io/docker/pulls/barcus/bareos-client?label=bareos-client&logo=docker
 [docker-img-sd]: https://img.shields.io/docker/pulls/barcus/bareos-storage?label=bareos-storage&logo=docker
 [docker-img-ui]: https://img.shields.io/docker/pulls/barcus/bareos-webui?label=bareos-webui&logo=docker
+[docker-img-api]: https://img.shields.io/docker/pulls/barcus/bareos-api?label=bareos-webui&logo=docker
 [docker-url]: https://registry.hub.docker.com/r/barcus
 [docker-url-dir]: https://registry.hub.docker.com/r/barcus/bareos-director
 [docker-url-fd]: https://registry.hub.docker.com/r/barcus/bareos-client
