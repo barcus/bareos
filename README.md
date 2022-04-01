@@ -14,6 +14,7 @@ This package provides images for [Bareos][bareos-href] :
 | Storage Daemon | [![Actions Status][build-storage-img]][build-storage-href] | ![Size badge][size-latest-storage-png] | ![Size badge][size-alpine-storage-png] | [![Docker badge][docker-img-sd]][docker-url-sd] |
 | Client/File Daemon | [![Actions Status][build-client-img]][build-client-href] | ![Size badge][size-latest-client-png] | ![Size badge][size-alpine-client-png] | [![Docker badge][docker-img-fd]][docker-url-fd] |
 | webUI | [![Actions Status][build-webui-img]][build-webui-href] | ![Size badge][size-latest-webui-png] | ![Size badge][size-alpine-webui-png] | [![Docker badge][docker-img-ui]][docker-url-ui] |
+| API | [![Actions Status][build-api-img]][build-api-href] | ![Size badge][size-latest-api-png] | | [![Docker badge][docker-img-api]][docker-url-api] |
 
 Images are based on **Ubuntu** or **Alpine**, check tags below
 
@@ -440,6 +441,8 @@ Enjoy !
 [build-url]: https://travis-ci.org/barcus/bareos
 [build-webui-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-webui
 [build-webui-img]: https://github.com/barcus/bareos/workflows/ci-webui/badge.svg
+[build-api-href]: https://github.com/barcus/bareos/actions?query=workflow%3Aci-api
+[build-api-img]: https://github.com/barcus/bareos/workflows/ci-api/badge.svg
 [compose-alpinev1-href]: https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v1.yml
 [compose-alpinev2-href]: https://github.com/barcus/bareos/blob/master/docker-compose-alpine-v2.yml
 [compose-ubuntu-mysql-href]: https://github.com/barcus/bareos/blob/master/docker-compose-ubuntu-mysql.yml
@@ -456,6 +459,7 @@ Enjoy !
 [docker-url-fd]: https://registry.hub.docker.com/r/barcus/bareos-client
 [docker-url-sd]: https://registry.hub.docker.com/r/barcus/bareos-storage
 [docker-url-ui]: https://registry.hub.docker.com/r/barcus/bareos-webui
+[docker-url-api]: https://registry.hub.docker.com/r/barcus/bareos-api
 [license-img]: https://img.shields.io/badge/License-MIT-yellow.svg
 [os-based-alpine]: https://img.shields.io/badge/os-alpine-9cf
 [os-based-ubuntu]: https://img.shields.io/badge/os-ubuntu-9cf
@@ -467,5 +471,6 @@ Enjoy !
 [size-latest-director-png]: https://img.shields.io/docker/image-size/barcus/bareos-director/latest?label=latest&style=plastic
 [size-latest-storage-png]: https://img.shields.io/docker/image-size/barcus/bareos-storage/latest?label=latest&style=plastic
 [size-latest-webui-png]: https://img.shields.io/docker/image-size/barcus/bareos-webui/latest?label=latest&style=plastic
+[size-latest-api-png]: https://img.shields.io/docker/image-size/barcus/bareos-api/latest?label=latest&style=plastic
 [run-compose-png]: https://github.com/barcus/bareos/workflows/run-compose/badge.svg
 [psql-upgrade-href]: https://github.com/barcus/postgresql-upgrade
