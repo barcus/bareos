@@ -7,7 +7,7 @@ services:
       - /data/bareos/config/director:/etc/bareos
       - /data/bareos/data/director:/var/lib/bareos # required for MyCatalog backup
     environment:
-      - DB_INIT=false #should be 'true' if bareos db does not exist
+      - DB_INIT=true #should be 'true' if bareos db does not exist
       - DB_UPDATE=false
       - DB_HOST=bareos-db
       - DB_PORT=5432
@@ -75,10 +75,23 @@ services:
   bareos-api:
     image: barcus/bareos-api:21
     ports:
-    - 8000:8000
+      - 8000:8000
     environment:
-    - BAREOS_DIR_HOST=bareos-dir
+      - BAREOS_DIR_HOST=bareos-dir
+
+  bareos-exporter:
+    image: barcus/bareos-exporter
+    ports:
+      - 9625:9625
+    environment:
+      - DB_HOST=bareos-db
+      - DB_USER=bareos
+      - DB_PASSWORD=${DB_PASSWORD}
+      - WAIT_FOR_DB=15
+    depends_on:
+      - bareos-db
 
   smtpd:
     image: namshi/smtp
+
 #EOF
