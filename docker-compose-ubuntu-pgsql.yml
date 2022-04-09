@@ -72,6 +72,11 @@ services:
       - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD} # defined in .env file
       - POSTGRES_INITDB_ARGS=--encoding=SQL_ASCII
 
+  smtpd:
+    image: namshi/smtp
+
+  # Optional tools
+  # Bareos API
   bareos-api:
     image: barcus/bareos-api:21
     ports:
@@ -79,8 +84,9 @@ services:
     environment:
       - BAREOS_DIR_HOST=bareos-dir
 
+  # Bareos metrics exporter for Prometheus
   bareos-exporter:
-    image: barcus/bareos-exporter
+    image: vierbergenlars/bareos_exporter:v0.6.0
     ports:
       - 9625:9625
     environment:
@@ -90,8 +96,5 @@ services:
       - WAIT_FOR_DB=15
     depends_on:
       - bareos-db
-
-  smtpd:
-    image: namshi/smtp
 
 #EOF

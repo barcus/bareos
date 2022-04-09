@@ -109,12 +109,19 @@ through docker-compose, see example below
 
 ## Usage
 
+### Define ENV variables required
+
 Declare environment variables or copy the `.env.dist` to `.env` and adjust its
 values.
 
 Remember that all passwords should be defined inside this `.env` file.
-Feel free to change some passwords after your test also don't forget to update
-`ADMIN_MAIL` varialble in docker-compose file.
+It's recommanded to not use default passwords in `.env.dist` for production
+usage.
+
+Finaly, be sure to update variables in docker-compose file like
+`ADMIN_MAIL` or `DB_USER`
+
+### Run docker-compose
 
 ```bash
 docker-compose -f /path/to/your/docker-compose.yml up -d
@@ -132,20 +139,28 @@ docker-compose files are available for Alpine and Ubuntu based stack:
 :file_folder: Those docker-compose file are configured to store data inside
 `/data/(bareos|mysql|pgsql)`
 
-Finally, when your containers are up and running access Bareos through
+Finally, when your containers are up and running access Bareos using WebUI, CLI or API
 
-=> WebUI : (user: admin / pass: `<BAREOS_WEBUI_PASSWORD>`)
+### Access WebUI
 
-Open `http://your-docker-host:8080` then sign-in
+Open `http://your-docker-host:8080` in your web browser then sign-in
 
-=> bconsole :
+(user: admin / pass: `<BAREOS_WEBUI_PASSWORD>`)
 
-Run `docker exec -it bareos-dir bconsole`
+### Access bconsole
 
-=> API : (Required Bareos 20+ and Bareos named console)
+```bash
+docker exec -it bareos-dir bconsole
+```
 
-Open `http://your-docker-host:8000/docs` then click 'Authorize' to sign-in or
-use curl as example below
+### Access API
+
+(Required Bareos 20+ and Bareos named console)
+
+Open `http://your-docker-host:8000/docs` in your web browser then click
+'Authorize' to sign-in.
+
+Or use curl as example below:
 
 Get token: (should return json object with token inside)
 
@@ -178,9 +193,22 @@ curl -X 'GET' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY0NzIxMDM3NX0.alKiLsgMrovKVX6fdcUqkhG_9lsJNiOBQ6X7ixyziGw'
 ```
 
+Should return a JSON file with all clients configuration.
+
+### Access metrics for Prometheus
+
+Open `http://your-docker-host:9625/metrics` in your web browser to display
+metrics available.
+
+More information about [Bareos exporter][bareos-exporter-href]. Thank you to @vierbergenlars
+
+Metrics should be scraped by [Prometheus][prometheus-href] server.
+
+### Official documentation
+
 More information about Bareos configuration and usage in the [official documantion][bareos-doc]
 
-### Database migration (MySQL to PostgreSQL)
+## Database migration (MySQL to PostgreSQL)
 
 Since Bareos Version >= 21.0.0 the MySQL database backend is not shipped
 anymore. Therefore you need to use Bareos 20 to migrate an existing MySQL
@@ -193,9 +221,9 @@ If PostgreSQL database is empty or does not exist, it will be created.
 
 :warning: Don't forget `.env` file with passwords required!
 
-### PostgreSQL database upgrade
+## PostgreSQL database upgrade
 
-#### Compatibility
+### Compatibility
 
 At this moment, latest Ubuntu based images are compliant with PostgreSQL 12 or
 less and Alpine ones with PostgreSQL 14. This is due to the version of `pg_dump`
@@ -475,3 +503,5 @@ Enjoy !
 [size-latest-api-png]: https://img.shields.io/docker/image-size/barcus/bareos-api/latest?label=latest&style=plastic
 [run-compose-png]: https://github.com/barcus/bareos/workflows/run-compose/badge.svg
 [psql-upgrade-href]: https://github.com/barcus/postgresql-upgrade
+[bareos-exporter-href]: https://github.com/vierbergenlars/bareos_exporter
+[prometheus-href]: https://prometheus.io
