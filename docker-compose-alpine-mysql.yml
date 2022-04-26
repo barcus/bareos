@@ -16,7 +16,7 @@ services:
       - BAREOS_FD_HOST=bareos-fd
       - BAREOS_FD_PASSWORD=${BAREOS_FD_PASSWORD}
       - BAREOS_WEBUI_PASSWORD=${BAREOS_WEBUI_PASSWORD}
-      - SMTP_HOST=smtpd
+      - SMTP_HOST=smtpd:8025 # Local smtp container
       - ADMIN_MAIL=your@mail.address # Change me!
       # Optional you can gets backup notification via Slack or Telegram
       - WEBHOOK_NOTIFICATION=false # true or false if set to true email notification gets disabled
@@ -71,5 +71,5 @@ services:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
 
   smtpd:
-    image: namshi/smtp
+    image: devture/exim-relay
 #EOF
