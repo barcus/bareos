@@ -27,7 +27,7 @@ Images are based on **Ubuntu** or **Alpine**, check tags below
 * SQLite backend deprecated since Bareos 20.0.0
 
 * Ubuntu images for Bareos 16 and 17 are based on **Xenial** (deprecated)
-* Ubuntu images for Bareos 18 and 19 are based on **Bionic**
+* Ubuntu images for Bareos 18 and 19 are based on **Bionic** (no more updated)
 * Ubuntu images for Bareos 20 and 21 are based on **Focal**
 * Alpine images are available for **linux/amd64** and **linux/arm64/v8** platform
 * Weekly build are deployed to [Docker hub][docker-url] on Sunday 4am (GMT+1)
@@ -41,6 +41,9 @@ bareos-director (dir)
 * `20-ubuntu-pgsql`, `20-ubuntu`, `20`
 * `20-ubuntu-mysql`
 * `20-alpine-pgsql`, `20-alpine`, `alpine`
+
+:warning: Deprecated images
+
 * `19-ubuntu-mysql`, `19-ubuntu`, `19`
 * `19-ubuntu-pgsql`
 * `19-alpine-mysql`, `19-alpine`
@@ -48,9 +51,6 @@ bareos-director (dir)
 * `18-ubuntu-mysql`, `18-ubuntu`, `18`
 * `18-ubuntu-pgsql`
 * `18-alpine-mysql`, `18-alpine`
-
-:warning: Deprecated images
-
 * `17-ubuntu-mysql`, `17-ubuntu`, `17`
 * `17-ubuntu-pgsql`
 * `17-alpine`
@@ -63,13 +63,13 @@ bareos-client (fd) - bareos-storage (sd) - bareos-webui
 * `21-ubuntu`, `21`, `ubuntu`, `latest`
 * `20-ubuntu`, `20`
 * `20-alpine`, `alpine`
+
+:warning: Deprecated images
+
 * `19-ubuntu`, `19`
 * `19-alpine`
 * `18-ubuntu`, `18`
 * `18-alpine`
-
-:warning: Deprecated images
-
 * `17-ubuntu`, `17`
 * `17-alpine`
 * `16-ubuntu`, `16`
