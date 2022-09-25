@@ -1,14 +1,19 @@
 # Dockerfile Bareos storage daemon
-FROM ubuntu:focal
+FROM ubuntu:focal as build
 WORKDIR /root
 ARG VCHANGER="https://sourceforge.net/projects/vchanger/files/vchanger/1.0.3/vchanger-1.0.3.tar.gz/download"
+
 RUN apt-get update -qq \
- && apt-get -qq -y install --no-install-recommends curl build-essential
+ && apt-get -qq -y install --no-install-recommends curl build-essential \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 RUN curl -Lsk $VCHANGER -o vchanger.tar.gz \
- && tar -xzf vchanger.tar.gz \
- && cd vchanger \
- && ./configure \
+ && tar -xzf vchanger.tar.gz
+
+WORKDIR /root/vchanger
+
+RUN ./configure \
  && make install-strip
 
 FROM ubuntu:focal
@@ -46,8 +51,8 @@ RUN apt-get update -qq \
  && rm -rf /var/lib/apt/lists/*
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-COPY --from=0 /usr/local/bin/vchanger/ /usr/local/bin/vchanger/
-COPY --from=0 /usr/local/libexec/vchanger/ /usr/local/libexec/vchanger/
+COPY --from=build /usr/local/bin/vchanger/ /usr/local/bin/vchanger/
+COPY --from=build /usr/local/libexec/vchanger/ /usr/local/libexec/vchanger/
 RUN chmod u+x /docker-entrypoint.sh
 
 RUN tar czf /bareos-sd.tgz /etc/bareos/bareos-sd.d
