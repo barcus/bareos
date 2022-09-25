@@ -1,5 +1,5 @@
 # Dockerfile Bareos storage daemon
-FROM ubuntu:focal
+FROM ubuntu:jammy
 
 LABEL maintainer="barcus@tou.nu"
 
@@ -15,8 +15,8 @@ LABEL org.label-schema.schema-version="1.0" \
       org.label-schema.vcs-url="https://github.com/barcus/bareos" \
       org.label-schema.version=$VERSION
 
-ENV BAREOS_KEY http://download.bareos.org/bareos/experimental/nightly/xUbuntu_20.04/Release.key
-ENV BAREOS_REPO http://download.bareos.org/bareos/experimental/nightly/xUbuntu_20.04/
+ENV BAREOS_KEY http://download.bareos.org/bareos/experimental/nightly/xUbuntu_22.04/Release.key
+ENV BAREOS_REPO http://download.bareos.org/bareos/experimental/nightly/xUbuntu_22.04/
 ENV DEBIAN_FRONTEND noninteractive
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
