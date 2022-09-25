@@ -35,9 +35,22 @@ for file in $docker_files; do
     tag_build="${tag_build}-${backend}"
   fi
 
-  # nightly build only on scheduled job, excepted sunday
+  # Build only nightly images when event=schedule, excepted sunday
   if [ ${GITHUB_EVENT_NAME} == 'schedule' ] && [ $(date +%u) -ne 7 ]; then
-      [ "${version}" != 'nightly' ] && continue
+    [ "${version}" != 'nightly' ] && continue
+  fi
+
+  # If branch name contain nightly prefix build it only
+  re='^nightly/.*$'
+  if [[ ${GITHUB_REF_NAME} =~ $re ]]; then
+    [ "${version}" != 'nightly' ] && continue
+  fi
+
+  # If branch name contain $app/ build only $app
+  re='^(webui|client|storage|director|api)/.*$'
+  if [[ ${GITHUB_REF_NAME} =~ $re ]]; then
+    re="^${app}/.*$"
+    [[ ${GITHUB_REF_NAME} =~ $re ]] || continue
   fi
 
   # Declare each Dockerfile and tags related
