@@ -43,7 +43,7 @@ opening a new issue; it's that easy!
 
 - A quick summary and/or background
 - Steps to reproduce (if required)
-  - Be specific!
+   - Be specific!
 - What you expected would happen
 - What actually happens
 - Notes (possibly including why you think this might be happening, or
