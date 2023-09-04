@@ -23,7 +23,7 @@ jobs:
         module: [alpine-mysql, alpine-mysql-v2, ubuntu-mysql, ubuntu-pgsql, alpine-pgsql]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Create required folder
         run: |
