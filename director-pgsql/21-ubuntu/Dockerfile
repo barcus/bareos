@@ -50,7 +50,6 @@ COPY webhook-notify /usr/local/bin/webhook-notify
 RUN chmod u+x /usr/local/bin/webhook-notify
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod u+x /docker-entrypoint.sh
 
 EXPOSE 9101
 
