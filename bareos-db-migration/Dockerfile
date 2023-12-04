@@ -49,7 +49,6 @@ RUN apt-get update -qq \
 RUN tar czf /bareos-dir.tgz /etc/bareos
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod u+x /docker-entrypoint.sh
 
 VOLUME /etc/bareos
 

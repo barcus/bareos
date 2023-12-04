@@ -24,7 +24,6 @@ ENV PATH="/home/bareos/.local/bin:${PATH}"
 RUN pip install --no-cache-dir "bareos-restapi>=21*,<22*"
 
 COPY --chown=bareos docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod a+x /docker-entrypoint.sh
 
 EXPOSE 8000
 
