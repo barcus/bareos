@@ -36,7 +36,6 @@ RUN apt-get update -qq \
  && rm -rf /var/lib/apt/lists/*
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod a+x /docker-entrypoint.sh
 
 RUN tar czf /bareos-fd.tgz /etc/bareos/bareos-fd.d
 

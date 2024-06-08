@@ -27,7 +27,6 @@ RUN mkdir /run/bareos \
  && chown bareos /run/bareos
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod a+x /docker-entrypoint.sh
 
 EXPOSE 9102
 
