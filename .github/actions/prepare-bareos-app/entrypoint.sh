@@ -28,6 +28,11 @@ for file in $docker_files; do
   base_img=$(echo "$version_dir" |cut -d'-' -f2)
   [[ $version -ge 20 ]] && default_backend='pgsql'
 
+  # disable ubuntu builds
+  if [ "${base_img}" == "ubuntu" ]; then
+    continue
+  fi
+
   # Define default tag
   tag_build="${version}-${base_img}"
   if [ "${app}" == 'director' ]; then
@@ -37,7 +42,7 @@ for file in $docker_files; do
 
   # nightly build only on scheduled job, excepted sunday
   if [ ${GITHUB_EVENT_NAME} == 'schedule' ] && [ $(date +%u) -ne 7 ]; then
-      [ "${version}" != 'nightly' ] && continue
+    [ "${version}" != 'nightly' ] && continue
   fi
 
   # Declare each Dockerfile and tags related
