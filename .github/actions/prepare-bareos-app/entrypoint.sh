@@ -55,7 +55,6 @@ for file in $docker_files; do
       echo "${app} ${tag_build} ${version}" >> "$tag_file"
       if [ "${version}" == "$latest_ubuntu" ]; then
         echo "${app} ${tag_build} ubuntu" >> "$tag_file"
-        echo "${app} ${tag_build} latest" >> "$tag_file"
       fi
     fi
     if [ "${tag_build}" == 'nightly-ubuntu-pgsql' ]; then
@@ -65,7 +64,6 @@ for file in $docker_files; do
       echo "${app} ${tag_build} ${version}" >> "$tag_file"
       if [ "${version}" == "$latest_ubuntu" ]; then
         echo "${app} ${tag_build} ubuntu" >> "$tag_file"
-        echo "${app} ${tag_build} latest" >> "$tag_file"
       fi
     fi
   fi
@@ -81,10 +79,12 @@ for file in $docker_files; do
       echo "${app} ${tag_build} ${version}-alpine" >> "$tag_file"
       if [ "${version}" == "$latest_alpine" ]; then
         echo "${app} ${tag_build} alpine" >> "$tag_file"
+        echo "${app} ${tag_build} latest" >> "$tag_file"
       fi
     fi
     if [ "${app}" != 'director' ] && [ "${version}" == "$latest_alpine" ]; then
       echo "${app} ${tag_build} alpine" >> "$tag_file"
+        echo "${app} ${tag_build} latest" >> "$tag_file"
     fi
     if [ "${app}" == 'api' ] && [ "${version}" == "$latest_api" ]; then
       echo "${app} ${tag_build} ${version}" >> "$tag_file"
