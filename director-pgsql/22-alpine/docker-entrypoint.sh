@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ash
 
 github_bareos='raw.githubusercontent.com/bareos/bareos'
 webui_admin_conf='master/webui/install/bareos/bareos-dir.d/profile/webui-admin.conf'
@@ -21,11 +21,13 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
 
   # Update bareos-director configs
   # Director / mycatalog & mail report
-  sed -i 's#dbuser = "bareos"#dbuser = '\"${DB_USER}\"'#' \
+  sed -i "s#dbuser =.*#dbuser = $DB_USER#" \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
-  sed -i 's#dbpassword = ""#dbpassword = '\"${DB_PASSWORD}\"'#' \
+  sed -i 's#dbpassword =.*#dbpassword = '\""${DB_PASSWORD}"\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
-  sed -i 's#dbname = "bareos"#dbname = '\"${DB_NAME}\"'\n  dbaddress = '\"${DB_HOST}\"'\n  dbport = '\"${DB_PORT}\"'#' \
+  sed -i 's#dbname =.*#dbname = '\""${DB_NAME}"\"'\n  dbaddress = '\""${DB_HOST}"\"'\n  dbport = '\""${DB_PORT}"\"'#' \
+    /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
+  sed -i 's#dbdriver = .*#dbdriver = '\""postgresql"\"'#' \
     /etc/bareos/bareos-dir.d/catalog/MyCatalog.conf
   [ -n "${SENDER_MAIL}" ] && sed -i "s#<%r#<${SENDER_MAIL}#g" \
     /etc/bareos/bareos-dir.d/messages/Daemon.conf
@@ -35,7 +37,7 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
     /etc/bareos/bareos-dir.d/messages/Daemon.conf
   [ -n "${SENDER_MAIL}" ] && sed -i "s#<%r#<${SENDER_MAIL}#g" \
     /etc/bareos/bareos-dir.d/messages/Standard.conf
-  sed -i "s#/usr/bin/bsmtp -h localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#" \
+  sed -i "s#/usr/bin/bsmtp -h localhost#/usr/bin/bsmtp -h ${SMTP_HOST}#g" \
     /etc/bareos/bareos-dir.d/messages/Standard.conf
   sed -i "s#mail = root#mail = ${ADMIN_MAIL}#" \
     /etc/bareos/bareos-dir.d/messages/Standard.conf
@@ -63,12 +65,19 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
   # webUI
   sed -i 's#Password = .*#Password = '\""${BAREOS_WEBUI_PASSWORD}"\"'#' \
     /etc/bareos/bareos-dir.d/console/admin.conf
-  sed -i "s#}#  TlsEnable = false\n}#" \
-    /etc/bareos/bareos-dir.d/console/admin.conf
+
 
   # MyCatalog Backup
   sed -i "s#/var/lib/bareos/bareos.sql#/var/lib/bareos-director/bareos.sql#" \
     /etc/bareos/bareos-dir.d/fileset/Catalog.conf
+  sed -i "s#make_catalog_backup MyCatalog#make_catalog_backup ${DB_NAME} ${DB_USER} '' ${DB_HOST}#" \
+    /etc/bareos/bareos-dir.d/job/BackupCatalog.conf
+
+  # Add pgpass file to ${DB_USER} home
+  homedir=$(getent passwd "$DB_USER" | cut -d: -f6)
+  echo "${DB_HOST}:${DB_PORT}:${DB_NAME}:${DB_USER}:${DB_PASSWORD}" > "${homedir}/.pgpass"
+  chmod 600 "${homedir}/.pgpass"
+  chown "${DB_USER}" "${homedir}/.pgpass"
 
   # Control file
   touch /etc/bareos/bareos-config.control
@@ -97,16 +106,15 @@ export PGPASSWORD=${DB_ADMIN_PASSWORD}
 [[ -z "${DB_UPDATE}" ]] && DB_UPDATE='false'
 
 if [ ! -f /etc/bareos/bareos-db.control ] && [ "${DB_INIT}" == 'true' ] ; then
-  # Init Postgresql DB
+  # Init Postgres DB
   echo "Bareos DB init"
   echo "Bareos DB init: Create user ${DB_USER}"
   psql -c "create user ${DB_USER} with createdb createrole login;"
   echo "Bareos DB init: Set user password"
   psql -c "alter user ${DB_USER} password '${DB_PASSWORD}';"
-  /usr/lib/bareos/scripts/create_bareos_database 2>/dev/null
-  /usr/lib/bareos/scripts/make_bareos_tables 2>/dev/null
-  /usr/lib/bareos/scripts/grant_bareos_privileges 2>/dev/null
-
+  /etc/bareos/scripts/create_bareos_database 2>/dev/null
+  /etc/bareos/scripts/make_bareos_tables  2>/dev/null
+  /etc/bareos/scripts/grant_bareos_privileges  2>/dev/null
   # Control file
   touch /etc/bareos/bareos-db.control
 fi
@@ -115,14 +123,14 @@ if [ "${DB_UPDATE}" == 'true' ] ; then
   # Try Postgres upgrade
   echo "Bareoos DB update"
   echo "Bareoos DB update: Update tables"
-  /usr/lib/bareos/scripts/update_bareos_tables 2>/dev/null
+  /etc/bareos/scripts/update_bareos_tables  2>/dev/null
   echo "Bareoos DB update: Grant privileges"
-  /usr/lib/bareos/scripts/grant_bareos_privileges 2>/dev/null
+  /etc/bareos/scripts/grant_bareos_privileges  2>/dev/null
 fi
 
 # Fix permissions
 find /etc/bareos ! -user bareos -exec chown bareos {} \;
-chown -R bareos:bareos /var/lib/bareos
+chown -R bareos:bareos /var/lib/bareos /var/log/bareos
 
 # Run Dockerfile CMD
 exec "$@"

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ash
 
 bareos_sd_config="/etc/bareos/bareos-sd.d/director/bareos-dir.conf"
 
@@ -13,8 +13,10 @@ if [ ! -f /etc/bareos/bareos-config.control ]; then
 fi
 
 # Fix permissions
+find /var/lib/bareos ! -user bareos -exec chown bareos {} \;
 find /etc/bareos/bareos-sd.d ! -user bareos -exec chown bareos {} \;
-chown -R bareos /var/lib/bareos /dev/[n]st* /dev/tape
+find /dev -regex "/dev/[n]?st[0-9]+" ! -user bareos -exec chown bareos {} \;
+find /dev -regex "/dev/tape/.*" ! -user bareos -exec chown bareos {} \;
 
 # Run Dockerfile CMD
 exec "$@"
