@@ -16,19 +16,8 @@ This package provides images for [Bareos][bareos-href] :
 | webUI | [![Actions Status][build-webui-img]][build-webui-href] | ![Size badge][size-latest-webui-png] | ![Size badge][size-alpine-webui-png] | [![Docker badge][docker-img-ui]][docker-url-ui] |
 | API | [![Actions Status][build-api-img]][build-api-href] | ![Size badge][size-latest-api-png] | | [![Docker badge][docker-img-api]][docker-url-api] |
 
-Images are based on **Ubuntu** or **Alpine**, check tags below
+Images are based on **Alpine**, check tags below
 
-:+1: Tested with Bareos 16.x.x to 21.0.0
-
-:warning:
-
-* MySQL/MariaDB backend deprecated since Bareos 20.0.0 (available for old DB only)
-* MySQL/MariaDB backend not available since Bareos 21.0.0
-* SQLite backend deprecated since Bareos 20.0.0
-
-* Ubuntu images for Bareos 16 and 17 are based on **Xenial** (deprecated)
-* Ubuntu images for Bareos 18 and 19 are based on **Bionic** (no more updated)
-* Ubuntu images for Bareos 20 and 21 are based on **Focal**
 * Alpine images are available for **linux/amd64** and **linux/arm64/v8** platform
 * Weekly build are deployed to [Docker hub][docker-url] on Sunday 4am (GMT+1)
 
@@ -36,65 +25,26 @@ Images are based on **Ubuntu** or **Alpine**, check tags below
 
 bareos-director (dir)
 
-* `nightly`
-* `21-ubuntu-pgsql`, `21-ubuntu`, `21`, `ubuntu`, `latest`
-* `20-ubuntu-pgsql`, `20-ubuntu`, `20`
-* `20-ubuntu-mysql`
-* `20-alpine-pgsql`, `20-alpine`, `alpine`
-
-:warning: Deprecated images
-
-* `19-ubuntu-mysql`, `19-ubuntu`, `19`
-* `19-ubuntu-pgsql`
-* `19-alpine-mysql`, `19-alpine`
-* `19-alpine-pgsql`
-* `18-ubuntu-mysql`, `18-ubuntu`, `18`
-* `18-ubuntu-pgsql`
-* `18-alpine-mysql`, `18-alpine`
-* `17-ubuntu-mysql`, `17-ubuntu`, `17`
-* `17-ubuntu-pgsql`
-* `17-alpine`
-* `16-ubuntu-mysql`, `16-ubuntu`, `16`
-* `16-ubuntu-pgsql`
+* `21-alpine-pgsql`, `21-alpine`, `alpine`, `latest`
+* `20-alpine-pgsql`, `20-alpine`
 
 bareos-client (fd) - bareos-storage (sd) - bareos-webui
 
-* `nightly`
-* `21-ubuntu`, `21`, `ubuntu`, `latest`
-* `20-ubuntu`, `20`
-* `20-alpine`, `alpine`
-
-:warning: Deprecated images
-
-* `19-ubuntu`, `19`
-* `19-alpine`
-* `18-ubuntu`, `18`
-* `18-alpine`
-* `17-ubuntu`, `17`
-* `17-alpine`
-* `16-ubuntu`, `16`
+* `21-alpine`, `alpine`, `latest`
+* `20-alpine`, `latest`
 
 bareos-api
 
 * `21-alpine`, `21`, `alpine`, `latest`
 
-## Security advice
-
-The default passwords inside the configuration files are created when building
-the docker image. Hence for production either build the image yourself using
-the sources from Github.
-
-:o: Do not use this container for anything else, as passwords get expose to
-the Bareos containers.
-
 ## Setup
 
 Bareos Director requires :
 
-* PostgreSQL or MySQL as a catalog backend (MySQL deprecated since Bareos 19.0.0)
+* PostgreSQL
 * SMTP Daemon as mail router (for reporting)
 
-Bareos Webui requires (Alpine images only) :
+Bareos Webui requires :
 
 * PHP-FPM
 
