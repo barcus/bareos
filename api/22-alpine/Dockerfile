@@ -16,12 +16,22 @@ LABEL org.label-schema.schema-version="1.0" \
 
 RUN pip install --no-cache-dir --upgrade pip==22.0.4
 
+# Required for installation of Python sslpsk package
+RUN apk add build-base openssl-dev
+
 RUN adduser -D bareos
 USER bareos
 WORKDIR /home/bareos
 
 ENV PATH="/home/bareos/.local/bin:${PATH}"
 RUN pip install --no-cache-dir "bareos-restapi>=22*,<23*"
+
+# Pin pydantic to 1.x version to circumvent
+# https://github.com/barcus/bareos/issues/187
+RUN pip install --no-cache-dir "pydantic==1.10.21"
+
+# Support connection encryption via TLS-PSK
+RUN pip install --no-cache-dir "sslpsk"
 
 COPY --chown=bareos docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod a+x /docker-entrypoint.sh
