@@ -18,7 +18,7 @@ jobs:
         module: [client, director, storage, webui, api]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Update Docker Hub description
         uses: peter-evans/dockerhub-description@v4.0.0
