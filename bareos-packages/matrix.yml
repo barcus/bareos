@@ -1,0 +1,18 @@
+# Build matrix: (bareos_branch, ubuntu_codename) tuples
+#
+# bareos-22 / jammy  — Bareos 22.x on Ubuntu 22.04 (upstream apt has none)
+# bareos-23 / jammy  — Bareos 23.x on Ubuntu 22.04 (upstream apt has none)
+# bareos-24 / noble  — Bareos 24.x on Ubuntu 24.04 (upstream only has 25.x)
+#
+# Bareos 25 is served by download.bareos.org/current/ and does not need
+# a source build. bareos-20 and bareos-21 have upstream versioned repos.
+#
+# Alpine is not listed here — no upstream APKBUILD exists; deferred.
+
+matrix:
+  - bareos_branch: bareos-22
+    ubuntu_codename: jammy
+  - bareos_branch: bareos-23
+    ubuntu_codename: jammy
+  - bareos_branch: bareos-24
+    ubuntu_codename: noble

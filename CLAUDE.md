@@ -90,6 +90,7 @@ GitHub Actions workflows in `.github/workflows/`:
 
 - `ci-director.yml`, `ci-client.yml`, `ci-storage.yml`, `ci-webui.yml`, `ci-api.yml` — build and push images; triggered on changes to the respective component directories
 - `run-compose.yml` — integration test: spins up each compose variant and runs `bconsole` to verify the stack is healthy (runs weekly on Sundays and on compose file changes)
+- `build-bareos-packages.yml` — builds `.deb` packages from the bareos source repo for versions not available on `download.bareos.org`; see `bareos-packages/README.md`
 - `test-n-lint.yml` — linting
 - `push-readme.yml` — syncs README to Docker Hub
 
@@ -98,5 +99,22 @@ The CI uses reusable composite actions in `.github/actions/` (prepare, build, pu
 ## Version Support
 
 - Alpine images support `linux/amd64` and `linux/arm64/v8`
-- Current active versions: 24 (Ubuntu and Alpine), 22 (Alpine)
+- Current active versions: 22 (Ubuntu and Alpine), 24 (Ubuntu)
 - MySQL backend was dropped in Bareos 21+; `director-mysql/` only goes up to version 20
+
+### Upstream package availability
+
+`download.bareos.org` only publishes versioned repos for Bareos 20 and 21. For 22+:
+
+| Bareos version | Ubuntu                          | Alpine            |
+|----------------|---------------------------------|-------------------|
+| 20             | versioned apt repo              | Alpine 3.15       |
+| 21             | versioned apt repo              | Alpine 3.17       |
+| 22             | `current/` (serves 25.x today) | Alpine 3.18       |
+| 23             | not published upstream          | not published     |
+| 24             | not published upstream          | not published     |
+| 25             | `current/` (latest)            | not published     |
+
+Use `bareos-packages/` to build `.deb` packages from source for versions 22–24.
+Once packages are published as GitHub Releases, use the `.claude/skills/add-bareos-version`
+skill to generate new component directories that install from those artifacts.
